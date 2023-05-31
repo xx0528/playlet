@@ -38,10 +38,10 @@ public class MainActivity extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_playlet);
-
-        View statusBar = findViewById(R.id.status_bar);
-        findViewById(R.id.status_bar).getLayoutParams().height= ScreenUtils.getInstance().getStatusBarHeight(getApplicationContext());
-        StatusUtils.setStatusTextColor1(true, MainActivity.this);//黑色字体
+//
+//        View statusBar = findViewById(R.id.status_bar);
+//        findViewById(R.id.status_bar).getLayoutParams().height= ScreenUtils.getInstance().getStatusBarHeight(getApplicationContext());
+//        StatusUtils.setStatusTextColor1(true, MainActivity.this);//黑色字体
 
         final BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.nav_view);
 
