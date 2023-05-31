@@ -14,6 +14,7 @@ import com.android.player.R;
 import com.android.player.base.BaseFragment;
 import com.android.player.base.BasePresenter;
 import com.android.player.pager.bean.VideoBean;
+import com.android.player.utils.DataFactory;
 import com.android.player.utils.StatusUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
@@ -21,6 +22,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class HomeFragment extends BaseFragment {
     private static final String PERMISSION_WRITE_EXTERNAL = "android.permission.WRITE_EXTERNAL_STORAGE";//抖音视频缓存
@@ -77,7 +79,6 @@ public class HomeFragment extends BaseFragment {
         FragmentPagerAdapter adapter = new FragmentAdapter(getActivity().getSupportFragmentManager());
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mViewPager.setAdapter(adapter);
-        mTabLayout.getTabAt(1).select();
     }
 
     @Override

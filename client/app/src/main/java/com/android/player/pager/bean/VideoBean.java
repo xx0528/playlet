@@ -10,175 +10,97 @@ public class VideoBean {
 
     public VideoBean(){}
 
-    private String title;
-    private String cover;
-    private String path;
-    private String sub_title;
-    private String describe;
-    private String videoPlayUrl;
-    private String videoDownloadUrl;
-    private String videoWidth;
-    private String videoHeight;
-    private String musicAuthorName;
-    private String musicName;
-    private String likeCount;
-    private String formatPlayCountStr;
-    private String playCount;
-    private String authorName;
-    private String authorImgUrl="https://p9-dy.byteimg.com/aweme/100x100/bdf80017d3278f461445.jpeg";
-    private String coverImgUrl;
-    private String filterTitleStr;//简介标题
-    private String musicImgUrl;//music封面
+    private String videoName;
+    private int videoType;
+    private String typeName;
+    private String desc;
+    private int likeCount;
+    private int playCount;
+    private int finish;
+    private int count;
+    private String imgUrl;
+    private String videoUrl;
 
-    public String getTitle() {
-        return title;
+
+    public String getVideoName() {
+        return videoName;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setVideoName(String videoName) {
+        this.videoName = videoName;
     }
 
-    public String getCover() {
-        return cover;
+    public int getVideoType() {
+        return videoType;
     }
 
-    public void setCover(String cover) {
-        this.cover = cover;
+    public void setVideoType(int videoType) {
+        this.videoType = videoType;
     }
 
-    public String getSub_title() {
-        return sub_title;
+    public String getTypeName() {
+        return typeName;
     }
 
-    public void setSub_title(String sub_title) {
-        this.sub_title = sub_title;
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
-    public String getDescribe() {
-        return describe;
+    public String getDesc() {
+        return desc;
     }
 
-    public void setDescribe(String describe) {
-        this.describe = describe;
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
-    public String getPath() {
-        return path;
+    public String getVideoUrl() {
+        return videoUrl;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
     }
 
-    public String getVideoPlayUrl() {
-        return videoPlayUrl;
-    }
-
-    public void setVideoPlayUrl(String videoPlayUrl) {
-        this.videoPlayUrl = videoPlayUrl;
-    }
-
-    public String getVideoDownloadUrl() {
-        return videoDownloadUrl;
-    }
-
-    public void setVideoDownloadUrl(String videoDownloadUrl) {
-        this.videoDownloadUrl = videoDownloadUrl;
-    }
-
-    public String getVideoWidth() {
-        return videoWidth;
-    }
-
-    public void setVideoWidth(String videoWidth) {
-        this.videoWidth = videoWidth;
-    }
-
-    public String getVideoHeight() {
-        return videoHeight;
-    }
-
-    public void setVideoHeight(String videoHeight) {
-        this.videoHeight = videoHeight;
-    }
-
-    public String getMusicAuthorName() {
-        return musicAuthorName;
-    }
-
-    public void setMusicAuthorName(String musicAuthorName) {
-        this.musicAuthorName = musicAuthorName;
-    }
-
-    public String getMusicName() {
-        return musicName;
-    }
-
-    public void setMusicName(String musicName) {
-        this.musicName = musicName;
-    }
-
-    public String getLikeCount() {
+    public int getLikeCount() {
         return likeCount;
     }
 
-    public void setLikeCount(String likeCount) {
+    public void setLikeCount(int likeCount) {
         this.likeCount = likeCount;
     }
 
-    public String getFormatPlayCountStr() {
-        return formatPlayCountStr;
-    }
-
-    public void setFormatPlayCountStr(String formatPlayCountStr) {
-        this.formatPlayCountStr = formatPlayCountStr;
-    }
-
-    public String getPlayCount() {
+    public int getPlayCount() {
         return playCount;
     }
 
-    public void setPlayCount(String playCount) {
+    public void setPlayCount(int playCount) {
         this.playCount = playCount;
     }
 
-    public String getAuthorName() {
-        return authorName;
+    public int getFinish() {
+        return finish;
     }
 
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
+    public void setFinish(int finish) {
+        this.finish = finish;
     }
 
-    public String getAuthorImgUrl() {
-        return authorImgUrl;
+    public int getCount() {
+        return count;
     }
 
-    public void setAuthorImgUrl(String authorImgUrl) {
-        this.authorImgUrl = authorImgUrl;
+    public void setCount(int count) {
+        this.count = count;
     }
 
-    public String getCoverImgUrl() {
-        return coverImgUrl;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public void setCoverImgUrl(String coverImgUrl) {
-        this.coverImgUrl = coverImgUrl;
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
-    public String getFilterTitleStr() {
-        return filterTitleStr;
-    }
 
-    public void setFilterTitleStr(String filterTitleStr) {
-        this.filterTitleStr = filterTitleStr;
-    }
-
-    public String getMusicImgUrl() {
-        return musicImgUrl;
-    }
-
-    public void setMusicImgUrl(String musicImgUrl) {
-        this.musicImgUrl = musicImgUrl;
-    }
 }

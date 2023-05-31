@@ -11,26 +11,51 @@
         android:layout_margin="0.5dp"
         android:foreground="?attr/selectableItemBackground">
         <ImageView
-            android:id="@+id/item_cover"
+            android:id="@+id/item_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:padding="2dp"
+            android:layout_marginBottom="38dp"
             android:scaleType="centerCrop"/>
+        <TextView
+            android:id="@+id/item_count"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="10dp"
+            android:gravity="right"
+            android:text="已完结"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="43dp"
+            />
         <TextView
             android:id="@+id/item_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="2"
+            android:maxLines="1"
             android:textColor="@color/white"
-            android:textSize="14dp"
-            android:padding="10dp"
-            android:includeFontPadding="false"
-            android:lineSpacingExtra="3dp"
+            android:textSize="12dp"
             android:gravity="bottom"
             android:background="@drawable/fg_video_info"
             android:layout_gravity="bottom"
             android:shadowRadius="2"
             android:shadowDx="1"
             android:shadowDy="1"
+            android:layout_marginBottom="18dp"
+            android:layout_marginLeft="10dp"
             android:shadowColor="#80000000"/>
+        <TextView
+            android:id="@+id/item_edposed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FC989494"
+            android:textSize="10dp"
+            android:gravity="bottom"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/fg_video_info"
+            android:text="观看至5集"
+            android:layout_gravity="bottom"/>
     </FrameLayout>
 </LinearLayout>

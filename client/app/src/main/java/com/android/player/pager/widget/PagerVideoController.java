@@ -24,7 +24,6 @@ public class PagerVideoController extends BaseViewPager {
 
     private VideoBean mMediaInfo;
     private FrameLayout mPlayerContainer;
-    private MusicDiscView mDiscView;
 
     public PagerVideoController(@NonNull Context context) {
         super(context);
@@ -57,26 +56,13 @@ public class PagerVideoController extends BaseViewPager {
         super.mPosition =position;
         this.mMediaInfo=videoInfo;
         if(null!=mMediaInfo){
-            TextView view_tv_author = (TextView) findViewById(R.id.view_tv_author);
-            TextView view_tv_describe = (TextView) findViewById(R.id.view_tv_describe);
-            TextView view_music_name = (TextView) findViewById(R.id.view_music_name);
+            TextView view_tv_name = (TextView) findViewById(R.id.view_tv_name);
+            TextView view_tv_episode = (TextView) findViewById(R.id.view_tv_episode);
             TextView view_tv_like = (TextView) findViewById(R.id.view_tv_like);
-            TextView view_tv_comment = (TextView) findViewById(R.id.view_tv_comment);
-            TextView view_tv_share = (TextView) findViewById(R.id.view_tv_share);
-            ImageView view_ic_avatar = (ImageView) findViewById(R.id.view_ic_avatar);
-            view_tv_author.setText(String.format("@%s",videoInfo.getAuthorName()));
-            view_tv_describe.setText(videoInfo.getTitle());
-            view_music_name.setText(videoInfo.getMusicName());
+            view_tv_name.setText(videoInfo.getVideoName());
+            view_tv_episode.setText("第1集");
             view_tv_like.setText(ScreenUtils.getInstance().formatWan(videoInfo.getLikeCount(),true));
-            view_tv_comment.setText(ScreenUtils.getInstance().formatWan(videoInfo.getPlayCount(),true));
-            view_tv_share.setText(videoInfo.getFormatPlayCountStr());
-            ImageView imageView = (ImageView) findViewById(R.id.pager_cover);
-            GlideModel.getInstance().loadCirImage(view_ic_avatar,mMediaInfo.getAuthorImgUrl());
-            GlideModel.getInstance().loadImage(imageView,mMediaInfo.getCoverImgUrl());
         }
-        //唱片机初始化
-        mDiscView = (MusicDiscView) findViewById(R.id.view_dic_cover);
-        mDiscView.setMusicFront(videoInfo.getMusicImgUrl());
     }
 
     /**
@@ -97,25 +83,21 @@ public class PagerVideoController extends BaseViewPager {
     @Override
     public void prepare() {
         Logger.d(TAG,"prepare-->"+getPositionStr());
-        if(null!=mDiscView) mDiscView.onResume();
     }
 
     @Override
     public void resume() {
         Logger.d(TAG,"resume-->"+getPositionStr());
-        if(null!=mDiscView) mDiscView.onResume();
     }
 
     @Override
     public void pause() {
         Logger.d(TAG,"pause-->"+getPositionStr());
-        if(null!=mDiscView) mDiscView.onPause();
     }
 
     @Override
     public void stop() {
         Logger.d(TAG,"stop-->"+getPositionStr());
-        if(null!=mDiscView) mDiscView.onStop();
     }
 
     @Override
@@ -126,7 +108,6 @@ public class PagerVideoController extends BaseViewPager {
     @Override
     public void onRelease() {
         Logger.d(TAG,"onRelease-->"+getPositionStr());
-        if(null!=mDiscView) mDiscView.onRelease();
         ViewGroup playerContainer = getPlayerContainer();
         if(null!=playerContainer){
             playerContainer.removeAllViews();

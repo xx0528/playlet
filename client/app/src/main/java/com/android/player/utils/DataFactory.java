@@ -147,7 +147,7 @@ public class DataFactory {
             public void run() {
                 super.run();
                 //String str = pasterAssetsByPath(App.getInstance().getContext(), "tiktok.json");
-                String str = pasterAssetsByName(App.getInstance().getContext(), "tiktok");
+                String str = pasterAssetsByName(App.getInstance().getContext(), "playlet");
                 if(!TextUtils.isEmpty(str)){
                     final List<VideoBean> list = new Gson().fromJson(str,new TypeToken<List<VideoBean>>(){}.getType());
                     if(null!=mOnCallBackListener&&null!=mHandler){

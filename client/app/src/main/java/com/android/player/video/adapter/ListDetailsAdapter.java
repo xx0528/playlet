@@ -126,7 +126,7 @@ public class ListDetailsAdapter extends BaseMultiItemAdapter<OpenEyesIndexItemBe
                 item_count.setText(String.format("%s人观看",0));
             }
             //封面+用户头像
-            ImageView imageCover = (ImageView) viewHolder.getView(R.id.item_cover);
+            ImageView imageCover = (ImageView) viewHolder.getView(R.id.item_img);
             if(null!=data.getCover()){
                 GlideModel.getInstance().loadImage(imageCover,data.getCover().getFeed());
             }else{
@@ -143,7 +143,7 @@ public class ListDetailsAdapter extends BaseMultiItemAdapter<OpenEyesIndexItemBe
      * @param position
      */
     private void setNullItem(ListPlayerHolder viewHolder, int position) {
-        ImageView imageCover = (ImageView) viewHolder.getView(R.id.item_cover);
+        ImageView imageCover = (ImageView) viewHolder.getView(R.id.item_img);
         imageCover.setImageResource(R.mipmap.ic_player_cover);
     }
 

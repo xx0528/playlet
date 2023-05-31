@@ -227,8 +227,8 @@ public class PagerPlayerFragment extends BaseFragment {
                     initVideoPlayer();
                     PlayerUtils.getInstance().removeViewFromParent(mVideoPlayer);
                     playerContainer.addView(mVideoPlayer,new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT, Gravity.CENTER));
-                    mVideoPlayer.getController().setTitle(videoData.getTitle());//视频标题(默认视图控制器横屏可见)
-                    mVideoPlayer.setDataSource(VideoCache.getInstance().getPlayPreloadUrl(videoData.getVideoDownloadUrl()));//播放地址设置
+                    mVideoPlayer.getController().setTitle(videoData.getVideoName());//视频标题(默认视图控制器横屏可见)
+                    mVideoPlayer.setDataSource(VideoCache.getInstance().getPlayPreloadUrl(videoData.getVideoUrl()));//播放地址设置
                     mVideoPlayer.prepareAsync();//开始异步准备播放
                 }
             }

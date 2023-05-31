@@ -114,7 +114,7 @@ public class ListPlayerAdapter extends BaseMultiItemAdapter<OpenEyesIndexItemBea
                 item_share.setText("25");
             }
             //封面+用户头像
-            ImageView imageCover = (ImageView) viewHolder.getView(R.id.item_cover);
+            ImageView imageCover = (ImageView) viewHolder.getView(R.id.item_img);
             ImageView itemUserAvatar = (ImageView) viewHolder.getView(R.id.item_user_avatar);
             ImageView itemPlayer = (ImageView) viewHolder.getView(R.id.item_player);
             itemPlayer.setImageResource(mAutoPlay?0:R.mipmap.ic_player_start);
@@ -139,7 +139,7 @@ public class ListPlayerAdapter extends BaseMultiItemAdapter<OpenEyesIndexItemBea
      * @param position
      */
     private void setNullItem(ListPlayerHolder viewHolder, int position) {
-        ImageView imageCover = (ImageView) viewHolder.getView(R.id.item_cover);
+        ImageView imageCover = (ImageView) viewHolder.getView(R.id.item_img);
         imageCover.setImageResource(R.mipmap.ic_player_cover);
     }
 

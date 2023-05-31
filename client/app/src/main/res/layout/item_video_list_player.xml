@@ -75,7 +75,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp">
         <ImageView
-            android:id="@+id/item_cover"
+            android:id="@+id/item_img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"/>

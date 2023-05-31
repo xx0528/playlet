@@ -40,7 +40,7 @@ public class VideoListFragment extends BaseFragment {
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         //列表适配器初始化
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.VERTICAL, false);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new VideoListAdapter(null);
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -57,11 +57,12 @@ public class VideoListFragment extends BaseFragment {
         });
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(mAdapter);
+
         //加载数据
         DataFactory.getInstance().getTikTopVideo(new DataFactory.OnCallBackListener() {
             @Override
             public void onList(List<VideoBean> data) {
-                if(null!=mAdapter) mAdapter.setNewData(data);
+                if (null != mAdapter) mAdapter.setNewData(data);
             }
         });
     }

@@ -1,5 +1,6 @@
 package com.android.player.pager.adapter;
 
+import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,15 +23,22 @@ public class VideoListAdapter extends BaseNoimalAdapter<VideoBean, BaseViewHolde
 
     public VideoListAdapter(List<VideoBean> data) {
         super(R.layout.item_video_list,data);
-        mItemHeight = ((ScreenUtils.getInstance().getScreenWidth() - ScreenUtils.getInstance().dpToPxInt(3f)) / 2) * 16 /11;
+        mItemHeight = ((ScreenUtils.getInstance().getScreenWidth() - ScreenUtils.getInstance().dpToPxInt(3f)) / 3) * 16 /11;
     }
 
     @Override
     protected void initItemView(BaseViewHolder viewHolder, int position, VideoBean data) {
-        ((TextView) viewHolder.getView(R.id.item_title)).setText(data.getFilterTitleStr());
+        ((TextView) viewHolder.getView(R.id.item_title)).setText(data.getVideoName());
         FrameLayout itemRootView = (FrameLayout) viewHolder.getView(R.id.item_root_content);
+//        Log.d("mItemHeight -- ", String.format("mItemHeight-- %d", mItemHeight));
         itemRootView.getLayoutParams().height= mItemHeight;
-        ImageView imageCover = (ImageView) viewHolder.getView(R.id.item_cover);
-        GlideModel.getInstance().loadImage(imageCover,data.getCoverImgUrl());
+        ImageView imageCover = (ImageView) viewHolder.getView(R.id.item_img);
+        GlideModel.getInstance().loadImage(imageCover, data.getImgUrl());
+        if (data.getFinish() == 1) {
+            ((TextView) viewHolder.getView(R.id.item_count)).setText("已完结");
+        } else {
+            ((TextView) viewHolder.getView(R.id.item_count)).setText(String.format("更新至%d集", data.getCount()) );
+        }
+        ((TextView) viewHolder.getView(R.id.item_edposed)).setText("观看至5集");
     }
 }
