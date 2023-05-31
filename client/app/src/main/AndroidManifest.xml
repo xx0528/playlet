@@ -52,7 +52,7 @@
         </activity>
         <!--垂直切片播放示例-->
         <activity
-            android:name="com.android.player.pager.activity.PagerPlayerActivity"
+            android:name="com.android.player.pager.activity.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
