@@ -3,17 +3,17 @@
 
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/shouye"
+        android:icon="@mipmap/ic_shouye"
         android:title="@string/title_home" />
 
     <item
         android:id="@+id/navigation_dashboard"
-        android:icon="@drawable/ziyuanfaxian"
+        android:icon="@mipmap/ic_ziyuanfaxian"
         android:title="@string/title_dashboard" />
 
     <item
         android:id="@+id/navigation_notifications"
-        android:icon="@drawable/wode"
+        android:icon="@mipmap/ic_wode"
         android:title="@string/title_notifications" />
 
 </menu>

@@ -5,7 +5,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "com.android.player"
+        applicationId "com.smalltvplay.playlet"
         minSdkVersion 16
         targetSdkVersion 33
         versionCode rootProject.ext.sdk.versionCode

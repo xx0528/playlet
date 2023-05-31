@@ -71,7 +71,7 @@
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
-            android:src="@drawable/quanjituan"/>
+            android:src="@mipmap/ic_quanjituan"/>
         <TextView
             android:id="@+id/episode_text"
             android:layout_width="wrap_content"
