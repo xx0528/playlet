@@ -3,11 +3,155 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_shape_mine"
     android:id="@+id/park_fragment">
 
-    <TextView
-        android:id="@+id/textView"
+    <LinearLayout
+        android:layout_height="80dp"
+        android:layout_margin="20dp"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent">
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@mipmap/ic_head"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="22dp"
+                android:textStyle="bold"
+                android:text="点击登陆"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:text="19448239283293"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="mine" />
+        android:layout_height="300dp"
+        android:background="@drawable/bg_shape_mine2"
+        android:layout_margin="20dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/mine_setting"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            >
+            <ImageView
+                android:src="@mipmap/ic_shezhi"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="系统设置"
+                android:textSize="18dp"
+                android:layout_marginLeft="20dp"
+                android:textStyle="bold"/>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/icon_on_the_right"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/mine_contact"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            >
+            <ImageView
+                android:src="@mipmap/ic_yuwolianxi"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="联系我们"
+                android:textSize="18dp"
+                android:layout_marginLeft="20dp"
+                android:textStyle="bold"/>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/icon_on_the_right"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/mine_feddback"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            >
+            <ImageView
+                android:src="@mipmap/icon_wentifankui"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="帮助与反馈"
+                android:textSize="18dp"
+                android:layout_marginLeft="20dp"
+                android:textStyle="bold"/>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/icon_on_the_right"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/mine_about"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            >
+            <ImageView
+                android:src="@mipmap/ic_guanyu"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="关于我们"
+                android:textSize="18dp"
+                android:layout_marginLeft="20dp"
+                android:textStyle="bold"/>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/icon_on_the_right"/>
+        </LinearLayout>
+
+    </LinearLayout>
 </LinearLayout>

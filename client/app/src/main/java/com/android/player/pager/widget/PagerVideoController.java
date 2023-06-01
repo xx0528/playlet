@@ -62,6 +62,8 @@ public class PagerVideoController extends BaseViewPager {
             view_tv_name.setText(videoInfo.getVideoName());
             view_tv_episode.setText("第1集");
             view_tv_like.setText(ScreenUtils.getInstance().formatWan(videoInfo.getLikeCount(),true));
+            ImageView imageView = (ImageView) findViewById(R.id.pager_cover);
+            GlideModel.getInstance().loadImage(imageView,mMediaInfo.getImgUrl());
         }
     }
 

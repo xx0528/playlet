@@ -62,7 +62,14 @@ public class VideoListFragment extends BaseFragment {
         DataFactory.getInstance().getTikTopVideo(new DataFactory.OnCallBackListener() {
             @Override
             public void onList(List<VideoBean> data) {
-                if (null != mAdapter) mAdapter.setNewData(data);
+                if (null != mAdapter) {
+                    mAdapter.setNewData(data);
+                    HomeFragment homeFragment = (HomeFragment) getActivity().getSupportFragmentManager().findFragmentByTag("HomeFragment");
+//                    PagerPlayerActivity pagerPlayerActivity = (PagerPlayerActivity) getActivity();
+//                    List<VideoBean> data = mAdapter.getData();
+//                    String videoJson = new Gson().toJson(data);
+                    homeFragment.navigationPlayer(data, (int)Math.random()*data.size());
+                }
             }
         });
     }
