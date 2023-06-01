@@ -47,12 +47,12 @@ public class ParkFragment extends BaseFragment {
         mTabs.add(getString(R.string.tab_zhuixu));
         mTabs.add(getString(R.string.tab_shenhao));
         mTabs.add(getString(R.string.tab_meinv));
-//        mTabs.add(getString(R.string.tab_shenyi));
-//        mTabs.add(getString(R.string.tab_xianyan));
-//        mTabs.add(getString(R.string.tab_xiangcun));
-//        mTabs.add(getString(R.string.tab_chongsheng));
-//        mTabs.add(getString(R.string.tab_aimei));
-//        mTabs.add(getString(R.string.tab_jiating));
+        mTabs.add(getString(R.string.tab_shenyi));
+        mTabs.add(getString(R.string.tab_xianyan));
+        mTabs.add(getString(R.string.tab_xiangcun));
+        mTabs.add(getString(R.string.tab_chongsheng));
+        mTabs.add(getString(R.string.tab_aimei));
+        mTabs.add(getString(R.string.tab_jiating));
 
         mTabLayout = (TabLayout) findViewById(R.id.park_tab_layout);
         for (int i = 0; i < mTabs.size(); i++) {
