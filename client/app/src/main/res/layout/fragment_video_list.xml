@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:background="#000">
     <ImageView
-        android:id="@+id/bar_image"
+        android:id="@+id/video_bar_image"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:scaleType="centerCrop"/>
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/video_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"

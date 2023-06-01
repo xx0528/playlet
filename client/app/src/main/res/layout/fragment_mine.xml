@@ -70,8 +70,13 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@mipmap/icon_on_the_right"/>
+
         </LinearLayout>
 
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:background="#ff9fc69d"/>
 
         <LinearLayout
             android:id="@+id/mine_contact"
@@ -99,7 +104,10 @@
                 android:src="@mipmap/icon_on_the_right"/>
         </LinearLayout>
 
-
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:background="#ff9fc69d"/>
         <LinearLayout
             android:id="@+id/mine_feddback"
             android:layout_width="match_parent"
@@ -126,7 +134,10 @@
                 android:src="@mipmap/icon_on_the_right"/>
         </LinearLayout>
 
-
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="2dp"
+            android:background="#ff9fc69d"/>
         <LinearLayout
             android:id="@+id/mine_about"
             android:layout_width="match_parent"

@@ -5,7 +5,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.Toast;
+
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.iplayer.base.AbstractMediaPlayer;
 import com.android.iplayer.listener.OnPlayerEventListener;
@@ -53,9 +53,9 @@ public class PagerPlayerFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
-        findViewById(R.id.ll_bar_margin).getLayoutParams().height= ScreenUtils.getInstance().getStatusBarHeight(getContext())+ScreenUtils.getInstance().dpToPxInt(49f);
+        findViewById(R.id.pager_ll_bar_margin).getLayoutParams().height= ScreenUtils.getInstance().getStatusBarHeight(getContext())+ScreenUtils.getInstance().dpToPxInt(49f);
         //视频列表适配器准备
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pager_player_recycler_view);
         recyclerView.setHasFixedSize(true);
         //LayoutManager内部已经过滤重复选中
         mLayoutManager = new ViewPagerLayoutManager(getContext(),ViewPagerLayoutManager.VERTICAL);

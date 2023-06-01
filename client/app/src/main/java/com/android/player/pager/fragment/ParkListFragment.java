@@ -3,6 +3,7 @@ package com.android.player.pager.fragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,7 +14,6 @@ import com.android.player.base.BasePresenter;
 import com.android.player.base.adapter.interfaces.OnItemClickListener;
 import com.android.player.pager.activity.MainActivity;
 import com.android.player.pager.adapter.ParkListAdapter;
-import com.android.player.pager.adapter.VideoListAdapter;
 import com.android.player.pager.bean.VideoBean;
 import com.android.player.utils.DataFactory;
 import com.android.player.utils.ScreenUtils;
@@ -34,13 +34,14 @@ public class ParkListFragment extends BaseFragment {
     protected void initViews() {
         typeId = getArguments().getInt("typeId");
         Log.d("typeid- --- ", Integer.toString(typeId));
-        ImageView status_bar = (ImageView) findViewById(R.id.bar_image);
+        ImageView status_bar = (ImageView) findViewById(R.id.park_bar_image);
         status_bar.getLayoutParams().height= ScreenUtils.getInstance().getStatusBarHeight(getContext())+ScreenUtils.getInstance().dpToPxInt(49f);
         status_bar.setImageResource(R.mipmap.ic_title_bg);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.park_recycler_view);
         recyclerView.setHasFixedSize(true);
         //列表适配器初始化
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 1, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new ParkListAdapter(null);
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
@@ -64,11 +65,6 @@ public class ParkListFragment extends BaseFragment {
             public void onList(List<VideoBean> data) {
                 if (null != mAdapter) {
                     mAdapter.setNewData(data);
-                    HomeFragment homeFragment = (HomeFragment) getActivity().getSupportFragmentManager().findFragmentByTag("HomeFragment");
-//                    PagerPlayerActivity pagerPlayerActivity = (PagerPlayerActivity) getActivity();
-//                    List<VideoBean> data = mAdapter.getData();
-//                    String videoJson = new Gson().toJson(data);
-                    homeFragment.navigationPlayer(data, (int)Math.random()*data.size());
                 }
             }
         });

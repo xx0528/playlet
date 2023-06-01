@@ -3,7 +3,6 @@ package com.android.player.pager.fragment;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.player.R;
@@ -34,10 +33,11 @@ public class VideoListFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
-        ImageView status_bar = (ImageView) findViewById(R.id.bar_image);
+        ImageView status_bar = (ImageView) findViewById(R.id.video_bar_image);
         status_bar.getLayoutParams().height= ScreenUtils.getInstance().getStatusBarHeight(getContext())+ScreenUtils.getInstance().dpToPxInt(49f);
         status_bar.setImageResource(R.mipmap.ic_title_bg);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.video_recycler_view);
         recyclerView.setHasFixedSize(true);
         //列表适配器初始化
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false);

@@ -2,6 +2,7 @@ package com.android.player.pager.fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.collection.SparseArrayCompat;
@@ -13,6 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.android.player.R;
 import com.android.player.base.BaseFragment;
 import com.android.player.base.BasePresenter;
+import com.android.player.utils.ScreenUtils;
 import com.android.player.utils.StatusUtils;
 import com.google.android.material.tabs.TabLayout;
 
@@ -33,6 +35,10 @@ public class ParkFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
+        View statusBar = findViewById(R.id.park_status_bar);
+        statusBar.getLayoutParams().height= ScreenUtils.getInstance().getStatusBarHeight(getActivity().getApplicationContext());
+        StatusUtils.setStatusTextColor1(true, getActivity());//黑色字体
+
         mTabs = new ArrayList<>();
         mTabs.add(getString(R.string.tab_hot));
         mTabs.add(getString(R.string.tab_fav));
@@ -48,7 +54,7 @@ public class ParkFragment extends BaseFragment {
 //        mTabs.add(getString(R.string.tab_aimei));
 //        mTabs.add(getString(R.string.tab_jiating));
 
-        mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        mTabLayout = (TabLayout) findViewById(R.id.park_tab_layout);
         for (int i = 0; i < mTabs.size(); i++) {
             mTabLayout.addTab(mTabLayout.newTab().setText(mTabs.get(i)));
         }
@@ -59,17 +65,6 @@ public class ParkFragment extends BaseFragment {
                 if(null != mViewPager){
                     mViewPager.setCurrentItem(position,true);
                 }
-//                if(null!=mTabLayout){
-//                    if(0==position){ //黑色字体
-//                        mTabLayout.setSelectedTabIndicatorColor(Color.parseColor("#333333"));
-//                        mTabLayout.setTabTextColors(Color.parseColor("#999999"),Color.parseColor("#333333"));
-//                        StatusUtils.setStatusTextColor1(true, getActivity());//黑色字体
-//                    }else{//白色字体
-//                        mTabLayout.setSelectedTabIndicatorColor(Color.parseColor("#FFFFFF"));
-//                        mTabLayout.setTabTextColors(Color.parseColor("#80FFFFFF"),Color.parseColor("#FFFFFFFF"));
-//                        StatusUtils.setStatusTextColor1(false, getActivity());//黑色字体
-//                    }
-//                }
             }
 
             @Override
@@ -82,7 +77,7 @@ public class ParkFragment extends BaseFragment {
 
             }
         });
-        mViewPager = (ViewPager) findViewById(R.id.video_pager);
+        mViewPager = (ViewPager) findViewById(R.id.park_video_pager);
         FragmentPagerAdapter adapter = new ParkFragment.FragmentAdapter(getActivity().getSupportFragmentManager());
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mViewPager.setAdapter(adapter);
@@ -92,33 +87,6 @@ public class ParkFragment extends BaseFragment {
     protected BasePresenter createPresenter() {
         return null;
     }
-
-    @Override
-    protected void onInvisible() {
-        super.onInvisible();
-    }
-
-    @Override
-    protected void onVisible() {
-        super.onVisible();
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
 
     private class FragmentAdapter extends FragmentPagerAdapter{
 

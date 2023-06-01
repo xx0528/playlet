@@ -110,7 +110,7 @@ public class VideoDetailsActivity extends AppCompatActivity implements VideoList
                 onBackPressed();
             }
         });
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list_player_recycler_view);
         //列表适配器初始化
         mLayoutManager = new GridLayoutManager(this,2, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(mLayoutManager);

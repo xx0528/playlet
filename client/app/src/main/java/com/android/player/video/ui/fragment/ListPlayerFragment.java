@@ -79,7 +79,7 @@ public class ListPlayerFragment extends BaseFragment<VideoListPersenter> impleme
                 if(null!=mPresenter) mPresenter.getIndexVideos(true);
             }
         });
-        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mRecyclerView = (RecyclerView) findViewById(R.id.list_player_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         //列表适配器初始化
         mLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);

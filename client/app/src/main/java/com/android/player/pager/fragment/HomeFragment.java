@@ -2,6 +2,7 @@ package com.android.player.pager.fragment;
 
 import android.graphics.Color;
 import android.text.TextUtils;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.collection.SparseArrayCompat;
@@ -13,8 +14,10 @@ import androidx.viewpager.widget.ViewPager;
 import com.android.player.R;
 import com.android.player.base.BaseFragment;
 import com.android.player.base.BasePresenter;
+import com.android.player.pager.activity.PagerPlayerActivity;
 import com.android.player.pager.bean.VideoBean;
 import com.android.player.utils.DataFactory;
+import com.android.player.utils.ScreenUtils;
 import com.android.player.utils.StatusUtils;
 import com.google.android.material.tabs.TabLayout;
 import com.google.gson.Gson;
@@ -38,11 +41,16 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected void initViews() {
+
+        View statusBar = findViewById(R.id.home_status_bar);
+        statusBar.getLayoutParams().height= ScreenUtils.getInstance().getStatusBarHeight(getActivity().getApplicationContext());
+        StatusUtils.setStatusTextColor1(true, getActivity());//黑色字体
+
         mTabs = new ArrayList<>();
         mTabs.add(getString(R.string.tab_fav));
         mTabs.add(getString(R.string.tab_hot));
 
-        mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        mTabLayout = (TabLayout) findViewById(R.id.home_tab_layout);
         mTabLayout.addTab(mTabLayout.newTab().setText(mTabs.get(0)));
         mTabLayout.addTab(mTabLayout.newTab().setText(mTabs.get(1)));
         mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -75,7 +83,7 @@ public class HomeFragment extends BaseFragment {
 
             }
         });
-        mViewPager = (ViewPager) findViewById(R.id.video_pager);
+        mViewPager = (ViewPager) findViewById(R.id.home_video_pager);
         FragmentPagerAdapter adapter = new FragmentAdapter(getActivity().getSupportFragmentManager());
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mViewPager.setAdapter(adapter);

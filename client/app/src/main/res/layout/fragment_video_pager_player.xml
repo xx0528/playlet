@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#000000">
     <TextView
-        android:id="@+id/ll_bar_margin"
+        android:id="@+id/pager_ll_bar_margin"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@drawable/bg_shape_draw_top_bg"/>
@@ -21,7 +21,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view"
+            android:id="@+id/pager_player_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>

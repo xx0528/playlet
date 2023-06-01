@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity {
         TitleView titleView = (TitleView) findViewById(R.id.title_view);
         titleView.setTitle(getResources().getString(R.string.app_name));
         titleView.enableTitleBack(false);
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext(),LinearLayoutManager.VERTICAL,false));
         MainMenuAdapter adapter=new MainMenuAdapter(DataFactory.getInstance().getMenus());
         adapter.setOnItemClickListener(new OnItemClickListener() {
