@@ -48,4 +48,14 @@
     <string name="title_notifications">我的</string>
     <string name="tab_fav">在追</string>
     <string name="tab_hot">精选</string>
+    <string name="tab_nixi">逆袭</string>
+    <string name="tab_zhuixu">赘婿</string>
+    <string name="tab_shenhao">神豪</string>
+    <string name="tab_meinv">美女</string>
+    <string name="tab_shenyi">神医</string>
+    <string name="tab_xianyan">现言</string>
+    <string name="tab_xiangcun">乡村</string>
+    <string name="tab_chongsheng">重生</string>
+    <string name="tab_aimei">暧昧</string>
+    <string name="tab_jiating">家庭</string>
 </resources>
