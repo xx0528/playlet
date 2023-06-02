@@ -4,6 +4,8 @@ import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.android.iplayer.utils.PlayerUtils;
 import com.android.player.R;
 import com.android.player.base.adapter.BaseNoimalAdapter;
 import com.android.player.base.adapter.widget.BaseViewHolder;
@@ -34,11 +36,12 @@ public class VideoListAdapter extends BaseNoimalAdapter<VideoBean, BaseViewHolde
         itemRootView.getLayoutParams().height= mItemHeight;
         ImageView imageCover = (ImageView) viewHolder.getView(R.id.item_img);
         GlideModel.getInstance().loadImage(imageCover, data.getImgUrl());
+        PlayerUtils.getInstance().setOutlineProvider(imageCover,ScreenUtils.getInstance().dpToPxInt(7f));
         if (data.getFinish() == 1) {
             ((TextView) viewHolder.getView(R.id.item_count)).setText("已完结");
         } else {
             ((TextView) viewHolder.getView(R.id.item_count)).setText(String.format("更新至%d集", data.getCount()) );
         }
-        ((TextView) viewHolder.getView(R.id.item_edposed)).setText("观看至5集");
+        ((TextView) viewHolder.getView(R.id.item_episodes)).setText("观看至5集");
     }
 }

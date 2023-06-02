@@ -9,18 +9,30 @@ public class VideoBean {
 
 
     public VideoBean(){}
-
+    //短剧名
     private String videoName;
+    //短剧分类
     private int videoType;
+    //分类名
     private String typeName;
+    //简介
     private String desc;
+    //收藏人数
     private int likeCount;
+    //播放次数
     private int playCount;
+    //是否完结 1 完结 0 更新
     private int finish;
+    //集数
     private int count;
+    //图片
     private String imgUrl;
+    //视频地址
     private String videoUrl;
-
+    //上架时间
+    private String createTime;
+    //免费集数
+    private int freeCount;
 
     public String getVideoName() {
         return videoName;
@@ -102,5 +114,11 @@ public class VideoBean {
         this.imgUrl = imgUrl;
     }
 
+    public String getCreateTime() {return createTime;}
+    public void setCreateTime(String createTime) { this.createTime = createTime; }
+
+    public int getFreeCount() {return freeCount;}
+
+    public void setFreeCount(int freeCount) { this.freeCount = freeCount; }
 
 }

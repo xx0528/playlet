@@ -41,7 +41,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:background="@drawable/bg_shape_mine2"
         android:layout_margin="20dp"
         android:orientation="vertical">
@@ -49,7 +49,7 @@
         <LinearLayout
             android:id="@+id/mine_setting"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_margin="10dp"
             android:gravity="center_vertical"
             >
@@ -81,7 +81,7 @@
         <LinearLayout
             android:id="@+id/mine_contact"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_margin="10dp"
             android:gravity="center_vertical"
             >
@@ -111,7 +111,7 @@
         <LinearLayout
             android:id="@+id/mine_feddback"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_margin="10dp"
             android:gravity="center_vertical"
             >
@@ -141,7 +141,7 @@
         <LinearLayout
             android:id="@+id/mine_about"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_margin="10dp"
             android:gravity="center_vertical"
             >

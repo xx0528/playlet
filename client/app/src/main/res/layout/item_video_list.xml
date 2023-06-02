@@ -46,7 +46,7 @@
             android:layout_marginLeft="10dp"
             android:shadowColor="#80000000"/>
         <TextView
-            android:id="@+id/item_edposed"
+            android:id="@+id/item_episodes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#FC989494"

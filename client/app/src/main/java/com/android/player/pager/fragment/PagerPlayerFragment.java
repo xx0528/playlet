@@ -1,10 +1,14 @@
 package com.android.player.pager.fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 import com.android.iplayer.base.AbstractMediaPlayer;
@@ -24,8 +28,11 @@ import com.android.player.pager.base.BaseViewPager;
 import com.android.player.pager.bean.VideoBean;
 import com.android.player.pager.controller.ShortControllerControl;
 import com.android.player.pager.interfaces.OnViewPagerListener;
+import com.android.player.pager.widget.EpisodesDialog;
 import com.android.player.pager.widget.PagerVideoController;
 import com.android.player.pager.widget.ViewPagerLayoutManager;
+import com.android.player.ui.activity.MainActivity;
+import com.android.player.ui.widget.ProjectDialog;
 import com.android.player.utils.DataFactory;
 import com.android.player.utils.Logger;
 import com.android.player.utils.ScreenUtils;
@@ -44,6 +51,7 @@ public class PagerPlayerFragment extends BaseFragment {
     private boolean isVisible=false;
     private VideoPlayer mVideoPlayer;
     private ViewPagerLayoutManager mLayoutManager;
+    private RecyclerView mRecycleView;
     private int mPosition;//准备待播放的角标位置
 
     @Override
@@ -54,9 +62,30 @@ public class PagerPlayerFragment extends BaseFragment {
     @Override
     protected void initViews() {
         findViewById(R.id.pager_ll_bar_margin).getLayoutParams().height= ScreenUtils.getInstance().getStatusBarHeight(getContext())+ScreenUtils.getInstance().dpToPxInt(49f);
+        ((View)findViewById(R.id.btn_episode)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EpisodesDialog dialog = new EpisodesDialog();
+                dialog.setOnMenuActionListener(new EpisodesDialog.OnMenuActionListener() {
+                    @Override
+                    public void onSelected(String url) {
+                    }
+                });
+                dialog.show(getChildFragmentManager(), "EpisodesDialog");
+            }
+        });
+        ((Button)findViewById(R.id.btn_change)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 获取当前可见的位置
+                int currentPosition = mLayoutManager.findFirstVisibleItemPosition();
+                // 滚动到下一个位置
+                mLayoutManager.smoothScrollToPosition(mRecycleView, null, currentPosition +1);
+            }
+        });
         //视频列表适配器准备
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.pager_player_recycler_view);
-        recyclerView.setHasFixedSize(true);
+        mRecycleView = (RecyclerView) findViewById(R.id.pager_player_recycler_view);
+        mRecycleView.setHasFixedSize(true);
         //LayoutManager内部已经过滤重复选中
         mLayoutManager = new ViewPagerLayoutManager(getContext(),ViewPagerLayoutManager.VERTICAL);
         mLayoutManager.setOnViewPagerListener(new OnViewPagerListener() {
@@ -87,9 +116,9 @@ public class PagerPlayerFragment extends BaseFragment {
                 }
             }
         });
-        recyclerView.setLayoutManager(mLayoutManager);
+        mRecycleView.setLayoutManager(mLayoutManager);
         mAdapter= new PagerPlayerAdapter(null);
-        recyclerView.setAdapter(mAdapter);
+        mRecycleView.setAdapter(mAdapter);
     }
 
     @Override
@@ -293,6 +322,9 @@ public class PagerPlayerFragment extends BaseFragment {
             if(null!=mAdapter) mAdapter.setNewData(null);
             mAdapter.setNewData(data);//第1+次打开次界面时
             this.mPosition=position;
+
+            ((TextView)findViewById(R.id.episode_text)).setText("共123集");
+
 //            View nav_view = findViewById(R.id.nav_view);
 //            nav_view.setVisibility(View.VISIBLE);
 //            nav_view.setOnClickListener(new View.OnClickListener() {

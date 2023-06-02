@@ -84,7 +84,7 @@ public class HomeFragment extends BaseFragment {
             }
         });
         mViewPager = (ViewPager) findViewById(R.id.home_video_pager);
-        FragmentPagerAdapter adapter = new FragmentAdapter(getActivity().getSupportFragmentManager());
+        FragmentPagerAdapter adapter = new FragmentAdapter(getChildFragmentManager());
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mViewPager.setAdapter(adapter);
     }

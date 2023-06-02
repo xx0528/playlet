@@ -78,7 +78,7 @@ public class ParkFragment extends BaseFragment {
             }
         });
         mViewPager = (ViewPager) findViewById(R.id.park_video_pager);
-        FragmentPagerAdapter adapter = new ParkFragment.FragmentAdapter(getActivity().getSupportFragmentManager());
+        FragmentPagerAdapter adapter = new ParkFragment.FragmentAdapter(getChildFragmentManager());
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mViewPager.setAdapter(adapter);
     }
