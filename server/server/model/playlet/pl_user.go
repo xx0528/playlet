@@ -1,7 +1,7 @@
 /*
  * @Author: xx
  * @Date: 2023-06-02 18:36:01
- * @LastEditTime: 2023-06-02 18:48:00
+ * @LastEditTime: 2023-06-02 19:59:12
  * @Description:
  */
 // 自动生成模板PlUser
@@ -19,6 +19,7 @@ type PlUser struct {
 	UserName      string    `json:"userName" form:"userName" gorm:"column:user_name;comment:用户名;"`
 	UserId        string    `json:"userId" form:"userId" gorm:"column:user_id;comment:用户Id;"`
 	GuestId       string    `json:"guestId" form:"guestId" gorm:"column:guest_id;comment:访客id;"`
+	Phone         string    `json:"phone" form:"phone" gorm:"column:phone;comment:手机;"`
 	Recharge      float64   `json:"recharge" form:"recharge" gorm:"column:recharge;comment:累计充值;"`
 	CurGold       float64   `json:"curGold" form:"curGold" gorm:"column:cur_gold;comment:当前金币;"`
 	BuyVideos     string    `json:"buyVideos" form:"buyVideos" gorm:"column:buy_videos;type:text;comment:解锁记录;"`
