@@ -16,3 +16,17 @@ plCost
 消费记录
 用户名 		用户id 	扣除金币	时间	剩余金币 	购买视频
 userName 	userId	costGold	time	leftGold	buyVideo {1123:12}
+
+
+登录｛鉴权 token｝
+
+获取数据
+
+填充客户端数据
+
+vip会员
+
+充值问题
+
+云存储
+
