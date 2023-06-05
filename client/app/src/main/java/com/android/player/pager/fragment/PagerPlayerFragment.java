@@ -1,8 +1,7 @@
 package com.android.player.pager.fragment;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +22,7 @@ import com.android.iplayer.widget.controls.ControlStatusView;
 import com.android.player.R;
 import com.android.player.base.BaseFragment;
 import com.android.player.base.BasePresenter;
+import com.android.player.pager.activity.MainActivity;
 import com.android.player.pager.adapter.PagerPlayerAdapter;
 import com.android.player.pager.base.BaseViewPager;
 import com.android.player.pager.bean.VideoBean;
@@ -31,8 +31,6 @@ import com.android.player.pager.interfaces.OnViewPagerListener;
 import com.android.player.pager.widget.EpisodesDialog;
 import com.android.player.pager.widget.PagerVideoController;
 import com.android.player.pager.widget.ViewPagerLayoutManager;
-import com.android.player.ui.activity.MainActivity;
-import com.android.player.ui.widget.ProjectDialog;
 import com.android.player.utils.DataFactory;
 import com.android.player.utils.Logger;
 import com.android.player.utils.ScreenUtils;
@@ -65,13 +63,15 @@ public class PagerPlayerFragment extends BaseFragment {
         ((View)findViewById(R.id.btn_episode)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                EpisodesDialog dialog = new EpisodesDialog();
+                VideoBean video = mAdapter.getData().get(mPosition);
+                EpisodesDialog dialog =  EpisodesDialog.newInstance(video.getVideoId(), mPosition);
                 dialog.setOnMenuActionListener(new EpisodesDialog.OnMenuActionListener() {
                     @Override
                     public void onSelected(String url) {
                     }
                 });
                 dialog.show(getChildFragmentManager(), "EpisodesDialog");
+                MainActivity.getInstance().setEpisodesDialog(dialog);
             }
         });
         ((Button)findViewById(R.id.btn_change)).setOnClickListener(new View.OnClickListener() {
@@ -117,7 +117,7 @@ public class PagerPlayerFragment extends BaseFragment {
             }
         });
         mRecycleView.setLayoutManager(mLayoutManager);
-        mAdapter= new PagerPlayerAdapter(null);
+        mAdapter= new PagerPlayerAdapter(MainActivity.getInstance().getVideoList());
         mRecycleView.setAdapter(mAdapter);
     }
 
@@ -257,7 +257,7 @@ public class PagerPlayerFragment extends BaseFragment {
                     PlayerUtils.getInstance().removeViewFromParent(mVideoPlayer);
                     playerContainer.addView(mVideoPlayer,new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT, Gravity.CENTER));
                     mVideoPlayer.getController().setTitle(videoData.getVideoName());//视频标题(默认视图控制器横屏可见)
-                    mVideoPlayer.setDataSource(VideoCache.getInstance().getPlayPreloadUrl(videoData.getVideoUrl()));//播放地址设置
+                    mVideoPlayer.setDataSource(VideoCache.getInstance().getPlayPreloadUrl(videoData.getVideoUrl(position)));//播放地址设置
                     mVideoPlayer.prepareAsync();//开始异步准备播放
                 }
             }
@@ -322,8 +322,13 @@ public class PagerPlayerFragment extends BaseFragment {
             if(null!=mAdapter) mAdapter.setNewData(null);
             mAdapter.setNewData(data);//第1+次打开次界面时
             this.mPosition=position;
-
-            ((TextView)findViewById(R.id.episode_text)).setText("共123集");
+            VideoBean videoInfo = data.get(position);
+            if (videoInfo == null) {
+                Log.d("Video -- ", "video info null-----" + position);
+            }
+            String text = String.format(DataFactory.getInstance().getString(R.string.episodes_all, "共%d集"), videoInfo.getCount());
+            Log.d("text -- ", text);
+            ((TextView)findViewById(R.id.episode_text)).setText(text);
 
 //            View nav_view = findViewById(R.id.nav_view);
 //            nav_view.setVisibility(View.VISIBLE);
@@ -338,6 +343,11 @@ public class PagerPlayerFragment extends BaseFragment {
                 mLayoutManager.scrollToPositionWithOffset(data.size()>position?position:0,0);
             }
         }
+    }
+
+    public void setNewData(List<VideoBean> data) {
+        if(null!=mAdapter) mAdapter.setNewData(null);
+        mAdapter.setNewData(data);
     }
 
     @Override

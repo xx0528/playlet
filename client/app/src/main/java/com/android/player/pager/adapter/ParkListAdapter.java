@@ -11,6 +11,7 @@ import com.android.player.R;
 import com.android.player.base.adapter.BaseNoimalAdapter;
 import com.android.player.base.adapter.widget.BaseViewHolder;
 import com.android.player.pager.bean.VideoBean;
+import com.android.player.utils.DataFactory;
 import com.android.player.utils.GlideModel;
 import com.android.player.utils.ScreenUtils;
 import java.util.List;
@@ -41,11 +42,11 @@ public class ParkListAdapter extends BaseNoimalAdapter<VideoBean, BaseViewHolder
         GlideModel.getInstance().loadImage(imageCover, data.getImgUrl());
         ((TextView) viewHolder.getView(R.id.park_item_type)).setText(data.getTypeName());
         ((TextView) viewHolder.getView(R.id.park_item_desc)).setText(data.getDesc());
-        ((TextView) viewHolder.getView(R.id.park_item_like)).setText(String.format("%d人在追", data.getLikeCount()));
+        ((TextView) viewHolder.getView(R.id.park_item_like)).setText(String.format(DataFactory.getInstance().getString(R.string.cur_add, "%d人在追"), data.getLikeCount()));
         if (data.getFinish() == 1) {
-            ((TextView) viewHolder.getView(R.id.park_item_episodes)).setText("已完结");
+            ((TextView) viewHolder.getView(R.id.park_item_episodes)).setText(DataFactory.getInstance().getString(R.string.finish, "已完结"));
         } else {
-            ((TextView) viewHolder.getView(R.id.park_item_episodes)).setText(String.format("全%d集", data.getCount()));
+            ((TextView) viewHolder.getView(R.id.park_item_episodes)).setText(String.format(DataFactory.getInstance().getString(R.string.episodes_all, "全%d集"), data.getCount()));
         }
 
     }

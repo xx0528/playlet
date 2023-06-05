@@ -1,7 +1,10 @@
 package com.android.player.pager.fragment;
 
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -25,6 +28,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class HomeFragment extends BaseFragment {
@@ -36,6 +40,7 @@ public class HomeFragment extends BaseFragment {
     private final SparseArrayCompat<Fragment> mFragments = new SparseArrayCompat<>();
     private TabLayout mTabLayout;
 
+    private List<VideoBean> mVideos;
     @Override
     protected int getLayoutID() { return R.layout.fragment_home; }
 
@@ -120,6 +125,27 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
+    public void setData(List<VideoBean> data) {
+        mVideos = data;
+        Log.d("homeFragment 00 ", "setdata----1");
+        VideoListFragment fragmentVideoList = (VideoListFragment) mFragments.get(0);
+        Log.d("homeFragment 00 ", "setdata----2");
+        if (fragmentVideoList != null) {
+            Log.d("homeFragment 00 ", "setdata----3");
+            fragmentVideoList.setNewData(data);
+            Log.d("homeFragment 00 ", "setdata----4");
+        }
+        Log.d("homeFragment 00 ", "setdata----5");
+        PagerPlayerFragment fragmentPagePlayer = (PagerPlayerFragment) mFragments.get(1);
+        Log.d("homeFragment 00 ", "setdata----6");
+        if (fragmentPagePlayer != null) {
+            Log.d("homeFragment 00 ", "setdata----7");
+            fragmentPagePlayer.setNewData(data);
+            Log.d("homeFragment 00 ", "setdata----8");
+        }
+        Log.d("homeFragment 00 ", "setdata----9");
+    }
+
     private class FragmentAdapter extends FragmentPagerAdapter{
 
         public FragmentAdapter(FragmentManager fm) {
@@ -133,6 +159,7 @@ public class HomeFragment extends BaseFragment {
         public Fragment getItem(int position) {
             Fragment fragment = mFragments.get(position);
             if (fragment == null) {
+                Log.d("create fragment --- ", "创建fragment" + position);
                 switch (position) {
                     default:
                     case 0:

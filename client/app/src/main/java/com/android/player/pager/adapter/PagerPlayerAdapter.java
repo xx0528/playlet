@@ -27,7 +27,7 @@ public class PagerPlayerAdapter extends BaseNoimalAdapter<VideoBean, PagerPlayer
     protected void initItemView(VideoViewHolder viewHolder, int position, VideoBean data) {
         viewHolder.mPagerVideoController.initMediaData( getItemData(position),position);
         //开始预加载
-        VideoCache.getInstance().startPreloadTask(data.getVideoUrl(), position,1024*1024);
+        VideoCache.getInstance().startPreloadTask(data.getVideoUrl(position), position,1024*1024);
     }
 
     public class VideoViewHolder extends BaseViewHolder{
@@ -47,7 +47,7 @@ public class PagerPlayerAdapter extends BaseNoimalAdapter<VideoBean, PagerPlayer
         if(adapterPosition>-1){
             VideoBean itemData = getItemData(adapterPosition);
             //取消预加载
-            VideoCache.getInstance().removePreloadTask(itemData.getVideoUrl());
+            VideoCache.getInstance().removePreloadTask(itemData.getVideoUrl(adapterPosition));
         }
         super.onViewDetachedFromWindow(holder);
     }

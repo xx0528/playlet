@@ -1,5 +1,6 @@
 package com.android.player.pager.fragment;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -42,7 +43,7 @@ public class VideoListFragment extends BaseFragment {
         //列表适配器初始化
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new VideoListAdapter(null);
+        mAdapter = new VideoListAdapter(MainActivity.getInstance().getVideoList());
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, long itemId) {
@@ -58,20 +59,27 @@ public class VideoListFragment extends BaseFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(mAdapter);
 
-        //加载数据
-        DataFactory.getInstance().getTikTopVideo(new DataFactory.OnCallBackListener() {
-            @Override
-            public void onList(List<VideoBean> data) {
-                if (null != mAdapter) {
-                    mAdapter.setNewData(data);
-                    HomeFragment homeFragment = (HomeFragment) getActivity().getSupportFragmentManager().findFragmentByTag("HomeFragment");
-//                    PagerPlayerActivity pagerPlayerActivity = (PagerPlayerActivity) getActivity();
-//                    List<VideoBean> data = mAdapter.getData();
-//                    String videoJson = new Gson().toJson(data);
-                    homeFragment.navigationPlayer(data, (int)Math.random()*data.size());
-                }
-            }
-        });
+//        //加载数据
+//        DataFactory.getInstance().getTikTopVideo(new DataFactory.OnCallBackListener() {
+//            @Override
+//            public void onList(List<VideoBean> data) {
+//                if (null != mAdapter) {
+//                    mAdapter.setNewData(data);
+//                    HomeFragment homeFragment = (HomeFragment) getActivity().getSupportFragmentManager().findFragmentByTag("HomeFragment");
+////                    PagerPlayerActivity pagerPlayerActivity = (PagerPlayerActivity) getActivity();
+////                    List<VideoBean> data = mAdapter.getData();
+////                    String videoJson = new Gson().toJson(data);
+//                    homeFragment.navigationPlayer(data, (int)Math.random()*data.size());
+//                }
+//            }
+//        });
+    }
+
+    public void setNewData(List<VideoBean> data) {
+        Log.d("videoList -- ", "setNewData --- 1");
+        if(null!=mAdapter) mAdapter.setNewData(null);
+        mAdapter.setNewData(data);
+        Log.d("videoList -- ", "setNewData --- 2");
     }
 
     @Override

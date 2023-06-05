@@ -1,6 +1,8 @@
 package com.android.player.pager.activity;
 
 import android.annotation.SuppressLint;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -12,29 +14,58 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.android.player.App;
 import com.android.player.R;
 import com.android.player.base.BaseActivity;
 import com.android.player.base.BasePresenter;
+import com.android.player.net.OnResultCallBack;
+import com.android.player.pager.bean.ResVideoInfo;
+import com.android.player.pager.bean.UserInfo;
+import com.android.player.pager.bean.VideoBean;
 import com.android.player.pager.fragment.HomeFragment;
 import com.android.player.pager.fragment.MineFragment;
+import com.android.player.pager.fragment.PagerPlayerFragment;
 import com.android.player.pager.fragment.ParkFragment;
 import com.android.player.pager.fragment.VideoListFragment;
+import com.android.player.pager.widget.EpisodesDialog;
+import com.android.player.utils.DataFactory;
 import com.android.player.utils.ScreenUtils;
 import com.android.player.utils.StatusUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
+
+import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends BaseActivity {
 
+    private static MainActivity mInstance;
     private  String className= "MainActivity";
 
     private MineFragment mineFragment;
     private ParkFragment parkFragment;
     private HomeFragment homeFragment;
 
+
+    private List<VideoBean> mVideos;
+    private UserInfo userInfo;
+
+    private EpisodesDialog mEpisodesDialog;
+
+    public static MainActivity getInstance(){
+        return mInstance;
+    }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setFullScreen(true);
+        mInstance = this;
+        //设置繁体
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.locale = Locale.TAIWAN; // 设置当前语言配置为繁体
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_playlet);
@@ -47,7 +78,6 @@ public class MainActivity extends BaseActivity {
 
         //bottomNavigationView Item 选择监听
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            Log.d("123", "onNavigationItemSelected is click: ");
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             hideAllFragment();
@@ -58,10 +88,8 @@ public class MainActivity extends BaseActivity {
                         fragmentTransaction.add(R.id.fragment_content, homeFragment, "HomeFragment")
                                 .setReorderingAllowed(true)
                                 .commit();
-                        Log.d("fragment -- ", "创建 homeFragment");
                     } else {
                         fragmentTransaction.show(homeFragment).commit();
-                        Log.d("fragment -- ", "显示 homeFragment");
                     }
                     break;
                 case R.id.navigation_park:
@@ -70,24 +98,19 @@ public class MainActivity extends BaseActivity {
                         fragmentTransaction.add(R.id.fragment_content, parkFragment, "ParkFragment")
                                 .setReorderingAllowed(true)
                                 .commit();
-                        Log.d("fragment -- ", "创建 parkFragment");
                     } else {
                         fragmentTransaction.show(parkFragment).commit();
-                        Log.d("fragment -- ", "显示 parkFragment");
                     }
 
                     break;
                 case R.id.navigation_mine:
-                    Log.d(className, "R.string.title_notification: ");
                     if (mineFragment == null) {
                         mineFragment = new MineFragment();
                         fragmentTransaction.add(R.id.fragment_content, mineFragment, "MineFragment")
                                 .setReorderingAllowed(true)
                                 .commit();
-                        Log.d("fragment -- ", "创建 mineFragment");
                     } else {
                         fragmentTransaction.show(mineFragment).commit();
-                        Log.d("fragment -- ", "显示 mineFragment");
                     }
 
                     break;
@@ -96,6 +119,8 @@ public class MainActivity extends BaseActivity {
             return true;
         });
         bottomNavigationView.setSelectedItemId(bottomNavigationView.getMenu().getItem(0).getItemId());
+
+        getVideoData();
     }
 
     @Override
@@ -107,21 +132,13 @@ public class MainActivity extends BaseActivity {
     public void hideAllFragment(){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         if (homeFragment != null) {
-            Log.d("123", "homeFragment hide: ");
             fragmentTransaction.hide(homeFragment);
-            Log.d("123", "homeFragment hide:22332 ");
         }
         if (parkFragment != null) {
-            Log.d("123", "parkFragment  hide: ");
-
             fragmentTransaction.hide(parkFragment);
-            Log.d("123", "parkFragment  hide:111 ");
         }
         if (mineFragment != null) {
-            Log.d("123", "mineFragment hide: ");
-
             fragmentTransaction.hide(mineFragment);
-            Log.d("123", "mineFragment hide:111222 ");
         }
         fragmentTransaction.commit();
     }
@@ -142,5 +159,46 @@ public class MainActivity extends BaseActivity {
 //            return;
 //        }
         super.onBackPressed();
+    }
+
+    public List<VideoBean> getVideoList() {
+        return mVideos;
+    }
+
+    private void getVideoData() {
+
+        //获取视频列表播放
+        //加载数据
+
+        DataFactory.getInstance().GetVideoInfo(0, new OnResultCallBack<ResVideoInfo>() {
+
+            @Override
+            public void onResponse(ResVideoInfo data) {
+                mVideos = data.data.list;
+                Log.d(TAG,"请求成功---" + new Gson().toJson(data));
+                homeFragment.setData(mVideos);
+            }
+
+            @Override
+            public void onError(int code, String errorMsg) {
+                Log.d(TAG, "请求失败" + code);
+            }
+        });
+    }
+
+    public VideoBean getVideoById(int id) {
+        for(VideoBean video : mVideos) {
+            if (video.getVideoId() == id)
+                return video;
+        }
+        return null;
+    }
+
+    public void setEpisodesDialog(EpisodesDialog dialog) {
+        mEpisodesDialog = dialog;
+    }
+
+    public EpisodesDialog getEpisodesDialog() {
+        return mEpisodesDialog;
     }
 }

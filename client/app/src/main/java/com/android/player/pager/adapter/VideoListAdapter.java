@@ -10,8 +10,11 @@ import com.android.player.R;
 import com.android.player.base.adapter.BaseNoimalAdapter;
 import com.android.player.base.adapter.widget.BaseViewHolder;
 import com.android.player.pager.bean.VideoBean;
+import com.android.player.utils.DataFactory;
 import com.android.player.utils.GlideModel;
 import com.android.player.utils.ScreenUtils;
+import com.android.player.utils.SharedPreferencesUtil;
+
 import java.util.List;
 
 /**
@@ -38,10 +41,11 @@ public class VideoListAdapter extends BaseNoimalAdapter<VideoBean, BaseViewHolde
         GlideModel.getInstance().loadImage(imageCover, data.getImgUrl());
         PlayerUtils.getInstance().setOutlineProvider(imageCover,ScreenUtils.getInstance().dpToPxInt(7f));
         if (data.getFinish() == 1) {
-            ((TextView) viewHolder.getView(R.id.item_count)).setText("已完结");
+            ((TextView) viewHolder.getView(R.id.item_count)).setText(DataFactory.getInstance().getString(R.string.episodes_all,"已完结"));
         } else {
-            ((TextView) viewHolder.getView(R.id.item_count)).setText(String.format("更新至%d集", data.getCount()) );
+            ((TextView) viewHolder.getView(R.id.item_count)).setText(String.format(DataFactory.getInstance().getString(R.string.episodes_update, "更新至%d集"), data.getCount()) );
         }
-        ((TextView) viewHolder.getView(R.id.item_episodes)).setText("观看至5集");
+        int curWatch = SharedPreferencesUtil.getInstance().getInt("episodes_cur_watch", 1);
+        ((TextView) viewHolder.getView(R.id.item_episodes)).setText(String.format(DataFactory.getInstance().getString(R.string.episodes_cur_watch, "觀看至%d集"), curWatch));
     }
 }

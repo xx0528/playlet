@@ -14,6 +14,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.android.player.R;
 import com.android.player.base.BaseFragment;
 import com.android.player.base.BasePresenter;
+import com.android.player.pager.activity.MainActivity;
+import com.android.player.pager.bean.VideoBean;
 import com.android.player.utils.ScreenUtils;
 import com.android.player.utils.StatusUtils;
 import com.google.android.material.tabs.TabLayout;
@@ -101,11 +103,12 @@ public class ParkFragment extends BaseFragment {
         public Fragment getItem(int position) {
             Fragment fragment = mFragments.get(position);
             if (fragment == null) {
+                List<VideoBean> videoList = MainActivity.getInstance().getVideoList();
                 Bundle args = new Bundle();
                 args.putInt("typeId", position);
                 fragment = new ParkListFragment();
                 fragment.setArguments(args);
-
+                ((ParkListFragment)fragment).setNewData(videoList);
                 mFragments.put(position, fragment);
             }
             return fragment;

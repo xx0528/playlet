@@ -2,6 +2,8 @@ package com.android.player.pager.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -11,6 +13,8 @@ import com.android.player.R;
 import com.android.player.base.BaseFragment;
 import com.android.player.base.BasePresenter;
 import com.android.player.utils.Logger;
+
+import java.util.Locale;
 
 public class MineFragment extends BaseFragment  {
 
@@ -48,6 +52,7 @@ public class MineFragment extends BaseFragment  {
         @SuppressLint("NonConstantResourceId")
         @Override
         public void onClick(View view) {
+
             Intent intent = null;
             switch (view.getId()) {
                 case R.id.mine_setting:

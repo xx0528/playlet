@@ -76,7 +76,6 @@
             android:id="@+id/episode_text"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="第92集"
             android:textColor="#fff"
             android:textSize="16dp"
             android:gravity="center_vertical"
@@ -100,7 +99,7 @@
             android:textSize="15dp"
             android:textColor="#fff"
             android:textStyle="bold"
-            android:text="换一个"/>
+            android:text="@string/change_next"/>
 
     </RelativeLayout>
 </FrameLayout>

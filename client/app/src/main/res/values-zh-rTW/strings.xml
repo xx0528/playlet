@@ -58,4 +58,18 @@
     <string name="tab_chongsheng">重生</string>
     <string name="tab_aimei">曖昧</string>
     <string name="tab_jiating">家庭</string>
+    <string name="episodes_all">共%d集</string>
+    <string name="episodes_cur">第%d集</string>
+    <string name="change_next">換一個</string>
+    <string name="continue_play">繼續觀看</string>
+    <string name="add_to">追</string>
+    <string name="finish">已完結</string>
+    <string name="cur_add">%d人在追</string>
+    <string name="click_login">點擊登陸</string>
+    <string name="setting">系統設置</string>
+    <string name="contact">聯系我們</string>
+    <string name="feedback">幫助與反饋</string>
+    <string name="about">關於我們</string>
+    <string name="episodes_update">更新至%d集</string>
+    <string name="episodes_cur_watch">觀看至%d集</string>
 </resources>

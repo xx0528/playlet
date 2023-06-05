@@ -10,6 +10,8 @@ import com.android.player.App;
 import com.android.player.R;
 import com.android.player.bean.Menu;
 import com.android.player.bean.Version;
+import com.android.player.net.OkHttpUtils;
+import com.android.player.net.OnResultCallBack;
 import com.android.player.pager.bean.VideoBean;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -19,7 +21,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * created by hty
@@ -291,5 +295,21 @@ public class DataFactory {
         }catch (RuntimeException e){
 
         }
+    }
+
+    public void GetVideoInfo(int page, OnResultCallBack callBack) {
+        Map<String, String> params=new HashMap<>();
+        params.put("page",page+"");
+        sendGetRequst("http://192.168.3.67:8080/api/plUserVideo/getPlUserVideoList",params,callBack);
+    }
+
+    /**
+     * 发送异步GET请求
+     * @param url URL
+     * @param params PARAMS
+     * @param callBack CALL BACK
+     */
+    protected void sendGetRequst(String url, Map<String,String> params, OnResultCallBack callBack){
+        OkHttpUtils.get(url,params,null,callBack);
     }
 }

@@ -18,6 +18,8 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.android.player.R;
+import com.android.player.pager.activity.MainActivity;
+import com.android.player.pager.bean.VideoBean;
 import com.android.player.pager.fragment.EpisodesListFragment;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -31,13 +33,33 @@ public class EpisodesDialog extends BottomSheetDialogFragment {
     private List<String> mTabs;
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+
+    private VideoBean mVideoInfo;
+    private int mCurPos;
     private final SparseArrayCompat<Fragment> mFragments = new SparseArrayCompat<>();
+
+    public static EpisodesDialog newInstance(int id, int curPos) {
+        EpisodesDialog dialog = new EpisodesDialog();
+        Bundle args = new Bundle();
+        args.putInt("videoId", id);
+        args.putInt("curPos", curPos);
+        dialog.setArguments(args);
+        return dialog;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //设置背景透明，才能显示出layout中诸如圆角的布局，否则会有白色底（框）
         setStyle(BottomSheetDialogFragment.STYLE_NORMAL, R.style.CustomBottomSheetDialogTheme);
+
+        Bundle args = getArguments();
+        if (args != null) {
+            int videoId = args.getInt("videoId");
+            mCurPos = args.getInt("curPos");
+            mVideoInfo = MainActivity.getInstance().getVideoById(videoId);
+        }
+
     }
 
     @Nullable
@@ -53,11 +75,27 @@ public class EpisodesDialog extends BottomSheetDialogFragment {
             }
         });
         mTabs = new ArrayList<>();
-        mTabs.add("1-30");
-        mTabs.add("31-60");
-        mTabs.add("61-90");
-        mTabs.add("91-120");
-        mTabs.add("121-150");
+        int pageSize = 30;
+
+        int tabCount = (mVideoInfo.getCount() + pageSize - 1) / pageSize;  //计算tab页数（向上取整）
+
+        for (int i = 0; i < tabCount; i++) {
+            int start = i * pageSize + 1;
+            int end = Math.min(start + pageSize - 1, mVideoInfo.getCount());  //避免最后一页的集数不足pageSize
+            String title = start + "-" + end;
+            mTabs.add(title);
+        }
+
+        //修改最后一页的标题
+        String lastTitle = mTabs.get(mTabs.size() - 1);
+        if (lastTitle.contains("-")) {
+            String[] arr = lastTitle.split("-");
+            int start = Integer.parseInt(arr[0]);
+            int end = Integer.parseInt(arr[1]);
+            if (end < mVideoInfo.getCount()) {  //最后一页的集数不足pageSize
+                mTabs.set(mTabs.size() - 1, end + 1 + "-" + mVideoInfo.getCount());
+            }
+        }
 
         mTabLayout = (TabLayout) view.findViewById(R.id.episodes_dialog_tab_layout);
         for (int i = 0; i < mTabs.size(); i++) {
@@ -100,6 +138,27 @@ public class EpisodesDialog extends BottomSheetDialogFragment {
         }
     }
 
+    public List<EpisodesListFragment.EpisodesListFragmentItem> getEpisodesListItemData(int pos) {
+
+        List<EpisodesListFragment.EpisodesListFragmentItem> items = new ArrayList();
+        for(int i = 1; i <= 30; i++) {
+            int num = (pos * 30) + i;
+            if (num >= mVideoInfo.getCount())
+                break;
+            boolean isPlay = false;
+            if (num == mCurPos) {
+                isPlay = true;
+            }
+            boolean isLock = false;
+            if (mVideoInfo.getLockCount() >= num) {
+                isLock = true;
+            }
+            items.add(new EpisodesListFragment.EpisodesListFragmentItem(num, isLock, isPlay));
+        }
+
+        return items;
+    }
+
     private class FragmentAdapter extends FragmentPagerAdapter{
         public FragmentAdapter(FragmentManager fm) {
             //setUserVisibleHint和setMaxLifecycle二选一,
@@ -115,7 +174,6 @@ public class EpisodesDialog extends BottomSheetDialogFragment {
                 Bundle args = new Bundle();
                 args.putInt("episodesPos", position);
                 fragment = new EpisodesListFragment();
-                ((EpisodesListFragment)fragment).setData(position);
                 fragment.setArguments(args);
 
                 mFragments.put(position, fragment);

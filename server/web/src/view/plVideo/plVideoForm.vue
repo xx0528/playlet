@@ -35,6 +35,9 @@
         <el-form-item label="免费集数:" prop="freeCount">
           <el-input v-model.number="formData.freeCount" :clearable="true" placeholder="请输入" />
         </el-form-item>
+        <el-form-item label="解锁集数:" prop="lockCount">
+          <el-input v-model.number="formData.lockCount" :clearable="true" placeholder="请输入" />
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="save">保存</el-button>
           <el-button type="primary" @click="back">返回</el-button>
@@ -78,6 +81,7 @@ const formData = ref({
             videoUrl: '',
             createTime: new Date(),
             freeCount: 0,
+            lockCount: 0,
         })
 // 验证规则
 const rule = reactive({
@@ -102,6 +106,11 @@ const rule = reactive({
                    trigger: ['input','blur'],
                }],
                freeCount : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               }],
+               lockCount : [{
                    required: true,
                    message: '',
                    trigger: ['input','blur'],

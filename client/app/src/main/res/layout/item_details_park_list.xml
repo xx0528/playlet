@@ -92,7 +92,7 @@
                 android:layout_alignParentBottom="true"
                 android:drawableLeft="@mipmap/icon_jixuguankan"
                 android:textSize="11sp"
-                android:text="继续观看"/>
+                android:text="@string/continue_play"/>
             <Button
                 android:layout_width="45dp"
                 android:layout_height="25dp"
@@ -101,7 +101,7 @@
                 android:background="@drawable/bg_btn_continue"
                 android:drawableLeft="@mipmap/icon_zhuijia"
                 android:textSize="11sp"
-                android:text="追"/>
+                android:text="@string/add_to"/>
         </RelativeLayout>
     </LinearLayout>
 

@@ -1,7 +1,7 @@
 /*
  * @Author: xx
  * @Date: 2023-06-02 18:28:19
- * @LastEditTime: 2023-06-02 18:54:32
+ * @LastEditTime: 2023-06-05 19:31:06
  * @Description:
  */
 // 自动生成模板PlVideo
@@ -28,6 +28,7 @@ type PlVideo struct {
 	VideoUrl   string    `json:"videoUrl" form:"videoUrl" gorm:"column:video_url;comment:视频地址;"`
 	CreateTime time.Time `json:"createTime" form:"createTime" gorm:"column:create_time;comment:上架时间;"`
 	FreeCount  int       `json:"freeCount" form:"freeCount" gorm:"column:free_count;comment:免费集数;"`
+	LockCount  int       `json:"lockCount" form:"lockCount" gorm:"column:lock_count;comment:解锁集数;"`
 	CreatedBy  uint      `gorm:"column:created_by;comment:创建者"`
 	UpdatedBy  uint      `gorm:"column:updated_by;comment:更新者"`
 	DeletedBy  uint      `gorm:"column:deleted_by;comment:删除者"`

@@ -52,6 +52,7 @@
             <template #default="scope">{{ formatDate(scope.row.createTime) }}</template>
          </el-table-column>
         <el-table-column align="left" label="免费集数" prop="freeCount" width="120" />
+        <el-table-column align="left" label="解锁集数" prop="lockCount" width="120" />
         <el-table-column align="left" label="按钮组">
             <template #default="scope">
             <el-button type="primary" link icon="edit" class="table-button" @click="updatePlVideoFunc(scope.row)">变更</el-button>
@@ -106,6 +107,9 @@
         <el-form-item label="免费集数:"  prop="freeCount" >
           <el-input v-model.number="formData.freeCount" :clearable="true" placeholder="请输入" />
         </el-form-item>
+        <el-form-item label="解锁集数:"  prop="lockCount" >
+          <el-input v-model.number="formData.lockCount" :clearable="true" placeholder="请输入" />
+        </el-form-item>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -151,6 +155,7 @@ const formData = ref({
         videoUrl: '',
         createTime: new Date(),
         freeCount: 0,
+        lockCount: 0,
         })
 
 // 验证规则
@@ -176,6 +181,11 @@ const rule = reactive({
                    trigger: ['input','blur'],
                }],
                freeCount : [{
+                   required: true,
+                   message: '',
+                   trigger: ['input','blur'],
+               }],
+               lockCount : [{
                    required: true,
                    message: '',
                    trigger: ['input','blur'],
@@ -343,6 +353,7 @@ const closeDialog = () => {
         videoUrl: '',
         createTime: new Date(),
         freeCount: 0,
+        lockCount: 0,
         }
 }
 // 弹窗确定

@@ -45,7 +45,7 @@ public class EpisodesListFragment extends BaseFragment {
         //列表适配器初始化
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 6, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new EpisodesListAdapter(null);
+        mAdapter = new EpisodesListAdapter( MainActivity.getInstance().getEpisodesDialog().getEpisodesListItemData(mEpisodesPos));
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, long itemId) {
@@ -56,12 +56,24 @@ public class EpisodesListFragment extends BaseFragment {
         recyclerView.setAdapter(mAdapter);
     }
 
-    public void setData(int pos) {
-//        mAdapter.setNewData();
+    public void setData(List<EpisodesListFragmentItem> data) {
+        mAdapter.setNewData(data);
     }
 
     @Override
     protected BasePresenter createPresenter() {
         return null;
+    }
+
+    public static class EpisodesListFragmentItem {
+        public int num;
+        public boolean isLock;
+        public boolean isPlay;
+
+        public EpisodesListFragmentItem(int num, boolean isLock, boolean isPlay) {
+            this.num = num;
+            this.isLock = isLock;
+            this.isPlay = isPlay;
+        }
     }
 }

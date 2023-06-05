@@ -18,6 +18,7 @@ import com.android.player.pager.bean.VideoBean;
 import com.android.player.utils.DataFactory;
 import com.android.player.utils.ScreenUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ParkListFragment extends BaseFragment {
@@ -43,7 +44,7 @@ public class ParkListFragment extends BaseFragment {
         //列表适配器初始化
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 1, GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        mAdapter = new ParkListAdapter(null);
+        mAdapter = new ParkListAdapter(MainActivity.getInstance().getVideoList());
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, long itemId) {
@@ -58,16 +59,18 @@ public class ParkListFragment extends BaseFragment {
         });
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(mAdapter);
+    }
 
-        //加载数据
-        DataFactory.getInstance().getTikTopVideo(new DataFactory.OnCallBackListener() {
-            @Override
-            public void onList(List<VideoBean> data) {
-                if (null != mAdapter) {
-                    mAdapter.setNewData(data);
+    public void setNewData(List<VideoBean> data) {
+        if (null != mAdapter) {
+            List<VideoBean> curPageList = new ArrayList<>();
+            for (VideoBean video : data) {
+                if (video.getVideoType() == typeId) {
+                    curPageList.add(video);
                 }
             }
-        });
+            mAdapter.setNewData(curPageList);
+        }
     }
 
     @Override
