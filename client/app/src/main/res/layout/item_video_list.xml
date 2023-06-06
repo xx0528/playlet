@@ -36,6 +36,7 @@
             android:maxLines="1"
             android:textColor="@color/white"
             android:textSize="12dp"
+            android:ellipsize="end"
             android:gravity="bottom"
             android:background="@drawable/fg_video_info"
             android:layout_gravity="bottom"

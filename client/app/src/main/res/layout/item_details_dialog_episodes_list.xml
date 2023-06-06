@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:background="@drawable/bg_shape_dialog"
     android:id="@+id/dialog_item_root_content"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/park_item_episodes"

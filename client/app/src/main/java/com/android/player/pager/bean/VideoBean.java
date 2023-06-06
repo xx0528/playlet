@@ -18,7 +18,7 @@ public class VideoBean {
     //分类名
     private String typeName;
     //简介
-    private String desc;
+    private String videoDesc;
     //收藏人数
     private int likeCount;
     //播放次数
@@ -63,12 +63,12 @@ public class VideoBean {
         this.typeName = typeName;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getVideoDesc() {
+        return videoDesc;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setVideoDesc(String desc) {
+        this.videoDesc = desc;
     }
 
     public String getVideoUrl() {

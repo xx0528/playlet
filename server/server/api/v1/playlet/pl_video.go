@@ -1,6 +1,8 @@
 package playlet
 
 import (
+	"strconv"
+
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
@@ -194,7 +196,11 @@ func (plVideoApi *PlVideoApi) GetPlVideoList(c *gin.Context) {
 
 func (plVideoApi *PlVideoApi) GetPlUserVideoList(c *gin.Context) {
 	pageInfo := playletReq.PlVideoSearch{}
-	pageInfo.Page = 0
+	numStr := c.Query("page")
+	num, err := strconv.Atoi(numStr)
+	if err == nil {
+		pageInfo.Page = num
+	}
 	pageInfo.PageSize = 50
 	if list, total, err := plVideoService.GetPlVideoInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))

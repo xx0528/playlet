@@ -41,7 +41,7 @@ public class ParkListAdapter extends BaseNoimalAdapter<VideoBean, BaseViewHolder
         PlayerUtils.getInstance().setOutlineProvider(imageCover, ScreenUtils.getInstance().dpToPxInt(10f));
         GlideModel.getInstance().loadImage(imageCover, data.getImgUrl());
         ((TextView) viewHolder.getView(R.id.park_item_type)).setText(data.getTypeName());
-        ((TextView) viewHolder.getView(R.id.park_item_desc)).setText(data.getDesc());
+        ((TextView) viewHolder.getView(R.id.park_item_desc)).setText(data.getVideoDesc());
         ((TextView) viewHolder.getView(R.id.park_item_like)).setText(String.format(DataFactory.getInstance().getString(R.string.cur_add, "%d人在追"), data.getLikeCount()));
         if (data.getFinish() == 1) {
             ((TextView) viewHolder.getView(R.id.park_item_episodes)).setText(DataFactory.getInstance().getString(R.string.finish, "已完结"));

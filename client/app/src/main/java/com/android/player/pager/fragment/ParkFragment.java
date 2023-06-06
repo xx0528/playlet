@@ -90,6 +90,12 @@ public class ParkFragment extends BaseFragment {
         return null;
     }
 
+    public void setData(List<VideoBean> data) {
+        for (int i = 0; i < mFragments.size(); i++) {
+            ((ParkListFragment)(mFragments.get(i))).setNewData(data);
+        }
+    }
+
     private class FragmentAdapter extends FragmentPagerAdapter{
 
         public FragmentAdapter(FragmentManager fm) {

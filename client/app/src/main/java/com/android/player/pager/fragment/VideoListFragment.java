@@ -76,11 +76,14 @@ public class VideoListFragment extends BaseFragment {
     }
 
     public void setNewData(List<VideoBean> data) {
-        Log.d("videoList -- ", "setNewData --- 1");
         if(null!=mAdapter) mAdapter.setNewData(null);
         mAdapter.setNewData(data);
-        Log.d("videoList -- ", "setNewData --- 2");
     }
+
+    public void addData(List<VideoBean> data) {
+        mAdapter.addData(data);
+    }
+
 
     @Override
     protected BasePresenter createPresenter() {

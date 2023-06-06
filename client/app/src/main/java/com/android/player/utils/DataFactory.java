@@ -298,8 +298,8 @@ public class DataFactory {
     }
 
     public void GetVideoInfo(int page, OnResultCallBack callBack) {
-        Map<String, String> params=new HashMap<>();
-        params.put("page",page+"");
+        Map<String, String> params = new HashMap<>();
+        params.put("page", page+"");
         sendGetRequst("http://192.168.3.67:8080/api/plUserVideo/getPlUserVideoList",params,callBack);
     }
 

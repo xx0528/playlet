@@ -50,6 +50,7 @@ public class MainActivity extends BaseActivity {
     private List<VideoBean> mVideos;
     private UserInfo userInfo;
 
+    private int curPage;
     private EpisodesDialog mEpisodesDialog;
 
     public static MainActivity getInstance(){
@@ -61,6 +62,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setFullScreen(true);
         mInstance = this;
+        curPage = 0;
         //设置繁体
         Resources resources = getResources();
         Configuration configuration = resources.getConfiguration();
@@ -170,7 +172,7 @@ public class MainActivity extends BaseActivity {
         //获取视频列表播放
         //加载数据
 
-        DataFactory.getInstance().GetVideoInfo(0, new OnResultCallBack<ResVideoInfo>() {
+        DataFactory.getInstance().GetVideoInfo(curPage, new OnResultCallBack<ResVideoInfo>() {
 
             @Override
             public void onResponse(ResVideoInfo data) {
@@ -186,6 +188,30 @@ public class MainActivity extends BaseActivity {
         });
     }
 
+
+    public void getMoreVideoData() {
+
+        //获取视频列表播放
+        //加载数据
+        curPage++;
+        DataFactory.getInstance().GetVideoInfo(curPage, new OnResultCallBack<ResVideoInfo>() {
+
+            @Override
+            public void onResponse(ResVideoInfo data) {
+                mVideos.addAll(data.data.list);
+                Log.d(TAG,"请求成功---" + new Gson().toJson(data));
+                if (homeFragment != null)
+                    homeFragment.setData(mVideos);
+                if (parkFragment != null)
+                    parkFragment.setData(mVideos);
+            }
+
+            @Override
+            public void onError(int code, String errorMsg) {
+                Log.d(TAG, "请求失败" + code);
+            }
+        });
+    }
     public VideoBean getVideoById(int id) {
         for(VideoBean video : mVideos) {
             if (video.getVideoId() == id)

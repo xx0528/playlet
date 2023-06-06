@@ -127,23 +127,26 @@ public class HomeFragment extends BaseFragment {
 
     public void setData(List<VideoBean> data) {
         mVideos = data;
-        Log.d("homeFragment 00 ", "setdata----1");
         VideoListFragment fragmentVideoList = (VideoListFragment) mFragments.get(0);
-        Log.d("homeFragment 00 ", "setdata----2");
         if (fragmentVideoList != null) {
-            Log.d("homeFragment 00 ", "setdata----3");
             fragmentVideoList.setNewData(data);
-            Log.d("homeFragment 00 ", "setdata----4");
         }
-        Log.d("homeFragment 00 ", "setdata----5");
         PagerPlayerFragment fragmentPagePlayer = (PagerPlayerFragment) mFragments.get(1);
-        Log.d("homeFragment 00 ", "setdata----6");
         if (fragmentPagePlayer != null) {
-            Log.d("homeFragment 00 ", "setdata----7");
             fragmentPagePlayer.setNewData(data);
-            Log.d("homeFragment 00 ", "setdata----8");
         }
-        Log.d("homeFragment 00 ", "setdata----9");
+    }
+
+    public void addData(List<VideoBean> data) {
+        mVideos = data;
+        VideoListFragment fragmentVideoList = (VideoListFragment) mFragments.get(0);
+        if (fragmentVideoList != null) {
+            fragmentVideoList.addData(data);
+        }
+        PagerPlayerFragment fragmentPagePlayer = (PagerPlayerFragment) mFragments.get(1);
+        if (fragmentPagePlayer != null) {
+            fragmentPagePlayer.addData(data);
+        }
     }
 
     private class FragmentAdapter extends FragmentPagerAdapter{

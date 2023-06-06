@@ -112,7 +112,7 @@ public class PagerPlayerFragment extends BaseFragment {
                 PagerPlayerFragment.this.mPosition=position;
                 startPlayer(mPosition);
                 if(isBottom){//是否要加载更多了,滑动到最后两条数据时触发加载更多
-                    loadMoreData();
+                    MainActivity.getInstance().getMoreVideoData();
                 }
             }
         });
@@ -349,6 +349,11 @@ public class PagerPlayerFragment extends BaseFragment {
         if(null!=mAdapter) mAdapter.setNewData(null);
         mAdapter.setNewData(data);
     }
+
+    public void addData(List<VideoBean> data) {
+        mAdapter.addData(data);
+    }
+
 
     @Override
     public void onResume() {

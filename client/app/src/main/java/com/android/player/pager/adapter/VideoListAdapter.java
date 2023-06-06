@@ -41,7 +41,7 @@ public class VideoListAdapter extends BaseNoimalAdapter<VideoBean, BaseViewHolde
         GlideModel.getInstance().loadImage(imageCover, data.getImgUrl());
         PlayerUtils.getInstance().setOutlineProvider(imageCover,ScreenUtils.getInstance().dpToPxInt(7f));
         if (data.getFinish() == 1) {
-            ((TextView) viewHolder.getView(R.id.item_count)).setText(DataFactory.getInstance().getString(R.string.episodes_all,"已完结"));
+            ((TextView) viewHolder.getView(R.id.item_count)).setText(String.format(DataFactory.getInstance().getString(R.string.episodes_all,"共%d集"), data.getCount()));
         } else {
             ((TextView) viewHolder.getView(R.id.item_count)).setText(String.format(DataFactory.getInstance().getString(R.string.episodes_update, "更新至%d集"), data.getCount()) );
         }

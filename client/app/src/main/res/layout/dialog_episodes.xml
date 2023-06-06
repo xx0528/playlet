@@ -50,7 +50,6 @@
                 android:id="@+id/episodes_dialog_tab_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_centerInParent="true"
                 app:tabIndicatorColor="#333333"
                 app:tabMode="scrollable"
                 app:tabGravity="fill"
