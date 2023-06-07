@@ -18,6 +18,7 @@ import com.smallplay.playlet.app.base.BaseFragment
 import com.smallplay.playlet.app.base.BaseFragment1
 import com.smallplay.playlet.app.eventViewModel
 import com.smallplay.playlet.app.ext.*
+import com.smallplay.playlet.app.util.StatusBarUtil
 import com.smallplay.playlet.app.weight.banner.HomeBannerAdapter
 import com.smallplay.playlet.app.weight.banner.HomeBannerViewHolder
 import com.smallplay.playlet.app.weight.recyclerview.DefineLoadMoreView
@@ -61,19 +62,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
             requestHomeViewModel.getBannerData()
             requestHomeViewModel.getHomeData(true)
         }
-        //初始化
-        mViewBind.includeToolbar.toolbar.run {
-            init("首页")
-            inflateMenu(R.menu.home_menu)
-            setOnMenuItemClickListener {
-                when (it.itemId) {
-                    R.id.home_search -> {
-                        nav().navigateAction(R.id.action_mainfragment_to_searchFragment)
-                    }
-                }
-                true
-            }
-        }
+
         //初始化recyclerView
         mViewBind.includeList.includeRecyclerview.recyclerView.init(LinearLayoutManager(context), articleAdapter).let {
             //因为首页要添加轮播图，所以我设置了firstNeedTop字段为false,即第一条数据不需要设置间距
@@ -199,7 +188,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
             })
             //监听全局的主题颜色改变
             appColor.observeInFragment(this@HomeFragment) {
-                setUiTheme(it, mViewBind.includeToolbar.toolbar, mViewBind.includeList.floatbtn, mViewBind.includeList.includeRecyclerview.swipeRefresh, loadsir, footView)
+                setUiTheme(it, mViewBind.includeList.floatbtn, mViewBind.includeList.includeRecyclerview.swipeRefresh, loadsir, footView)
             }
             //监听全局的列表动画改编
             appAnimation.observeInFragment(this@HomeFragment) {

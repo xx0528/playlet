@@ -324,32 +324,26 @@ fun ViewPager2.init(
 fun ViewPager2.initMain(fragment: Fragment): ViewPager2 {
     //是否可滑动
     this.isUserInputEnabled = false
-    this.offscreenPageLimit = 5
+    this.offscreenPageLimit = 3
     //设置适配器
     adapter = object : FragmentStateAdapter(fragment) {
         override fun createFragment(position: Int): Fragment {
-            when (position) {
+            return when (position) {
                 0 -> {
-                    return HomeFragment()
+                    HomeFragment()
                 }
                 1 -> {
-                    return ProjectFragment()
+                    ProjectFragment()
                 }
                 2 -> {
-                    return TreeArrFragment()
-                }
-                3 -> {
-                    return PublicNumberFragment()
-                }
-                4 -> {
-                    return MeFragment()
+                    MeFragment()
                 }
                 else -> {
-                    return HomeFragment()
+                    HomeFragment()
                 }
             }
         }
-        override fun getItemCount() = 5
+        override fun getItemCount() = 3
     }
     return this
 }
