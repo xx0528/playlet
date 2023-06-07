@@ -1,7 +1,16 @@
-include ':cache'
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "playlet"
 include ':app'
-include ':iplayer'
-include ':ijk'
-include ':exo'
-include ':widget'
-rootProject.name = "iPlayer"
