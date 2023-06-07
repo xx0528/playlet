@@ -7,10 +7,7 @@ import com.smallplay.playlet.app.network.ApiService
 import com.smallplay.playlet.app.network.NetworkApi
 import com.smallplay.playlet.app.network.apiService
 import com.smallplay.playlet.app.util.CacheUtil
-import com.smallplay.playlet.data.model.bean.ApiPagerResponse
-import com.smallplay.playlet.data.model.bean.ApiResponse
-import com.smallplay.playlet.data.model.bean.AriticleResponse
-import com.smallplay.playlet.data.model.bean.UserInfo
+import com.smallplay.playlet.data.model.bean.*
 import me.hgj.jetpackmvvm.network.AppException
 
 /**
@@ -23,6 +20,13 @@ val HttpRequestCoroutine: HttpRequestManger by lazy(mode = LazyThreadSafetyMode.
 
 class HttpRequestManger {
     /**
+     * 获取首页视频数据
+     */
+    suspend fun getVideoData(pageNo: Int): ApiResponse<ApiPagerResponse<ArrayList<VideoResponse>>> {
+        return apiService.getVideoList(pageNo)
+    }
+
+    /**
      * 获取首页文章数据
      */
     suspend fun getHomeData(pageNo: Int): ApiResponse<ApiPagerResponse<ArrayList<AriticleResponse>>> {
@@ -32,7 +36,7 @@ class HttpRequestManger {
             //如果App配置打开了首页请求置顶文章，且是第一页
             if (CacheUtil.isNeedTop() && pageNo == 0) {
                 val topData = async { apiService.getTopAritrilList() }
-                listData.await().data.datas.addAll(0, topData.await().data)
+                listData.await().data.list.addAll(0, topData.await().data)
                 listData.await()
             } else {
                 listData.await()
@@ -50,7 +54,7 @@ class HttpRequestManger {
             return apiService.login(username, password)
         } else {
             //抛出错误异常
-            throw AppException(registerData.errorCode, registerData.errorMsg)
+            throw AppException(registerData.code, registerData.msg)
         }
     }
 

@@ -116,17 +116,17 @@ class SearchResultFragment : BaseFragment<SearchViewModel, FragmentListBinding>(
                 swipeRefresh.isRefreshing = false
                 //请求成功，页码+1
                 requestSearchViewModel.pageNo++
-                if (it.isRefresh() && it.datas.size == 0) {
+                if (it.isRefresh() && it.list.size == 0) {
                     //如果是第一页，并且没有数据，页面提示空布局
                     loadsir.showEmpty()
                 } else if (it.isRefresh()) {
                     //如果是刷新的，有数据
                     loadsir.showSuccess()
-                    articleAdapter.setList(it.datas)
+                    articleAdapter.setList(it.list)
                 } else {
                     //不是第一页
                     loadsir.showSuccess()
-                    articleAdapter.addData(it.datas)
+                    articleAdapter.addData(it.list)
                 }
                 recyclerView.loadMoreFinish(it.isEmpty(), it.hasMore())
             }, {

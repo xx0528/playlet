@@ -40,7 +40,7 @@ class RequestProjectViewModel : BaseViewModel() {
                     isEmpty = it.isEmpty(),
                     hasMore = it.hasMore(),
                     isFirstEmpty = isRefresh && it.isEmpty(),
-                    listData = it.datas
+                    listData = it.list
                 )
             projectDataState.value = listDataUiState
         }, {

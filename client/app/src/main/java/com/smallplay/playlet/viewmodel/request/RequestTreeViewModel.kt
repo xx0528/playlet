@@ -50,7 +50,7 @@ class RequestTreeViewModel : BaseViewModel() {
                     isEmpty = it.isEmpty(),
                     hasMore = it.hasMore(),
                     isFirstEmpty = isRefresh && it.isEmpty(),
-                    listData = it.datas
+                    listData = it.list
                 )
             plazaDataState.value = listDataUiState
         }, {
@@ -83,7 +83,7 @@ class RequestTreeViewModel : BaseViewModel() {
                     isEmpty = it.isEmpty(),
                     hasMore = it.hasMore(),
                     isFirstEmpty = isRefresh && it.isEmpty(),
-                    listData = it.datas
+                    listData = it.list
                 )
             askDataState.value = listDataUiState
         }, {
@@ -164,7 +164,7 @@ class RequestTreeViewModel : BaseViewModel() {
                     isEmpty = it.isEmpty(),
                     hasMore = it.hasMore(),
                     isFirstEmpty = isRefresh && it.isEmpty(),
-                    listData = it.datas
+                    listData = it.list
                 )
             systemChildDataState.value = listDataUiState
         }, {

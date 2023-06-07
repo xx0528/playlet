@@ -27,8 +27,10 @@ import com.smallplay.playlet.data.model.bean.BannerResponse
 import com.smallplay.playlet.data.model.bean.CollectBus
 import com.smallplay.playlet.databinding.FragmentHomeBinding
 import com.smallplay.playlet.ui.adapter.AriticleAdapter
+import com.smallplay.playlet.ui.adapter.VideoAdapter
 import com.smallplay.playlet.viewmodel.request.RequestCollectViewModel
 import com.smallplay.playlet.viewmodel.request.RequestHomeViewModel
+import com.smallplay.playlet.viewmodel.request.RequestVideoViewModel
 import com.smallplay.playlet.viewmodel.state.HomeViewModel
 import me.hgj.jetpackmvvm.ext.nav
 import me.hgj.jetpackmvvm.ext.navigateAction
@@ -42,25 +44,23 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
     //适配器
     private val articleAdapter: AriticleAdapter by lazy { AriticleAdapter(arrayListOf(), true) }
 
+    //适配器
+    private val videoAdapter: VideoAdapter by lazy { VideoAdapter(arrayListOf()) }
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
 
     //recyclerview的底部加载view 因为在首页要动态改变他的颜色，所以加了他这个字段
     private lateinit var footView: DefineLoadMoreView
 
-    //收藏viewModel
-    private val requestCollectViewModel: RequestCollectViewModel by viewModels()
-
-    //请求数据ViewModel
-    private val requestHomeViewModel: RequestHomeViewModel by viewModels()
+    //请求ViewModel
+    private val requestVideoViewModel: RequestVideoViewModel by viewModels()
 
     override fun initView(savedInstanceState: Bundle?) {
         //状态页配置
         loadsir = loadServiceInit(mViewBind.includeList.includeRecyclerview.swipeRefresh) {
             //点击重试时触发的操作
             loadsir.showLoading()
-            requestHomeViewModel.getBannerData()
-            requestHomeViewModel.getHomeData(true)
+            requestVideoViewModel.getVideoData(true)
         }
 
         //初始化recyclerView
@@ -68,7 +68,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
             //因为首页要添加轮播图，所以我设置了firstNeedTop字段为false,即第一条数据不需要设置间距
             it.addItemDecoration(SpaceItemDecoration(0, ConvertUtils.dp2px(8f), false))
             footView = it.initFooter(SwipeRecyclerView.LoadMoreListener {
-                requestHomeViewModel.getHomeData(false)
+                requestVideoViewModel.getVideoData(false)
             })
             //初始化FloatingActionButton
             it.initFloatBtn(mViewBind.includeList.floatbtn)
@@ -76,39 +76,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
         //初始化 SwipeRefreshLayout
         mViewBind.includeList.includeRecyclerview.swipeRefresh.init {
             //触发刷新监听时请求数据
-            requestHomeViewModel.getHomeData(true)
-        }
-        articleAdapter.run {
-            setCollectClick { item, v, _ ->
-                if (v.isChecked) {
-                    requestCollectViewModel.uncollect(item.id)
-                } else {
-                    requestCollectViewModel.collect(item.id)
-                }
-            }
-            setOnItemClickListener { adapter, view, position ->
-                nav().navigateAction(R.id.action_to_webFragment, Bundle().apply {
-                    putParcelable(
-                        "ariticleData",
-                        articleAdapter.data[position - this@HomeFragment.mViewBind.includeList.includeRecyclerview.recyclerView.headerCount]
-                    )
-                })
-            }
-            addChildClickViewIds(R.id.item_home_author, R.id.item_project_author)
-            setOnItemChildClickListener { adapter, view, position ->
-                when (view.id) {
-                    R.id.item_home_author, R.id.item_project_author -> {
-                        nav().navigateAction(
-                            R.id.action_mainfragment_to_lookInfoFragment,
-                            Bundle().apply {
-                                putInt(
-                                    "id",
-                                    articleAdapter.data[position - this@HomeFragment.mViewBind.includeList.includeRecyclerview.recyclerView.headerCount].userId
-                                )
-                            })
-                    }
-                }
-            }
+            requestVideoViewModel.getVideoData(true)
         }
     }
 
@@ -118,55 +86,18 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
     override fun lazyLoadData() {
         //设置界面 加载中
         loadsir.showLoading()
-        //请求轮播图数据
-        requestHomeViewModel.getBannerData()
-        //请求文章列表数据
-        requestHomeViewModel.getHomeData(true)
+        //请求视频列表数据
+        requestVideoViewModel.getVideoData(true)
     }
 
     override fun createObserver() {
-        requestHomeViewModel.run {
-            //监听首页文章列表请求的数据变化
-            homeDataState.observe(viewLifecycleOwner, Observer {
+        requestVideoViewModel.run {
+            //监听首页视频列表请求的数据变化
+            videoDataState.observe(viewLifecycleOwner, Observer {
                 //设值 新写了个拓展函数，搞死了这个恶心的重复代码
-                loadListData(it, articleAdapter, loadsir, mViewBind.includeList.includeRecyclerview.recyclerView, mViewBind.includeList.includeRecyclerview.swipeRefresh)
-            })
-            //监听轮播图请求的数据变化
-            bannerData.observe(viewLifecycleOwner, Observer { resultState ->
-                parseState(resultState, { data ->
-                    //请求轮播图数据成功，添加轮播图到headview ，如果等于0说明没有添加过头部，添加一个
-                    if (mViewBind.includeList.includeRecyclerview.recyclerView.headerCount == 0) {
-                        val headview = LayoutInflater.from(context).inflate(R.layout.include_banner, null).apply {
-                                    findViewById<BannerViewPager<BannerResponse, HomeBannerViewHolder>>(R.id.banner_view).apply {
-                                        adapter = HomeBannerAdapter()
-                                        setLifecycleRegistry(lifecycle)
-                                        setOnPageClickListener {
-                                            nav().navigateAction(R.id.action_to_webFragment, Bundle().apply {putParcelable("bannerdata", data[it])})
-                                        }
-                                        create(data)
-                                    }
-                                }
-                        mViewBind.includeList.includeRecyclerview.recyclerView.addHeaderView(headview)
-                        mViewBind.includeList.includeRecyclerview.recyclerView.scrollToPosition(0)
-                    }
-                })
+                loadListData(it, videoAdapter, loadsir, mViewBind.includeList.includeRecyclerview.recyclerView, mViewBind.includeList.includeRecyclerview.swipeRefresh)
             })
         }
-        requestCollectViewModel.collectUiState.observe(viewLifecycleOwner, Observer {
-            if (it.isSuccess) {
-                //收藏或取消收藏操作成功，发送全局收藏消息
-                eventViewModel.collectEvent.value = CollectBus(it.id, it.collect)
-            } else {
-                showMessage(it.errorMsg)
-                for (index in articleAdapter.data.indices) {
-                    if (articleAdapter.data[index].id == it.id) {
-                        articleAdapter.data[index].collect = it.collect
-                        articleAdapter.notifyItemChanged(index)
-                        break
-                    }
-                }
-            }
-        })
         appViewModel.run {
             //监听账户信息是否改变 有值时(登录)将相关的数据设置为已收藏，为空时(退出登录)，将已收藏的数据变为未收藏
             userInfo.observeInFragment(this@HomeFragment, Observer {

@@ -35,7 +35,7 @@ class RequestIntegralViewModel : BaseViewModel() {
                     isEmpty = it.isEmpty(),
                     hasMore = it.hasMore(),
                     isFirstEmpty = isRefresh && it.isEmpty(),
-                    listData = it.datas
+                    listData = it.list
                 )
             integralDataState.value = listDataUiState
         }, {
@@ -65,7 +65,7 @@ class RequestIntegralViewModel : BaseViewModel() {
                     isEmpty = it.isEmpty(),
                     hasMore = it.hasMore(),
                     isFirstEmpty = isRefresh && it.isEmpty(),
-                    listData = it.datas
+                    listData = it.list
                 )
             integralHistoryDataState.value = listDataUiState
         }, {

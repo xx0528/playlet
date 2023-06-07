@@ -11,7 +11,7 @@ import retrofit2.http.*
 interface ApiService {
 
     companion object {
-        const val SERVER_URL = "https://wanandroid.com/"
+        const val SERVER_URL = "http://192.168.3.67:8080/api/"
         const val SERVER_URL1 = "https://wanandroid.com/"
     }
 
@@ -274,5 +274,12 @@ interface ApiService {
     @FormUrlEncoded
     suspend fun doneTodo(@Path("id") id: Int, @Field("status") status: Int): ApiResponse<Any?>
 
+
+
+    /**
+     * 获取视频数据
+     */
+    @GET("plUserVideo/getPlUserVideoList")
+    suspend fun getVideoList(@Query("page") pageNo: Int): ApiResponse<ApiPagerResponse<ArrayList<VideoResponse>>>
 
 }

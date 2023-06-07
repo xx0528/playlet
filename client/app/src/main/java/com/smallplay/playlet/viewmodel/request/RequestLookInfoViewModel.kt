@@ -34,7 +34,7 @@ class RequestLookInfoViewModel : BaseViewModel() {
                     isEmpty = it.shareArticles.isEmpty(),
                     hasMore = it.shareArticles.hasMore(),
                     isFirstEmpty = isRefresh && it.shareArticles.isEmpty(),
-                    listData = it.shareArticles.datas
+                    listData = it.shareArticles.list
                 )
             shareListDataUistate.value = listDataUiState
         }, {

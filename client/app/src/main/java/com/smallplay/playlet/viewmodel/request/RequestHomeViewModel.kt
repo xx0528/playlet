@@ -47,7 +47,7 @@ class RequestHomeViewModel : BaseViewModel() {
                     isEmpty = it.isEmpty(),
                     hasMore = it.hasMore(),
                     isFirstEmpty = isRefresh && it.isEmpty(),
-                    listData = it.datas
+                    listData = it.list
                 )
             homeDataState.value = listDataUiState
         }, {

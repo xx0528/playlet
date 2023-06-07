@@ -209,6 +209,8 @@ func (plVideoApi *PlVideoApi) GetPlUserVideoList(c *gin.Context) {
 		response.OkWithDetailed(response.PageResult{
 			List:     list,
 			Total:    total,
+			Over:     false,
+			Offset:   0,
 			Page:     pageInfo.Page,
 			PageSize: pageInfo.PageSize,
 		}, "获取成功", c)
