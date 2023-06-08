@@ -51,8 +51,6 @@ class IntegralHistoryFragment : BaseFragment<IntegralViewModel, FragmentListBind
                 //触发加载更多时请求数据
                 requestIntegralViewModel.getIntegralHistoryData(false)
             })
-            //初始化FloatingActionButton
-            it.initFloatBtn(floatbtn)
         }
         //初始化 SwipeRefreshLayout
         swipeRefresh.init {

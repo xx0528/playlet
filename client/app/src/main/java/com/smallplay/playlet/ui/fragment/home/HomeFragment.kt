@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ConvertUtils
 import com.kingja.loadsir.core.LoadService
@@ -42,9 +43,6 @@ import me.hgj.jetpackmvvm.ext.parseState
 class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 
     //适配器
-    private val articleAdapter: AriticleAdapter by lazy { AriticleAdapter(arrayListOf(), true) }
-
-    //适配器
     private val videoAdapter: VideoAdapter by lazy { VideoAdapter(arrayListOf()) }
     //界面状态管理者
     private lateinit var loadsir: LoadService<Any>
@@ -64,14 +62,12 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
         }
 
         //初始化recyclerView
-        mViewBind.includeList.includeRecyclerview.recyclerView.init(LinearLayoutManager(context), articleAdapter).let {
+        mViewBind.includeList.includeRecyclerview.recyclerView.init(GridLayoutManager(context ,2), videoAdapter).let {
             //因为首页要添加轮播图，所以我设置了firstNeedTop字段为false,即第一条数据不需要设置间距
-            it.addItemDecoration(SpaceItemDecoration(0, ConvertUtils.dp2px(8f), false))
+            it.addItemDecoration(SpaceItemDecoration(0, ConvertUtils.dp2px(8f)))
             footView = it.initFooter(SwipeRecyclerView.LoadMoreListener {
                 requestVideoViewModel.getVideoData(false)
             })
-            //初始化FloatingActionButton
-            it.initFloatBtn(mViewBind.includeList.floatbtn)
         }
         //初始化 SwipeRefreshLayout
         mViewBind.includeList.includeRecyclerview.swipeRefresh.init {
@@ -103,36 +99,36 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
             userInfo.observeInFragment(this@HomeFragment, Observer {
                 if (it != null) {
                     it.collectIds.forEach { id ->
-                        for (item in articleAdapter.data) {
-                            if (id.toInt() == item.id) {
-                                item.collect = true
-                                break
-                            }
+                        for (item in videoAdapter.data) {
+//                            if (id.toInt() == item.id) {
+//                                item.collect = true
+//                                break
+//                            }
                         }
                     }
                 } else {
-                    for (item in articleAdapter.data) {
-                        item.collect = false
+                    for (item in videoAdapter.data) {
+//                        item.collect = false
                     }
                 }
-                articleAdapter.notifyDataSetChanged()
+                videoAdapter.notifyDataSetChanged()
             })
             //监听全局的主题颜色改变
             appColor.observeInFragment(this@HomeFragment) {
-                setUiTheme(it, mViewBind.includeList.floatbtn, mViewBind.includeList.includeRecyclerview.swipeRefresh, loadsir, footView)
+                setUiTheme(it, mViewBind.includeList.includeRecyclerview.swipeRefresh, loadsir, footView)
             }
-            //监听全局的列表动画改编
+            //监听全局的列表动画改变
             appAnimation.observeInFragment(this@HomeFragment) {
-                articleAdapter.setAdapterAnimation(it)
+                videoAdapter.setAdapterAnimation(it)
             }
             //监听全局的收藏信息 收藏的Id跟本列表的数据id匹配则需要更新
             eventViewModel.collectEvent.observeInFragment(this@HomeFragment) {
-                for (index in articleAdapter.data.indices) {
-                    if (articleAdapter.data[index].id == it.id) {
-                        articleAdapter.data[index].collect = it.collect
-                        articleAdapter.notifyItemChanged(index)
-                        break
-                    }
+                for (index in videoAdapter.data.indices) {
+//                    if (videoAdapter.data[index].id == it.id) {
+//                        videoAdapter.data[index].collect = it.collect
+//                        videoAdapter.notifyItemChanged(index)
+//                        break
+//                    }
                 }
             }
         }

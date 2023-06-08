@@ -44,7 +44,6 @@ class SystemFragment : BaseFragment<TreeViewModel, IncludeListBinding>() {
         //初始化recyclerView
         recyclerView.init(LinearLayoutManager(context), systemAdapter).let {
             it.addItemDecoration(SpaceItemDecoration(0, ConvertUtils.dp2px(8f)))
-            it.initFloatBtn(floatbtn)
         }
         //初始化 SwipeRefreshLayout
         swipeRefresh.init {
@@ -92,7 +91,7 @@ class SystemFragment : BaseFragment<TreeViewModel, IncludeListBinding>() {
         appViewModel.run {
             //监听全局的主题颜色改变
             appColor.observeInFragment(this@SystemFragment, Observer {
-                setUiTheme(it, floatbtn, swipeRefresh, loadsir)
+                setUiTheme(it, swipeRefresh, loadsir)
             })
             //监听全局的列表动画改编
             appAnimation.observeInFragment(this@SystemFragment, Observer {

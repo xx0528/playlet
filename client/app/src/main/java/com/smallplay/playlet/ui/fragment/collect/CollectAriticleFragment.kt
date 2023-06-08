@@ -43,8 +43,6 @@ class CollectAriticleFragment : BaseFragment<RequestCollectViewModel, IncludeLis
             it.initFooter(SwipeRecyclerView.LoadMoreListener {
                 mViewModel.getCollectAriticleData(false)
             })
-            //初始化FloatingActionButton
-            it.initFloatBtn(floatbtn)
         }
         //初始化 SwipeRefreshLayout
         swipeRefresh.init {

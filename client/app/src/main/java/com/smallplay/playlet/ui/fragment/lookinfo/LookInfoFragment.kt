@@ -66,7 +66,6 @@ class LookInfoFragment : BaseFragment<LookInfoViewModel, FragmentLookinfoBinding
             it.initFooter(SwipeRecyclerView.LoadMoreListener {
                 requestLookInfoViewModel.getLookinfo(shareId, false)
             })
-            it.initFloatBtn(floatbtn)
         }
         swipeRefresh.init {
             requestLookInfoViewModel.getLookinfo(shareId, true)

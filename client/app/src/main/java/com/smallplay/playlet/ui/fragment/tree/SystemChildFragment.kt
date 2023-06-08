@@ -63,8 +63,6 @@ class SystemChildFragment : BaseFragment<TreeViewModel, IncludeListBinding>() {
             footView = it.initFooter(SwipeRecyclerView.LoadMoreListener {
                 requestTreeViewModel.getSystemChildData(false, cid)
             })
-            //初始化FloatingActionButton
-            it.initFloatBtn(floatbtn)
         }
         //初始化 SwipeRefreshLayout
         swipeRefresh.init {

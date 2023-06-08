@@ -39,8 +39,6 @@ class CollectUrlFragment : BaseFragment<RequestCollectViewModel, IncludeListBind
         //初始化recyclerView
         recyclerView.init(LinearLayoutManager(context), articleAdapter).let {
             it.addItemDecoration(SpaceItemDecoration(0, ConvertUtils.dp2px(8f)))
-            //初始化FloatingActionButton
-            it.initFloatBtn(floatbtn)
         }
         //初始化 SwipeRefreshLayout
         swipeRefresh.init {
