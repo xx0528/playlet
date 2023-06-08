@@ -56,7 +56,7 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
             parseState(resultState, {
                 rank = it
                 mViewModel.info.set("id：${it.userId}　排名：${it.rank}")
-                mViewModel.integral.set(it.coinCount)
+                mViewModel.gold.set(it.coinCount)
             }, {
                 ToastUtils.showShort(it.errorMsg)
             })
@@ -72,9 +72,9 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
                     mViewModel.name.set(if (it.nickname.isEmpty()) it.username else it.nickname)
                     requestMeViewModel.getIntegral()
                 }, {
-                    mViewModel.name.set("请先登录~")
+                    mViewModel.name.set(context?.getString(R.string.me_click_login_text))
                     mViewModel.info.set("id：--　排名：--")
-                    mViewModel.integral.set(0)
+                    mViewModel.gold.set(0)
                 })
             })
         }
@@ -95,7 +95,7 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         }
 
         /** 积分 */
-        fun integral() {
+        fun gold() {
             nav().jumpByLogin {
                 it.navigateAction(R.id.action_mainfragment_to_integralFragment,
                     Bundle().apply {
@@ -105,35 +105,24 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
             }
         }
 
-        /** 文章 */
-        fun ariticle() {
-            nav().jumpByLogin {
-                it.navigateAction(R.id.action_mainfragment_to_ariticleFragment)
-            }
-        }
-
-        fun todo() {
+        /** 联系我们 */
+        fun chat() {
             nav().jumpByLogin {
                 it.navigateAction(R.id.action_mainfragment_to_todoListFragment)
             }
         }
 
-        /** 玩Android开源网站 */
+        /** 关于我们 */
         fun about() {
             nav().navigateAction(R.id.action_to_webFragment, Bundle().apply {
                 putParcelable(
                     "bannerdata",
                     BannerResponse(
-                        title = "玩Android网站",
-                        url = "https://www.wanandroid.com/"
+                        title = "关于我们",
+                        url = "https://www.baidu.com/"
                     )
                 )
             })
-        }
-
-        /** 加入我们 */
-        fun join() {
-            joinQQGroup("9n4i5sHt4189d4DvbotKiCHy-5jZtD4D")
         }
 
         /** 设置*/

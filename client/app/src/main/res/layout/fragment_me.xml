@@ -71,7 +71,7 @@
                             app:layout_constraintStart_toEndOf="@+id/imageView"
                             app:layout_constraintTop_toTopOf="@+id/imageView"
                             app:layout_constraintVertical_chainStyle="packed"
-                            tools:text="我是菜虚鲲" />
+                            tools:text="点击登陆" />
 
                         <TextView
                             android:id="@+id/me_info"
@@ -85,7 +85,7 @@
                             app:layout_constraintBottom_toBottomOf="@+id/imageView"
                             app:layout_constraintStart_toEndOf="@+id/imageView"
                             app:layout_constraintTop_toBottomOf="@+id/me_name"
-                            tools:text="id：--　排名：--" />
+                            tools:text="id：--　--" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -108,7 +108,7 @@
                                 android:layout_height="50dp"
                                 android:background="?attr/selectableItemBackground"
                                 android:gravity="center_vertical"
-                                android:onClick="@{()->click.integral()}"
+                                android:onClick="@{()->click.gold()}"
                                 android:orientation="horizontal"
                                 android:paddingLeft="16dp"
                                 android:paddingRight="16dp">
@@ -123,7 +123,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="我的积分"
+                                    android:text="@string/me_my_gold_text"
                                     android:textColor="@color/colorBlack333"
                                     android:textSize="14dp"
                                     android:textStyle="bold" />
@@ -132,7 +132,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginRight="6dp"
-                                    android:text="当前积分:"
+                                    android:text="@string/me_cur_gold_text"
                                     android:textColor="@color/textHint"
                                     android:textSize="13dp" />
 
@@ -141,11 +141,11 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginRight="8dp"
-                                    android:text="@{String.valueOf(vm.integral)}"
+                                    android:text="@{String.valueOf(vm.gold)}"
                                     android:textColor="@color/colorPrimary"
                                     android:textSize="15dp"
                                     android:textStyle="bold"
-                                    tools:text="10000000" />
+                                    tools:text="1000000" />
 
                                 <ImageView
                                     android:layout_width="16dp"
@@ -189,7 +189,7 @@
                                 android:layout_height="50dp"
                                 android:background="?attr/selectableItemBackground"
                                 android:gravity="center_vertical"
-                                android:onClick="@{()->click.ariticle()}"
+                                android:onClick="@{()->click.chat()}"
                                 android:orientation="horizontal"
                                 android:paddingLeft="16dp"
                                 android:paddingRight="16dp">
@@ -198,44 +198,13 @@
                                     android:layout_width="24dp"
                                     android:layout_height="24dp"
                                     android:layout_marginRight="16dp"
-                                    android:src="@drawable/wenzhang" />
+                                    android:src="@mipmap/ic_yuwolianxi" />
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="我的文章"
-                                    android:textColor="@color/colorBlack333"
-                                    android:textSize="14dp"
-                                    android:textStyle="bold" />
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@drawable/ic_right" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:background="?attr/selectableItemBackground"
-                                android:gravity="center_vertical"
-                                android:onClick="@{()->click.todo()}"
-                                android:orientation="horizontal"
-                                android:paddingLeft="16dp"
-                                android:paddingRight="16dp">
-
-                                <ImageView
-                                    android:layout_width="24dp"
-                                    android:layout_height="24dp"
-                                    android:layout_marginRight="16dp"
-                                    android:src="@drawable/renwu" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="TODO"
+                                    android:text="@string/me_chat_text"
                                     android:textColor="@color/colorBlack333"
                                     android:textSize="14dp"
                                     android:textStyle="bold" />
@@ -272,38 +241,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="开源网站"
-                                    android:textColor="@color/colorBlack333"
-                                    android:textSize="14dp"
-                                    android:textStyle="bold" />
-
-                                <ImageView
-                                    android:layout_width="16dp"
-                                    android:layout_height="16dp"
-                                    android:src="@drawable/ic_right" />
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="50dp"
-                                android:background="?attr/selectableItemBackground"
-                                android:gravity="center_vertical"
-                                android:onClick="@{()->click.join()}"
-                                android:orientation="horizontal"
-                                android:paddingLeft="16dp"
-                                android:paddingRight="16dp">
-
-                                <ImageView
-                                    android:layout_width="24dp"
-                                    android:layout_height="24dp"
-                                    android:layout_marginRight="16dp"
-                                    android:src="@drawable/jairu" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="加入我们"
+                                    android:text="@string/me_about_text"
                                     android:textColor="@color/colorBlack333"
                                     android:textSize="14dp"
                                     android:textStyle="bold" />
@@ -334,7 +272,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_weight="1"
-                                    android:text="系统设置"
+                                    android:text="@string/me_setting_text"
                                     android:textColor="@color/colorBlack333"
                                     android:textSize="14dp"
                                     android:textStyle="bold" />

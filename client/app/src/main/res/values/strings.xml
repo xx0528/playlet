@@ -34,4 +34,10 @@
     <string name="video_finish_text">已完结共%1$d集</string>
     <string name="video_update_text">更新中共%1$d集</string>
     <string name="video_watch_text">%1$d人正在看</string>
+    <string name="me_setting_text">系统设置</string>
+    <string name="me_about_text">关于我们</string>
+    <string name="me_chat_text">联系我们</string>
+    <string name="me_cur_gold_text">当前金币:</string>
+    <string name="me_my_gold_text">我的金币</string>
+    <string name="me_click_login_text">点击登陆~</string>
 </resources>
