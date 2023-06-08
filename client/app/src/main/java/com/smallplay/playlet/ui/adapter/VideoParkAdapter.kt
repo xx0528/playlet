@@ -8,9 +8,8 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.smallplay.playlet.R
 import com.smallplay.playlet.app.ext.setAdapterAnimation
 import com.smallplay.playlet.app.util.SettingUtil
-import com.smallplay.playlet.app.weight.customview.CollectView
 
-class VideoAdapter(data: MutableList<VideoResponse>?) :
+class VideoParkAdapter(data: MutableList<VideoResponse>?) :
     BaseQuickAdapter<VideoResponse, BaseViewHolder>(
         R.layout.item_video_list, data
     ) {

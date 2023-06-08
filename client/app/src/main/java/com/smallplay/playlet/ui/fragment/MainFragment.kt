@@ -12,8 +12,6 @@ import com.smallplay.playlet.app.ext.interceptLongClick
 import com.smallplay.playlet.app.ext.setUiTheme
 import com.smallplay.playlet.databinding.FragmentMainBinding
 import com.smallplay.playlet.viewmodel.state.MainViewModel
-import me.hgj.jetpackmvvm.ext.nav
-import me.hgj.jetpackmvvm.ext.util.loge
 
 /**
  * 描述　:项目主页Fragment
@@ -27,11 +25,11 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>() {
         mainBottom.init{
             when (it) {
                 R.id.menu_main -> mainViewpager.setCurrentItem(0, false)
-                R.id.menu_project -> mainViewpager.setCurrentItem(1, false)
+                R.id.menu_park -> mainViewpager.setCurrentItem(1, false)
                 R.id.menu_me -> mainViewpager.setCurrentItem(2, false)
             }
         }
-        mainBottom.interceptLongClick(R.id.menu_main,R.id.menu_project,R.id.menu_me)
+        mainBottom.interceptLongClick(R.id.menu_main,R.id.menu_park,R.id.menu_me)
     }
 
     override fun createObserver() {

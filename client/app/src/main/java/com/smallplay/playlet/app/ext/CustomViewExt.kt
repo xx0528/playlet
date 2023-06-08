@@ -14,7 +14,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -36,12 +35,9 @@ import com.smallplay.playlet.app.weight.loadCallBack.ErrorCallback
 import com.smallplay.playlet.app.weight.loadCallBack.LoadingCallback
 import com.smallplay.playlet.app.weight.recyclerview.DefineLoadMoreView
 import com.smallplay.playlet.app.weight.viewpager.ScaleTransitionPagerTitleView
-import com.smallplay.playlet.data.model.bean.ClassifyResponse
 import com.smallplay.playlet.ui.fragment.home.HomeFragment
 import com.smallplay.playlet.ui.fragment.me.MeFragment
-import com.smallplay.playlet.ui.fragment.project.ProjectFragment
-import com.smallplay.playlet.ui.fragment.publicNumber.PublicNumberFragment
-import com.smallplay.playlet.ui.fragment.tree.TreeArrFragment
+import com.smallplay.playlet.ui.fragment.park.ParkFragment
 import me.hgj.jetpackmvvm.ext.util.toHtml
 import net.lucode.hackware.magicindicator.MagicIndicator
 import net.lucode.hackware.magicindicator.buildins.UIUtil
@@ -333,7 +329,7 @@ fun ViewPager2.initMain(fragment: Fragment): ViewPager2 {
                     HomeFragment()
                 }
                 1 -> {
-                    ProjectFragment()
+                    ParkFragment()
                 }
                 2 -> {
                     MeFragment()
