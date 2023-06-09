@@ -3,6 +3,8 @@ package com.smallplay.playlet.ui.fragment.home
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.ConvertUtils
 import com.kingja.loadsir.core.LoadService
 import com.yanzhenjie.recyclerview.SwipeRecyclerView
@@ -38,7 +40,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
         }
 
         //初始化recyclerView
-        mViewBind.includeList.includeRecyclerview.recyclerView.init(GridLayoutManager(context ,2), videoHomeAdapter).let {
+        mViewBind.includeList.includeRecyclerview.recyclerView.init(LinearLayoutManager(context), videoHomeAdapter).let {
             //因为首页要添加轮播图，所以我设置了firstNeedTop字段为false,即第一条数据不需要设置间距
             it.addItemDecoration(SpaceItemDecoration(0, ConvertUtils.dp2px(8f)))
             footView = it.initFooter(SwipeRecyclerView.LoadMoreListener {

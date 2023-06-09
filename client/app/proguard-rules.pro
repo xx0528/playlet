@@ -18,6 +18,15 @@
 
 -keep class com.smallplay.playlet.data.**{*;}
 
+# 视频库混淆
+-keep class xyz.doikki.videoplayer.** { *; }
+-dontwarn xyz.doikki.videoplayer.**
+
+# IjkPlayer
+-keep class tv.danmaku.ijk.** { *; }
+-dontwarn tv.danmaku.ijk.**
+
+
 ################common###############
 
  #实体类不参与混淆

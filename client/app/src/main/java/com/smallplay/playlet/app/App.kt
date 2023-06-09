@@ -20,6 +20,10 @@ import me.hgj.jetpackmvvm.ext.getAppViewModel
 import me.hgj.jetpackmvvm.ext.util.jetpackMvvmLog
 import me.hgj.jetpackmvvm.ext.util.logd
 import me.hgj.jetpackmvvm.base.BaseApp
+import xyz.doikki.videoplayer.ijk.IjkPlayerFactory
+import xyz.doikki.videoplayer.player.AndroidMediaPlayerFactory
+import xyz.doikki.videoplayer.player.VideoViewConfig
+import xyz.doikki.videoplayer.player.VideoViewManager
 
 /**
  * 描述　:
@@ -53,6 +57,16 @@ class App : BaseApp() {
             .addCallback(EmptyCallback())//空
             .setDefaultCallback(SuccessCallback::class.java)//设置默认加载状态页
             .commit()
+
+        //视频库初始化
+        VideoViewManager.setConfig(
+            VideoViewConfig.newBuilder()
+            //使用使用IjkPlayer解码
+            .setPlayerFactory(IjkPlayerFactory.create())
+            //使用MediaPlayer解码
+            .setPlayerFactory(AndroidMediaPlayerFactory.create())
+            .build());
+
         //初始化Bugly
         val context = applicationContext
         // 获取当前包名
