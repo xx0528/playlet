@@ -6,12 +6,11 @@ import kotlinx.android.synthetic.main.fragment_main.*
 import com.smallplay.playlet.R
 import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.base.BaseFragment
-import com.smallplay.playlet.app.ext.init
-import com.smallplay.playlet.app.ext.initMain
-import com.smallplay.playlet.app.ext.interceptLongClick
-import com.smallplay.playlet.app.ext.setUiTheme
+import com.smallplay.playlet.app.eventViewModel
+import com.smallplay.playlet.app.ext.*
 import com.smallplay.playlet.databinding.FragmentMainBinding
 import com.smallplay.playlet.viewmodel.state.MainViewModel
+import kotlinx.android.synthetic.main.include_recyclerview.*
 
 /**
  * 描述　:项目主页Fragment
@@ -35,6 +34,11 @@ class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>() {
     override fun createObserver() {
         appViewModel.appColor.observeInFragment(this, Observer {
             setUiTheme(it, mainBottom)
+        })
+
+        eventViewModel.navigationIdx.observeInFragment(this, Observer {
+            mainBottom.currentItem = it
+            mainViewpager.setCurrentItem(it, false)
         })
     }
 }

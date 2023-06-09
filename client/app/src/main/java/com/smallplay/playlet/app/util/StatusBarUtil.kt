@@ -7,11 +7,14 @@ import android.graphics.Color
 import android.os.Build
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.IntRange
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.smallplay.playlet.R
 

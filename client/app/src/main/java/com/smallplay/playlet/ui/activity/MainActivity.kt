@@ -2,16 +2,19 @@ package com.smallplay.playlet.ui.activity
 
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.View
+import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.blankj.utilcode.util.ToastUtils
 import com.tencent.bugly.beta.Beta
 import com.smallplay.playlet.R
 import com.smallplay.playlet.app.appViewModel
-import com.smallplay.playlet.app.base.BaseActivity
 import com.smallplay.playlet.app.base.BaseActivity1
 import com.smallplay.playlet.app.util.StatusBarUtil
 import com.smallplay.playlet.databinding.ActivityMainBinding
@@ -48,6 +51,8 @@ class MainActivity : BaseActivity1<MainViewModel, ActivityMainBinding>() {
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
             supportActionBar?.setBackgroundDrawable(ColorDrawable(it))
             StatusBarUtil.setColor(this, it, 0) }
+
+        setStatusBarColor(0)
     }
 
     override fun createObserver() {
@@ -55,6 +60,33 @@ class MainActivity : BaseActivity1<MainViewModel, ActivityMainBinding>() {
             supportActionBar?.setBackgroundDrawable(ColorDrawable(it))
             StatusBarUtil.setColor(this, it, 0)
         })
+
+
+        /**
+         * 把状态栏设成透明
+         */
+        appViewModel.statusBarColor.observeInActivity(this, Observer {
+            setStatusBarColor(it)
+        })
+    }
+
+    private fun setStatusBarColor(colorIdx: Int) {
+        val decorView = window.decorView
+        decorView.setOnApplyWindowInsetsListener { v: View, insets: WindowInsets? ->
+            val defaultInsets = v.onApplyWindowInsets(insets)
+            defaultInsets.replaceSystemWindowInsets(
+                defaultInsets.systemWindowInsetLeft,
+                0,
+                defaultInsets.systemWindowInsetRight,
+                defaultInsets.systemWindowInsetBottom
+            )
+        }
+        ViewCompat.requestApplyInsets(decorView)
+        when (colorIdx) {
+            0 -> window.statusBarColor = ContextCompat.getColor(this, android.R.color.transparent)
+            1 -> window.statusBarColor = ContextCompat.getColor(this, android.R.color.black)
+            2 -> window.statusBarColor = ContextCompat.getColor(this, android.R.color.white)
+        }
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.smallplay.playlet.app.util.videoCache
+package com.smallplay.playlet.ui.video.cache
 
 import com.danikula.videocache.HttpProxyCacheServer
 import xyz.doikki.videoplayer.util.L

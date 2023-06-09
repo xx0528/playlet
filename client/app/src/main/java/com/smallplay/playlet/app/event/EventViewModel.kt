@@ -18,4 +18,6 @@ class EventViewModel : BaseViewModel() {
     //添加TODO通知
     val todoEvent = EventLiveData<Boolean>()
 
+    var navigationIdx = EventLiveData<Int>()
+
 }

@@ -11,7 +11,7 @@ import com.smallplay.playlet.app.util.SettingUtil
 
 class VideoParkAdapter(data: MutableList<VideoResponse>?) :
     BaseQuickAdapter<VideoResponse, BaseViewHolder>(
-        R.layout.item_video_list, data
+        R.layout.item_park_video, data
     ) {
 
     init {

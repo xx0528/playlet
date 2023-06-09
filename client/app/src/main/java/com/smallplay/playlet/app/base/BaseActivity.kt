@@ -1,11 +1,17 @@
 package com.smallplay.playlet.app.base
 
+import android.R
+import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.WindowInsets
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.databinding.ViewDataBinding
-import me.hgj.jetpackmvvm.base.activity.BaseVmDbActivity
-import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import com.smallplay.playlet.app.ext.dismissLoadingExt
 import com.smallplay.playlet.app.ext.showLoadingExt
+import me.hgj.jetpackmvvm.base.activity.BaseVmDbActivity
+import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 
 /**
  * 描述　: 你项目中的Activity基类，在这里实现显示弹窗，吐司，还有加入自己的需求操作 ，如果不想用Databind，请继承

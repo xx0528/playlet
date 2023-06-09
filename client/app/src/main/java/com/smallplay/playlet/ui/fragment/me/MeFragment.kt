@@ -33,6 +33,7 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
     private val requestMeViewModel: RequestMeViewModel by viewModels()
 
     override fun initView(savedInstanceState: Bundle?) {
+
         mDatabind.vm = mViewModel
         mDatabind.click = ProxyClick()
         appViewModel.appColor.value?.let { setUiTheme(it, me_linear, me_integral) }

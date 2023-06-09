@@ -51,6 +51,14 @@ class ParkFragment : BaseFragment1<ParkViewModel, FragmentParkBinding>() {
             //触发刷新监听时请求数据
             appViewModel.getVideoData(true)
         }
+
+        videoParkAdapter.run {
+            setOnItemClickListener { adapter, view, position ->
+                appViewModel.setCurVideo(position)
+                eventViewModel.navigationIdx.value = 0
+                appViewModel.statusBarColor.setValue(0)
+            }
+        }
     }
 
     /**
