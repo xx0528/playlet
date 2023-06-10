@@ -4,9 +4,6 @@ import androidx.multidex.MultiDex
 import cat.ereza.customactivityoncrash.config.CaocConfig
 import com.kingja.loadsir.callback.SuccessCallback
 import com.kingja.loadsir.core.LoadSir
-import com.tencent.bugly.Bugly
-import com.tencent.bugly.crashreport.CrashReport
-import com.tencent.mmkv.MMKV
 import com.smallplay.playlet.BuildConfig
 import com.smallplay.playlet.app.event.AppViewModel
 import com.smallplay.playlet.app.event.EventViewModel
@@ -16,10 +13,13 @@ import com.smallplay.playlet.app.weight.loadCallBack.ErrorCallback
 import com.smallplay.playlet.app.weight.loadCallBack.LoadingCallback
 import com.smallplay.playlet.ui.activity.ErrorActivity
 import com.smallplay.playlet.ui.activity.WelcomeActivity
-import me.hgj.jetpackmvvm.ext.getAppViewModel
+import com.smallplay.playlet.ui.video.ProgressManagerImpl
+import com.tencent.bugly.Bugly
+import com.tencent.bugly.crashreport.CrashReport
+import com.tencent.mmkv.MMKV
+import me.hgj.jetpackmvvm.base.BaseApp
 import me.hgj.jetpackmvvm.ext.util.jetpackMvvmLog
 import me.hgj.jetpackmvvm.ext.util.logd
-import me.hgj.jetpackmvvm.base.BaseApp
 import xyz.doikki.videoplayer.ijk.IjkPlayerFactory
 import xyz.doikki.videoplayer.player.AndroidMediaPlayerFactory
 import xyz.doikki.videoplayer.player.VideoViewConfig
@@ -61,11 +61,16 @@ class App : BaseApp() {
         //视频库初始化
         VideoViewManager.setConfig(
             VideoViewConfig.newBuilder()
-            //使用使用IjkPlayer解码
-            .setPlayerFactory(IjkPlayerFactory.create())
-            //使用MediaPlayer解码
-            .setPlayerFactory(AndroidMediaPlayerFactory.create())
-            .build());
+                .setLogEnabled(BuildConfig.DEBUG)
+                //使用使用IjkPlayer解码
+                .setPlayerFactory(IjkPlayerFactory.create())
+                //使用MediaPlayer解码
+//                .setPlayerFactory(AndroidMediaPlayerFactory.create())
+                //使用硬解码
+//                .setPlayerFactory(ExoMediaPlayerFactory.create())
+//                .setPlayOnMobileNetwork(false)
+//                .setProgressManager(ProgressManagerImpl())
+                .build());
 
         //初始化Bugly
         val context = applicationContext
@@ -80,8 +85,6 @@ class App : BaseApp() {
         Bugly.init(context, if (BuildConfig.DEBUG) "xxx" else "a52f2b5ebb", BuildConfig.DEBUG)
         "".logd()
         jetpackMvvmLog = BuildConfig.DEBUG
-
-
 
 
         //防止项目崩溃，崩溃后打开错误界面

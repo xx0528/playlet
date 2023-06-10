@@ -34,11 +34,17 @@ class AppViewModel : BaseViewModel() {
     //页面 视频数据页面从0开始
     var pageNo = 0
 
+    //剧场视频列表数据
+    var videoParkDataState: MutableLiveData<ListDataUiState<VideoResponse>> = MutableLiveData()
+
     //首页视频列表数据
-    var videoDataState: MutableLiveData<ListDataUiState<VideoResponse>> = MutableLiveData()
+    var videoHomeDataState:  MutableLiveData<ListDataUiState<VideoResponse>> = MutableLiveData()
 
     //当前选中视频
     var curPlayVideoNo : MutableLiveData<Int> = MutableLiveData()
+
+    //App状态栏透明
+    var dialogVisible = EventLiveData<Int>()
 
     init {
         //默认值保存的账户信息，没有登陆过则为null
@@ -69,7 +75,10 @@ class AppViewModel : BaseViewModel() {
                     isFirstEmpty = isRefresh && it.isEmpty(),
                     listData = it.list
                 )
-            videoDataState.value = listDataUiState
+            videoParkDataState.value = listDataUiState
+            if (isRefresh) {
+                setCurVideo(it.list[0].ID)
+            }
         }, {
             //请求失败
             val listDataUiState =
@@ -79,11 +88,41 @@ class AppViewModel : BaseViewModel() {
                     isRefresh = isRefresh,
                     listData = arrayListOf<VideoResponse>()
                 )
-            videoDataState.value = listDataUiState
+            videoParkDataState.value = listDataUiState
         })
     }
 
-    fun setCurVideo(videoIndex : Int) {
-       curPlayVideoNo.value = videoIndex
+    fun setCurVideo(videoID : Int) {
+        //通过选中的视频构造整部数据
+        var videoInfo = getVideoByID(videoID) ?: return
+
+        val arrayList = arrayListOf<VideoResponse>()
+
+        if (videoInfo != null) {
+            for (i in 1 until videoInfo.count+1) {
+                val newVideo = videoInfo.copy(imgUrl = "${videoInfo.videoUrl}/cover.png", videoUrl = "${videoInfo.videoUrl}/$i.mp4")
+                arrayList.add(newVideo)
+            }
+        }
+        val listDataUiState =
+            ListDataUiState(
+                isSuccess = true,
+                isRefresh = false,
+                isEmpty = false,
+                hasMore = true,
+                isFirstEmpty = false,
+                listData = arrayList
+            )
+        videoHomeDataState.value = listDataUiState
+        curPlayVideoNo.value = 0
+    }
+
+    private fun getVideoByID(ID : Int) : VideoResponse? {
+        for(item in videoParkDataState.value?.listData!!) {
+            if (item.ID == ID) {
+                return item
+            }
+        }
+        return null
     }
 }

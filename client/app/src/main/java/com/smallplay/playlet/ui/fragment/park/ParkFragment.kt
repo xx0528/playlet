@@ -54,9 +54,8 @@ class ParkFragment : BaseFragment1<ParkViewModel, FragmentParkBinding>() {
 
         videoParkAdapter.run {
             setOnItemClickListener { adapter, view, position ->
-                appViewModel.setCurVideo(position)
                 eventViewModel.navigationIdx.value = 0
-                appViewModel.statusBarColor.setValue(0)
+                appViewModel.setCurVideo(getItem(position).ID)
             }
         }
     }
@@ -74,7 +73,7 @@ class ParkFragment : BaseFragment1<ParkViewModel, FragmentParkBinding>() {
     override fun createObserver() {
         appViewModel.run {
             //监听首页视频列表请求的数据变化
-            videoDataState.observe(viewLifecycleOwner, Observer {
+            videoParkDataState.observe(viewLifecycleOwner, Observer {
                 //设值 新写了个拓展函数，搞死了这个恶心的重复代码
                 loadListData(it, videoParkAdapter, loadsir, mViewBind.includeList.includeRecyclerview.recyclerView, mViewBind.includeList.includeRecyclerview.swipeRefresh)
             })
