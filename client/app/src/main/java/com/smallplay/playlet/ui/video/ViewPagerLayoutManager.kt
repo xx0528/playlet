@@ -80,4 +80,8 @@ class ViewPagerLayoutManager @JvmOverloads constructor(
             )
         }
     }
+
+    fun onReset() {
+        mDrift = 0
+    }
 }

@@ -4,7 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.smallplay.playlet.R
@@ -15,6 +19,7 @@ import com.smallplay.playlet.ui.fragment.dialog.EpisodeFragment
 import kotlinx.android.synthetic.main.dialog_episodes.*
 import kotlinx.android.synthetic.main.dialog_episodes.magic_indicator
 import kotlinx.android.synthetic.main.dialog_episodes.view_pager
+import net.lucode.hackware.magicindicator.MagicIndicator
 
 
 class EpisodesDialog : BottomSheetDialogFragment() {
@@ -24,6 +29,10 @@ class EpisodesDialog : BottomSheetDialogFragment() {
 
     //标题集合
     var mDataList: ArrayList<String> = arrayListOf()
+
+    lateinit var mViewPager : ViewPager2
+    lateinit var mImageView : ImageView
+    lateinit var mMagicIndicator : MagicIndicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +47,16 @@ class EpisodesDialog : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.dialog_episodes, container, false)
-        dialog_episodes_close.setOnClickListener { appViewModel.dialogVisible.value = 0 }
-        view_pager.init(this, fragments)
-        magic_indicator.bindViewPager2(view_pager, mDataList)
+        mViewPager = view.findViewById<ViewPager2>(R.id.view_pager)
+        mViewPager.init(this, fragments)
+
+        mImageView = view.findViewById<ImageView>(R.id.dialog_episodes_close)
+        mImageView.setOnClickListener {
+            dismiss()
+        }
+
+        mMagicIndicator = view.findViewById<MagicIndicator>(R.id.magic_indicator)
+        mMagicIndicator.bindViewPager2(mViewPager, mDataList)
         return view
     }
 
@@ -84,12 +100,12 @@ class EpisodesDialog : BottomSheetDialogFragment() {
                 }
             }
 
-            for (i in 0 until data.size) {
-                fragments.add(EpisodeFragment.newInstance(i + 1))
+            for (i in 0 until mDataList.size) {
+                fragments.add(EpisodeFragment.newInstance(i))
             }
-            magic_indicator.navigator.notifyDataSetChanged()
-            view_pager.adapter?.notifyDataSetChanged()
-            view_pager.offscreenPageLimit = fragments.size
+            mMagicIndicator.navigator.notifyDataSetChanged()
+            mViewPager.adapter?.notifyDataSetChanged()
+            mViewPager.offscreenPageLimit = fragments.size
 
         }
     }

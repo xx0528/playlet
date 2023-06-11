@@ -2,6 +2,7 @@ package com.smallplay.playlet.ui.fragment.dialog
 
 
 import android.os.Bundle
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ConvertUtils
 import com.smallplay.playlet.app.appViewModel
@@ -33,7 +34,7 @@ class EpisodeFragment : BaseFragment<EpisodesViewModel, IncludeListBinding>() {
         }
 
         //初始化recyclerView
-        recyclerView.init(LinearLayoutManager(context), episodesAdapter).let {
+        recyclerView.init(GridLayoutManager(context, 6, GridLayoutManager.VERTICAL, false), episodesAdapter).let {
             it.addItemDecoration(SpaceItemDecoration(0, ConvertUtils.dp2px(8f)))
         }
         episodesAdapter.run {
@@ -47,9 +48,9 @@ class EpisodeFragment : BaseFragment<EpisodesViewModel, IncludeListBinding>() {
     override fun initData() {
         var list = arrayListOf<EpisodesItem>()
         var videoInfo = appViewModel.videoHomeDataState.value?.listData?.get(0)
-        for (i in 1 until mEpisodePageNum) {
-            if (videoInfo != null) {
-                list.add(EpisodesItem(1, videoInfo.freeCount > i,videoInfo.lockCount > i))
+        if (videoInfo != null) {
+            for (i in 1 until videoInfo.count + 1) {
+                list.add(EpisodesItem(i + mEpisodePageNum * 30, i > videoInfo.freeCount, i > videoInfo.lockCount))
             }
         }
         episodesAdapter.setList(list)

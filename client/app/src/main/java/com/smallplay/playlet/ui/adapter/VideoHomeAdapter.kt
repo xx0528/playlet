@@ -14,8 +14,6 @@ import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.ext.setAdapterAnimation
 import com.smallplay.playlet.app.util.SettingUtil
 import com.smallplay.playlet.data.model.bean.VideoResponse
-import com.smallplay.playlet.ui.activity.EpisodesDialog
-import com.smallplay.playlet.ui.activity.MainActivity
 import com.smallplay.playlet.ui.video.cache.PreloadManager
 import com.smallplay.playlet.ui.video.render.VideoController
 import com.smallplay.playlet.ui.video.render.VideoItemView

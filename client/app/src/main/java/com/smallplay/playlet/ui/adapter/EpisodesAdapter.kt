@@ -16,7 +16,7 @@ class EpisodesAdapter(data: MutableList<EpisodesItem>?) :
     ) {
 
     override fun convert(holder: BaseViewHolder, item: EpisodesItem) {
-        holder.setText(R.id.park_item_episodes, item.num)
+        holder.setText(R.id.park_item_episodes, "${item.num}")
         if (item.lock) {
             holder.getView<View>(R.id.episodes_lock_icon).visibility = View.VISIBLE
         } else {

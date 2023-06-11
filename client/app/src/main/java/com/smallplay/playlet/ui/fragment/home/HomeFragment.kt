@@ -89,17 +89,23 @@ open class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
             })
 //
             curPlayVideoNo.observe(viewLifecycleOwner, Observer {
-                startPlay(it)
+                //定为到要预览的位置
+                if (null != mLayoutManager) {
+                    mLayoutManager?.onReset()
+                    mViewBind.recyclerView.scrollToPosition(it)
+                }
             })
             appViewModel.dialogVisible.observeInFragment(this@HomeFragment, Observer {
-                val dialog = EpisodesDialog()
-                dialog.show(childFragmentManager, "EpisodesDialog")
+                if (it == 1) {
+                    val dialog = EpisodesDialog()
+                    dialog.show(childFragmentManager, "EpisodesDialog")
+                }
             })
         }
     }
 
     private fun startPlay(position: Int) {
-        mViewBind.recyclerView.scrollToPosition(position)
+//        mViewBind.recyclerView.scrollToPosition(position)
         videoHomeAdapter.playVideo(position, mViewBind.recyclerView)
         mCurPos = position
     }

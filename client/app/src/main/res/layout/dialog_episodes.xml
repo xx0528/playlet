@@ -48,14 +48,13 @@
             android:id="@+id/viewpager_linear"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:background="@color/white"
             android:padding="2dp">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/include_viewpager_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:theme="@style/AppTheme.AppBarOverlay"
                 app:contentInsetStart="0dp"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:tabIndicatorColor="#333333"
@@ -64,8 +63,8 @@
                 app:tabIndicator="@drawable/tab_indicator"
                 app:tabIndicatorHeight="3dp"
                 app:tabIndicatorFullWidth="false"
-                app:tabTextColor="#999999"
-                app:tabSelectedTextColor="#ce6872"
+                app:tabTextColor="@color/colorBlack333"
+                app:tabSelectedTextColor="#000"
                 app:tabTextAppearance="@style/tabStyle" />
 
             <net.lucode.hackware.magicindicator.MagicIndicator
