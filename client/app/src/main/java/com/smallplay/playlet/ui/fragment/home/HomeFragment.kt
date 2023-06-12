@@ -19,6 +19,7 @@ import com.smallplay.playlet.ui.video.render.VideoController
 import com.smallplay.playlet.ui.video.render.VideoRenderViewFactory
 import com.smallplay.playlet.viewmodel.state.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
+import xyz.doikki.videoplayer.player.BaseVideoView.SimpleOnStateChangeListener
 import xyz.doikki.videoplayer.player.VideoView
 import xyz.doikki.videoplayer.util.L
 
@@ -35,6 +36,8 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
     private var mVideoView: VideoView? = null
     private var mCurPos: Int = 0
     private var mEpisodeDialog: EpisodesDialog? = null
+
+    private val TAG = "HomeFragment"
 
     override fun initView(savedInstanceState: Bundle?) {
 
@@ -84,7 +87,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 
     private fun initVideoView() {
         mVideoView = context?.let { VideoView(it) }
-        mVideoView!!.setLooping(true)
+        mVideoView!!.setLooping(false)
 
         //以下只能二选一，看你的需求
         mVideoView!!.setRenderViewFactory(VideoRenderViewFactory.create())
@@ -125,6 +128,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
+                Log.d(TAG, "状态变化 $state")
                 if (state == VerticalViewPager.SCROLL_STATE_DRAGGING) {
                     mCurItem = vvp!!.currentItem
                 }
@@ -159,6 +163,18 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
                     //请点进去看isDissociate的解释
                     mController!!.addControlComponent(viewHolder.mVideoItemView, true)
                     viewHolder.mPlayerContainer.addView(mVideoView, 0)
+
+                    //监听播放结束
+                    mVideoView!!.addOnStateChangeListener(object : SimpleOnStateChangeListener() {
+                        override fun onPlayStateChanged(playState: Int) {
+                            if (playState == VideoView.STATE_PLAYBACK_COMPLETED) {
+                                appViewModel.curPlayVideoNo.value = appViewModel.curPlayVideoNo.value?.plus(
+                                    1
+                                )
+                            }
+                        }
+                    })
+
                     mVideoView?.start()
                     mCurPos = position
                 }
@@ -170,7 +186,9 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 
     override fun onResume() {
         super.onResume()
+        Log.d(TAG, "onResume ---- ")
         if (mVideoView != null) {
+            Log.d(TAG, "mVideoView!!.resume ---- ")
             mVideoView!!.resume()
         }
     }
@@ -178,14 +196,18 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 
     override fun onPause() {
         super.onPause()
+        Log.d(TAG, "onPause ---- ")
         if (mVideoView != null) {
+            Log.d(TAG, "mVideoView!!.pause ---- ")
             mVideoView!!.pause()
         }
     }
 
     override fun onDestroy() {
+        Log.d(TAG, "onDestroy ---- ")
         super.onDestroy()
         if (mVideoView != null) {
+            Log.d(TAG, "mVideoView!!.release ---- ")
             mVideoView!!.release()
         }
     }
