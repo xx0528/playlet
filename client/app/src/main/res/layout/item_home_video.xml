@@ -5,8 +5,8 @@
     android:layout_height="match_parent">
 
     <com.smallplay.playlet.ui.video.render.VideoItemView
-        android:id="@+id/park_video_View"
+        android:id="@+id/home_video_View"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </FrameLayout>

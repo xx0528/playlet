@@ -15,6 +15,7 @@ import xyz.doikki.videoplayer.controller.ControlWrapper
 import xyz.doikki.videoplayer.controller.IControlComponent
 import xyz.doikki.videoplayer.player.VideoView
 import xyz.doikki.videoplayer.util.L
+import kotlin.math.abs
 
 class VideoItemView : FrameLayout, IControlComponent {
     private var thumb: ImageView? = null
@@ -55,8 +56,8 @@ class VideoItemView : FrameLayout, IControlComponent {
             MotionEvent.ACTION_UP -> {
                 val endX = event.x.toInt()
                 val endY = event.y.toInt()
-                if (Math.abs(endX - mStartX) < mScaledTouchSlop
-                    && Math.abs(endY - mStartY) < mScaledTouchSlop
+                if (abs(endX - mStartX) < mScaledTouchSlop
+                    && abs(endY - mStartY) < mScaledTouchSlop
                 ) {
                     performClick()
                 }

@@ -1,109 +1,106 @@
 package com.smallplay.playlet.ui.adapter
 
+import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewParent
-import android.widget.Button
+import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.recyclerview.widget.RecyclerView
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.chad.library.adapter.base.BaseQuickAdapter
-import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.smallplay.playlet.R
-import com.smallplay.playlet.app.appViewModel
-import com.smallplay.playlet.app.ext.setAdapterAnimation
-import com.smallplay.playlet.app.util.SettingUtil
 import com.smallplay.playlet.data.model.bean.VideoResponse
 import com.smallplay.playlet.ui.video.cache.PreloadManager
-import com.smallplay.playlet.ui.video.render.VideoController
 import com.smallplay.playlet.ui.video.render.VideoItemView
-import com.smallplay.playlet.ui.video.render.VideoRenderViewFactory
-import me.hgj.jetpackmvvm.base.appContext
-import xyz.doikki.videoplayer.player.VideoView
 
+class VideoHomeAdapter(
+    /**
+     * 数据源
+     */
+    private var mVideoBeans: List<VideoResponse>?
+) :
+    PagerAdapter() {
+    /**
+     * View缓存池，从ViewPager中移除的item将会存到这里面，用来复用
+     */
+    private val mViewPool: MutableList<View> = ArrayList()
 
-class VideoHomeAdapter(data: MutableList<VideoResponse>?) :
-    BaseQuickAdapter<VideoResponse, BaseViewHolder>(
-        R.layout.item_home_video, data
-    ) {
-
-    private var mVideoView: VideoView? = null
-    private var mController: VideoController? = null
-
-
-    init {
-        setAdapterAnimation(SettingUtil.getListMode())
+    fun setList(videoBeans: List<VideoResponse>?) {
+        mVideoBeans = videoBeans
     }
 
-    fun initVideo() {
-        //init video
-        mVideoView = VideoView(appContext)
-        mVideoView?.setRenderViewFactory(VideoRenderViewFactory.create())
-        mVideoView?.setLooping(false)
-        mController = VideoController(appContext)
-        mVideoView?.setVideoController(mController)
-
+    override fun getCount(): Int {
+        return if (mVideoBeans == null) 0 else mVideoBeans!!.size
     }
 
-    override fun convert(holder: BaseViewHolder, item: VideoResponse) {
-        var pos = getItemPosition(item)
-        item.run {
+    override fun isViewFromObject(view: View, o: Any): Boolean {
+        return view === o
+    }
 
-            //iv_thumb 和 tv_title 是layout_video_controller里的 不是item_home_video
-            PreloadManager.getInstance(appContext)?.addPreloadTask(videoUrl, pos)
-            Glide.with(appContext).load(imgUrl)
-                .transition(DrawableTransitionOptions.withCrossFade(100))
-                .placeholder(android.R.color.white)
-                .into(holder.getView(R.id.iv_thumb))
-
-            holder.setText(R.id.tv_title, videoName)
-            holder.setText(R.id.tv_cur_episodes, "第${pos}集")
-            holder.getView<FrameLayout>(R.id.home_video_container).tag = holder
+    override fun instantiateItem(container: ViewGroup, position: Int): Any {
+        val context = container.context
+        var view: View? = null
+        if (mViewPool.size > 0) { //取第一个进行复用
+            view = mViewPool[0]
+            mViewPool.removeAt(0)
         }
-
-        holder.getView<View>(R.id.btn_episode).setOnClickListener {
-            appViewModel.dialogVisible.value = 1
+        val viewHolder: ViewHolder
+        if (view == null) {
+            view = LayoutInflater.from(context).inflate(R.layout.item_home_video, container, false)
+            viewHolder = ViewHolder(view)
+        } else {
+            viewHolder = view.tag as ViewHolder
         }
-    }
-
-    fun playVideo(position : Int, recyclerView: RecyclerView) {
-
-        val itemView = recyclerView.getChildAt(position)
-        val viewHolder: BaseViewHolder = itemView.tag as BaseViewHolder
-
-        mVideoView!!.release()
-        if ( mVideoView != null) {
-            val parent: ViewParent? = mVideoView?.parent
-            if (parent is FrameLayout) {
-                parent.removeView(mVideoView)
-            }
+        val (_, videoName, _, _, _, _, _, _, _, imgUrl, videoUrl) = mVideoBeans!![position]
+        //开始预加载
+        PreloadManager.getInstance(context)!!.addPreloadTask(videoUrl, position)
+        Glide.with(context)
+            .load(imgUrl)
+            .placeholder(android.R.color.white)
+            .into(viewHolder.mThumb)
+        viewHolder.mTitle.text = videoName
+        viewHolder.mTitle.setOnClickListener {
+            Toast.makeText(context, "点击了标题", Toast.LENGTH_SHORT).show()
         }
-        var item = getItem(position)
-
-        val playUrl: String? = PreloadManager.getInstance(appContext)?.getPlayUrl(item.videoUrl)
-        mVideoView!!.setUrl(playUrl)
-        //请点进去看isDissociate的解释
-        //请点进去看isDissociate的解释
-        mController!!.addControlComponent(viewHolder.getView<VideoItemView>(R.id.park_video_View), true)
-        viewHolder.getView<FrameLayout>(R.id.home_video_container).addView(mVideoView, 0)
-        mVideoView!!.start()
-
+        viewHolder.mCurEpisode.text = "第${position + 1}集"
+        viewHolder.mAllEpisode.text = "共${count}集"
+        viewHolder.mPosition = position
+        container.addView(view)
+        return view!!
     }
 
-    fun resume() {
-        mVideoView?.resume()
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+        val itemView = `object` as View
+        container.removeView(itemView)
+        val (_, _, _, _, _, _, _, _, _, _, videoUrl) = mVideoBeans!![position]
+        //取消预加载
+        PreloadManager.getInstance(container.context)!!.removePreloadTask(videoUrl)
+        //保存起来用来复用
+        mViewPool.add(itemView)
     }
 
-    fun pause() {
-        mVideoView?.pause()
-    }
+    /**
+     * 借鉴ListView item复用方法
+     */
+    class ViewHolder internal constructor(itemView: View?) {
+        var mPosition = 0
+        var mTitle : TextView//标题
+        var mThumb : ImageView //封面图
+        var mCurEpisode: TextView //第几集
+        var mAllEpisode: TextView //共几集
+        var mVideoItemView: VideoItemView
+        var mPlayerContainer: FrameLayout
 
-    fun release() {
-        mVideoView?.release()
-    }
-
-    fun onBackPressed() {
-        mVideoView?.onBackPressed()
+        init {
+            mVideoItemView = itemView!!.findViewById(R.id.home_video_View)
+            mTitle = mVideoItemView.findViewById(R.id.tv_title)
+            mThumb = mVideoItemView.findViewById(R.id.iv_thumb)
+            mAllEpisode = mVideoItemView.findViewById(R.id.episode_text)
+            mCurEpisode = mVideoItemView.findViewById(R.id.tv_cur_episodes)
+            mPlayerContainer = itemView.findViewById(R.id.home_video_container)
+            itemView.tag = this
+        }
     }
 }
 
