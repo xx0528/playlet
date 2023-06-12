@@ -4,10 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.smallplay.playlet.R
@@ -64,9 +61,9 @@ class VideoHomeAdapter(
             .placeholder(android.R.color.white)
             .into(viewHolder.mThumb)
         viewHolder.mTitle.text = videoName
-//        viewHolder.mTitle.setOnClickListener {
-//            Toast.makeText(context, "点击了标题", Toast.LENGTH_SHORT).show()
-//        }
+        viewHolder.mBtnChange.setOnClickListener {
+            appViewModel.setNextVideo()
+        }
         viewHolder.mCurEpisode.text = "第${position + 1}集"
         viewHolder.mAllEpisode.text = "共${count}集"
         viewHolder.mPosition = position
@@ -98,6 +95,7 @@ class VideoHomeAdapter(
         var mBtnOpenDialog: View    //
         var mVideoItemView: VideoItemView
         var mPlayerContainer: FrameLayout
+        var mBtnChange: Button
 
         init {
             mVideoItemView = itemView!!.findViewById(R.id.home_video_View)
@@ -107,6 +105,7 @@ class VideoHomeAdapter(
             mCurEpisode = mVideoItemView.findViewById(R.id.tv_cur_episodes)
             mPlayerContainer = itemView.findViewById(R.id.home_video_container)
             mBtnOpenDialog = itemView.findViewById(R.id.btn_episode)
+            mBtnChange = itemView.findViewById(R.id.btn_change)
             itemView.tag = this
         }
     }

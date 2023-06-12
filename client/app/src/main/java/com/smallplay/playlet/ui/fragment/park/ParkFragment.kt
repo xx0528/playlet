@@ -1,6 +1,7 @@
 package com.smallplay.playlet.ui.fragment.park
 
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.blankj.utilcode.util.ConvertUtils
@@ -30,6 +31,8 @@ class ParkFragment : BaseFragment1<ParkViewModel, FragmentParkBinding>() {
     //recyclerview的底部加载view 因为在首页要动态改变他的颜色，所以加了他这个字段
     private lateinit var footView: DefineLoadMoreView
 
+    private val TAG = "ParkFragment-----"
+
     override fun initView(savedInstanceState: Bundle?) {
         //状态页配置
         loadsir = loadServiceInit(mViewBind.includeList.includeRecyclerview.swipeRefresh) {
@@ -54,6 +57,7 @@ class ParkFragment : BaseFragment1<ParkViewModel, FragmentParkBinding>() {
 
         videoParkAdapter.run {
             setOnItemClickListener { adapter, view, position ->
+                Log.d(TAG, "按钮按到 跳转视频--  ${getItem(position).videoName} 视频ID ${getItem(position).ID}")
                 appViewModel.setCurVideo(getItem(position).ID)
                 eventViewModel.navigationIdx.value = 0
             }
