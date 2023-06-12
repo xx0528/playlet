@@ -29,11 +29,12 @@ import xyz.doikki.videoplayer.util.L
 class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 
     //适配器
-    private val videoHomeAdapter: VideoHomeAdapter by lazy { VideoHomeAdapter(arrayListOf()) }
+    private var videoHomeAdapter: VideoHomeAdapter? = null
     private var mPreloadManager: PreloadManager? = null
     private var mController: VideoController? = null
     private var mVideoView: VideoView? = null
     private var mCurPos: Int = 0
+    private var mEpisodeDialog: EpisodesDialog? = null
 
     override fun initView(savedInstanceState: Bundle?) {
 
@@ -56,20 +57,25 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 
             //监听首页视频列表请求的数据变化
             videoHomeDataState.observe(viewLifecycleOwner, Observer {
-                videoHomeAdapter?.setList(it.listData)
-                videoHomeAdapter.notifyDataSetChanged()
+                vvp.adapter = null
+                videoHomeAdapter = VideoHomeAdapter(it.listData)
+                initViewPager()
             })
 //
             curPlayVideoNo.observe(viewLifecycleOwner, Observer {
                 //定为到要预览的位置
+                if (mEpisodeDialog != null) {
+                    mEpisodeDialog?.dismiss()
+                    mEpisodeDialog = null
+                }
                 vvp.currentItem = it
-
+                videoHomeAdapter?.notifyDataSetChanged()
                 vvp.post(Runnable { startPlay(it) })
             })
             appViewModel.dialogVisible.observeInFragment(this@HomeFragment, Observer {
                 if (it == 1) {
-                    val dialog = EpisodesDialog()
-                    dialog.show(childFragmentManager, "EpisodesDialog")
+                    mEpisodeDialog = EpisodesDialog()
+                    mEpisodeDialog?.show(childFragmentManager, "EpisodesDialog")
                 }
             })
         }

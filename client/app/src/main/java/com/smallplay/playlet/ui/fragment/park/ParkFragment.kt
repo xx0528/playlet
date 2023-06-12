@@ -54,8 +54,8 @@ class ParkFragment : BaseFragment1<ParkViewModel, FragmentParkBinding>() {
 
         videoParkAdapter.run {
             setOnItemClickListener { adapter, view, position ->
-                eventViewModel.navigationIdx.value = 0
                 appViewModel.setCurVideo(getItem(position).ID)
+                eventViewModel.navigationIdx.value = 0
             }
         }
     }

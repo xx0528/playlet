@@ -48,7 +48,7 @@
             android:id="@+id/viewpager_linear"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/white"
+            android:background="#888"
             android:padding="2dp">
 
             <androidx.appcompat.widget.Toolbar
@@ -59,6 +59,7 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:tabIndicatorColor="#333333"
                 app:tabMode="scrollable"
+                app:subtitleTextColor="@color/black"
                 app:tabGravity="fill"
                 app:tabIndicator="@drawable/tab_indicator"
                 app:tabIndicatorHeight="3dp"

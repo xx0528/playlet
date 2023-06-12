@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.smallplay.playlet.R
+import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.data.model.bean.VideoResponse
 import com.smallplay.playlet.ui.video.cache.PreloadManager
 import com.smallplay.playlet.ui.video.render.VideoItemView
@@ -60,12 +61,14 @@ class VideoHomeAdapter(
             .placeholder(android.R.color.white)
             .into(viewHolder.mThumb)
         viewHolder.mTitle.text = videoName
-        viewHolder.mTitle.setOnClickListener {
-            Toast.makeText(context, "点击了标题", Toast.LENGTH_SHORT).show()
-        }
+//        viewHolder.mTitle.setOnClickListener {
+//            Toast.makeText(context, "点击了标题", Toast.LENGTH_SHORT).show()
+//        }
         viewHolder.mCurEpisode.text = "第${position + 1}集"
         viewHolder.mAllEpisode.text = "共${count}集"
         viewHolder.mPosition = position
+        viewHolder.mBtnOpenDialog.setOnClickListener{appViewModel.dialogVisible.value = 1}
+
         container.addView(view)
         return view!!
     }
@@ -89,6 +92,7 @@ class VideoHomeAdapter(
         var mThumb : ImageView //封面图
         var mCurEpisode: TextView //第几集
         var mAllEpisode: TextView //共几集
+        var mBtnOpenDialog: View    //
         var mVideoItemView: VideoItemView
         var mPlayerContainer: FrameLayout
 
@@ -99,6 +103,7 @@ class VideoHomeAdapter(
             mAllEpisode = mVideoItemView.findViewById(R.id.episode_text)
             mCurEpisode = mVideoItemView.findViewById(R.id.tv_cur_episodes)
             mPlayerContainer = itemView.findViewById(R.id.home_video_container)
+            mBtnOpenDialog = itemView.findViewById(R.id.btn_episode)
             itemView.tag = this
         }
     }
