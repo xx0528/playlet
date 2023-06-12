@@ -1,6 +1,7 @@
 package com.smallplay.playlet.ui.fragment.home
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -56,7 +57,9 @@ open class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
             }
 
             override fun onPageSelected(position: Int, isBottom: Boolean) {
+                Log.d("pageSelect -- ", "第${position}个 curPos $mCurPos")
                 if (mCurPos == position) return
+
                 startPlay(position)
             }
 

@@ -35,25 +35,25 @@ class WelcomeActivity : BaseActivity<BaseViewModel, ActivityWelcomeBinding>() {
         mDatabind.click = ProxyClick()
         welcome_baseview.setBackgroundColor(SettingUtil.getColor(this))
         mViewPager = findViewById(R.id.banner_view)
-        if (CacheUtil.isFirst()) {
-            //是第一次打开App 显示引导页
-            welcome_image.gone()
-            mViewPager.apply {
-                adapter = WelcomeBannerAdapter()
-                setLifecycleRegistry(lifecycle)
-                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                    override fun onPageSelected(position: Int) {
-                        super.onPageSelected(position)
-                        if (position == resList.size - 1) {
-                            welcomeJoin.visible()
-                        } else {
-                            welcomeJoin.gone()
-                        }
-                    }
-                })
-                create(resList.toList())
-            }
-        } else {
+//        if (CacheUtil.isFirst()) {
+//            //是第一次打开App 显示引导页
+//            welcome_image.gone()
+//            mViewPager.apply {
+//                adapter = WelcomeBannerAdapter()
+//                setLifecycleRegistry(lifecycle)
+//                registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+//                    override fun onPageSelected(position: Int) {
+//                        super.onPageSelected(position)
+//                        if (position == resList.size - 1) {
+//                            welcomeJoin.visible()
+//                        } else {
+//                            welcomeJoin.gone()
+//                        }
+//                    }
+//                })
+//                create(resList.toList())
+//            }
+//        } else {
             //不是第一次打开App 0.3秒后自动跳转到主页
             welcome_image.visible()
             mViewPager.postDelayed({
@@ -62,7 +62,7 @@ class WelcomeActivity : BaseActivity<BaseViewModel, ActivityWelcomeBinding>() {
                 //带点渐变动画
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             }, 300)
-        }
+//        }
     }
 
     inner class ProxyClick {

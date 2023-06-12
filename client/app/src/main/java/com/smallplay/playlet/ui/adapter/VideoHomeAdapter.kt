@@ -39,7 +39,7 @@ class VideoHomeAdapter(data: MutableList<VideoResponse>?) :
         //init video
         mVideoView = VideoView(appContext)
         mVideoView?.setRenderViewFactory(VideoRenderViewFactory.create())
-        mVideoView?.setLooping(true)
+        mVideoView?.setLooping(false)
         mController = VideoController(appContext)
         mVideoView?.setVideoController(mController)
 
@@ -68,7 +68,7 @@ class VideoHomeAdapter(data: MutableList<VideoResponse>?) :
 
     fun playVideo(position : Int, recyclerView: RecyclerView) {
 
-        val itemView = recyclerView.getChildAt(0)
+        val itemView = recyclerView.getChildAt(position)
         val viewHolder: BaseViewHolder = itemView.tag as BaseViewHolder
 
         mVideoView!!.release()
@@ -79,6 +79,7 @@ class VideoHomeAdapter(data: MutableList<VideoResponse>?) :
             }
         }
         var item = getItem(position)
+
         val playUrl: String? = PreloadManager.getInstance(appContext)?.getPlayUrl(item.videoUrl)
         mVideoView!!.setUrl(playUrl)
         //请点进去看isDissociate的解释
