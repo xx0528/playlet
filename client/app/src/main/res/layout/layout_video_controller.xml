@@ -22,6 +22,21 @@
         tools:visibility="visible"/>
 
 
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="-19dp"
+        android:background="@null"
+        android:max="1000"
+        android:maxHeight="4dp"
+        android:minHeight="4dp"
+        android:paddingEnd="0dp"
+        android:paddingStart="0dp"
+        android:thumb="@null"
+        android:thumbOffset="0dp" />
+
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
@@ -92,4 +107,14 @@
             android:text="@string/change_next"/>
 
     </RelativeLayout>
+
+
+    <ProgressBar
+        android:id="@+id/bottom_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_gravity="bottom"
+        android:max="1000"
+        android:progressDrawable="@drawable/dkplayer_layer_progress_bar" />
 </FrameLayout>
