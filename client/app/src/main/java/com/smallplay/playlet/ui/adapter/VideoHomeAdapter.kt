@@ -1,5 +1,6 @@
 package com.smallplay.playlet.ui.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,8 @@ class VideoHomeAdapter(
      * View缓存池，从ViewPager中移除的item将会存到这里面，用来复用
      */
     private val mViewPool: MutableList<View> = ArrayList()
+
+    private val TAG = "VideoHomeAdapter------==== "
 
     fun setList(videoBeans: List<VideoResponse>?) {
         mVideoBeans = videoBeans
@@ -68,7 +71,7 @@ class VideoHomeAdapter(
         viewHolder.mAllEpisode.text = "共${count}集"
         viewHolder.mPosition = position
         viewHolder.mBtnOpenDialog.setOnClickListener{appViewModel.dialogVisible.value = 1}
-
+        Log.d(TAG, "初始化 $videoName  第 $position 集")
         container.addView(view)
         return view!!
     }

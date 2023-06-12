@@ -1,5 +1,6 @@
 package com.smallplay.playlet.ui.fragment.home
 
+import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -37,7 +38,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
     private var mCurPos: Int = 0
     private var mEpisodeDialog: EpisodesDialog? = null
 
-    private val TAG = "HomeFragment"
+    private val TAG = "HomeFragment----------------"
 
     override fun initView(savedInstanceState: Bundle?) {
 
@@ -67,12 +68,14 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 //
             curPlayVideoNo.observe(viewLifecycleOwner, Observer {
                 //定为到要预览的位置
+                Log.d(TAG, "监听到 播放 $it")
                 if (mEpisodeDialog != null) {
                     mEpisodeDialog?.dismiss()
                     mEpisodeDialog = null
                 }
                 vvp.currentItem = it
-                videoHomeAdapter?.notifyDataSetChanged()
+//                videoHomeAdapter?.notifyDataSetChanged()
+                Log.d(TAG, "监听当前播放curPlayVideo 触发 startPlay")
                 vvp.post(Runnable { startPlay(it) })
             })
             appViewModel.dialogVisible.observeInFragment(this@HomeFragment, Observer {
@@ -95,6 +98,20 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
         mController = context?.let { VideoController(it) }
         mVideoView!!.setVideoController(mController)
         mVideoView!!.parent
+
+        //监听播放结束
+        mVideoView!!.addOnStateChangeListener(object : SimpleOnStateChangeListener() {
+            override fun onPlayStateChanged(playState: Int) {
+                if (playState == VideoView.STATE_PLAYBACK_COMPLETED) {
+                    Log.d(TAG, "当前播放到位置mCurPos $mCurPos")
+                    Log.d(TAG, "自动播放下一条， 当前是 ${appViewModel.curPlayVideoNo.value}")
+                    appViewModel.curPlayVideoNo.value = appViewModel.curPlayVideoNo.value?.plus(
+                        1
+                    )
+                    Log.d(TAG, "改变后是--  ${appViewModel.curPlayVideoNo.value}")
+                }
+            }
+        })
     }
 
     private fun initViewPager() {
@@ -123,12 +140,13 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 if (position == mCurPos) return
-                startPlay(position)
+//                Log.d(TAG, "onPageSelected 触发 startPlay")
+//                startPlay(position)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
-                Log.d(TAG, "状态变化 $state")
+                Log.d(TAG, " onPageScrollStateChanged 状态变化 $state")
                 if (state == VerticalViewPager.SCROLL_STATE_DRAGGING) {
                     mCurItem = vvp!!.currentItem
                 }
@@ -143,6 +161,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 
     open fun startPlay(position: Int) {
         val count = vvp!!.childCount
+        Log.d(TAG, " startPlay 播放--position $position")
         for (i in 0 until count) {
             val itemView = vvp!!.getChildAt(i)
             val viewHolder: VideoHomeAdapter.ViewHolder = itemView.tag as VideoHomeAdapter.ViewHolder
@@ -154,9 +173,10 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
                         parent.removeView(mVideoView)
                     }
                 }
-
                 val videoBean: VideoResponse? = appViewModel.videoHomeDataState.value?.listData?.get(position)
                 if (videoBean != null) {
+                    Log.d(TAG, "获取到的 position = $position  videoBean 的 videoName = ${videoBean.videoName} videoUrl = ${videoBean.videoUrl}")
+
                     val playUrl = mPreloadManager!!.getPlayUrl(videoBean.videoUrl)
                     L.i("startPlay: position: $position  url: $playUrl")
                     mVideoView?.setUrl(playUrl)
@@ -164,19 +184,9 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
                     mController!!.addControlComponent(viewHolder.mVideoItemView, true)
                     viewHolder.mPlayerContainer.addView(mVideoView, 0)
 
-                    //监听播放结束
-                    mVideoView!!.addOnStateChangeListener(object : SimpleOnStateChangeListener() {
-                        override fun onPlayStateChanged(playState: Int) {
-                            if (playState == VideoView.STATE_PLAYBACK_COMPLETED) {
-                                appViewModel.curPlayVideoNo.value = appViewModel.curPlayVideoNo.value?.plus(
-                                    1
-                                )
-                            }
-                        }
-                    })
-
                     mVideoView?.start()
                     mCurPos = position
+                    Log.d(TAG, "设置当前播放位置${mCurPos}")
                 }
                 break
             }

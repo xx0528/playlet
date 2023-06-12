@@ -38,15 +38,15 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         mDatabind.click = ProxyClick()
         appViewModel.appColor.value?.let { setUiTheme(it, me_linear, me_integral) }
         appViewModel.userInfo.value?.let { mViewModel.name.set(if (it.nickname.isEmpty()) it.username else it.nickname) }
-        me_swipe.init {
-            requestMeViewModel.getIntegral()
-        }
+//        me_swipe.init {
+//            requestMeViewModel.getIntegral()
+//        }
     }
 
     override fun lazyLoadData() {
         appViewModel.userInfo.value?.run {
-            me_swipe.isRefreshing = true
-            requestMeViewModel.getIntegral()
+//            me_swipe.isRefreshing = true
+//            requestMeViewModel.getIntegral()
         }
     }
 
@@ -69,9 +69,9 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
             })
             userInfo.observeInFragment(this@MeFragment, Observer {
                 it.notNull({
-                    me_swipe.isRefreshing = true
+//                    me_swipe.isRefreshing = true
                     mViewModel.name.set(if (it.nickname.isEmpty()) it.username else it.nickname)
-                    requestMeViewModel.getIntegral()
+//                    requestMeViewModel.getIntegral()
                 }, {
                     mViewModel.name.set(context?.getString(R.string.me_click_login_text))
                     mViewModel.info.set("id：--　排名：--")

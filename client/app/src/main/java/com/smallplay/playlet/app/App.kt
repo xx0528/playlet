@@ -61,7 +61,7 @@ class App : BaseApp() {
         //视频库初始化
         VideoViewManager.setConfig(
             VideoViewConfig.newBuilder()
-                .setLogEnabled(BuildConfig.DEBUG)
+//                .setLogEnabled(BuildConfig.DEBUG)
                 //使用使用IjkPlayer解码
                 .setPlayerFactory(IjkPlayerFactory.create())
                 //使用MediaPlayer解码
