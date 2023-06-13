@@ -11,12 +11,26 @@
         android:scaleType="centerCrop"/>
     <ImageView
         android:id="@+id/btn_back"
-        android:layout_width="50dp"
+        android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_marginTop="15dp"
-        android:padding="10dp"
+        android:paddingRight="50dp"
+        android:paddingTop="15dp"
         android:src="@mipmap/ic_back_gray"
             />
+    <TextView
+        android:id="@+id/tv_cur_episodes_top"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginLeft="30dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:lineSpacingExtra="4dp"
+        android:textColor="#8E8B8B"
+        android:elevation="5dp"
+        android:text="第五集"/>
     <ImageView
         android:id="@+id/play_btn"
         android:layout_width="@dimen/dkplayer_play_btn_size"

@@ -87,6 +87,7 @@ class VideoHomeAdapter(
             viewHolder.mAllEpisode.text = "共${count}集"
             viewHolder.mBtnChange.visibility = View.VISIBLE
             viewHolder.mBtnBack.visibility = View.INVISIBLE
+            viewHolder.mCurEpisodeTop.visibility = View.INVISIBLE
 //            viewHolder.mBtnOpenDialog.layoutParams = RelativeLayout.LayoutParams(130, viewHolder.mBtnOpenDialog.height);
 
         } else if (appViewModel.curPage.value == "PlayFragment") {
@@ -95,7 +96,9 @@ class VideoHomeAdapter(
             viewHolder.mBtnChange.visibility = View.INVISIBLE
             viewHolder.mBtnBack.visibility = View.VISIBLE
 //            viewHolder.mBtnOpenDialog.layoutParams = RelativeLayout.LayoutParams(1000, viewHolder.mBtnOpenDialog.height);
-            viewHolder.mAllEpisode.text = "共${count}集"
+            viewHolder.mAllEpisode.text = "${videoName}·共${count}集"
+            viewHolder.mCurEpisodeTop.visibility = View.VISIBLE
+            viewHolder.mCurEpisodeTop.text = "第${position + 1}集"
         }
 
         Log.d(TAG, "初始化------ $videoName  第 $position 集")
@@ -131,6 +134,7 @@ class VideoHomeAdapter(
         var mLikeIcon: View
         var mBtnBack: View
         var mLikeCount: TextView
+        var mCurEpisodeTop: TextView
 
         init {
             mVideoItemView = itemView!!.findViewById(R.id.home_video_View)
@@ -146,6 +150,8 @@ class VideoHomeAdapter(
             mLikeIcon = itemView.findViewById<View>(R.id.like_icon)
             mLikeCount = itemView.findViewById<TextView>(R.id.like_count)
             mBtnBack = itemView.findViewById<TextView>(R.id.btn_back)
+            mCurEpisodeTop = itemView.findViewById<TextView>(R.id.tv_cur_episodes_top)
+
 
             itemView.tag = this
         }
