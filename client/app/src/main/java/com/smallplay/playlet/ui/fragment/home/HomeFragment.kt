@@ -71,24 +71,15 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 //
             curPlayVideoNo.observe(viewLifecycleOwner, Observer {
                 //定为到要预览的位置
-                Log.d(TAG, "监听到 播放 $it")
-//                if (mEpisodeDialog != null) {
-//                    mEpisodeDialog?.dismiss()
-//                    mEpisodeDialog = null
-//                }
                 vvp.currentItem = it
-//                videoHomeAdapter?.notifyDataSetChanged()
                 Log.d(TAG, "监听当前播放curPlayVideo 触发 startPlay")
                 startPlay(it)
-//                vvp.post(Runnable { startPlay(it) })
             })
             appViewModel.dialogVisible.observeInFragment(this@HomeFragment, Observer {
                 if (it == 1) {
                     nav().navigateAction(R.id.action_to_playFragment, Bundle().apply {
                         putInt("curPos", mCurPos)
                     })
-//                    mEpisodeDialog = EpisodesDialog()
-//                    mEpisodeDialog?.show(childFragmentManager, "EpisodesDialog")
                 }
             })
         }
@@ -110,16 +101,11 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
         mVideoView!!.addOnStateChangeListener(object : SimpleOnStateChangeListener() {
             override fun onPlayStateChanged(playState: Int) {
                 if (playState == VideoView.STATE_PLAYBACK_COMPLETED) {
-                    Log.d(TAG, "当前播放到位置mCurPos $mCurPos")
                     Log.d(TAG, "自动播放下一条， 当前是 ${appViewModel.curPlayVideoNo.value}")
-//                    appViewModel.curPlayVideoNo.value = appViewModel.curPlayVideoNo.value?.plus(
-//                        1
-//                    )
                     mCurPos++
                     nav().navigateAction(R.id.action_to_playFragment, Bundle().apply {
                         putInt("curPos", mCurPos)
                     })
-                    Log.d(TAG, "改变后是--  ${appViewModel.curPlayVideoNo.value}")
                 }
             }
         })
@@ -151,9 +137,6 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 if (position == mCurPos) return
-//                Log.d(TAG, "onPageSelected 触发 startPlay")
-//                startPlay(position)
-//                滑动进入PlayFragment
                 nav().navigateAction(R.id.action_to_playFragment, Bundle().apply {
                     putInt("curPos", mCurPos)
                 })

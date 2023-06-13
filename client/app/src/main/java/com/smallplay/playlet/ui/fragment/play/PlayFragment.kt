@@ -32,8 +32,6 @@ import xyz.doikki.videoplayer.util.L
  */
 class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
 
-    //适配器
-    private var videoHomeAdapter: VideoHomeAdapter? = null
     private var mPreloadManager: PreloadManager? = null
     private var mController: VideoController? = null
     private var mVideoView: VideoView? = null
@@ -81,10 +79,8 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
                     mEpisodeDialog = null
                 }
                 vvp.currentItem = it
-//                videoHomeAdapter?.notifyDataSetChanged()
                 Log.d(TAG, "监听当前播放curPlayVideo 触发 startPlay")
                 startPlay(it)
-//                vvp.post(Runnable { startPlay(it) })
             })
             appViewModel.dialogVisible.observeInFragment(this@PlayFragment, Observer {
                 if (it == 1) {
@@ -102,7 +98,6 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
 
         //以下只能二选一，看你的需求
         mVideoView!!.setRenderViewFactory(VideoRenderViewFactory.create())
-        //        mVideoView.setScreenScaleType(VideoView.SCREEN_SCALE_CENTER_CROP);
         mController = context?.let { VideoController(it) }
         mVideoView!!.setVideoController(mController)
         mVideoView!!.parent
@@ -111,7 +106,6 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
         mVideoView!!.addOnStateChangeListener(object : SimpleOnStateChangeListener() {
             override fun onPlayStateChanged(playState: Int) {
                 if (playState == VideoView.STATE_PLAYBACK_COMPLETED) {
-                    Log.d(TAG, "当前播放到位置mCurPos $mCurPos")
                     Log.d(TAG, "自动播放下一条， 当前是 ${appViewModel.curPlayVideoNo.value}")
                     appViewModel.curPlayVideoNo.value = appViewModel.curPlayVideoNo.value?.plus(
                         1
@@ -129,9 +123,6 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
         vvp!!.setOnPageChangeListener(object : SimpleOnPageChangeListener() {
             private var mCurItem = 0
 
-            /**
-             * VerticalViewPager是否反向滑动
-             */
             private var mIsReverseScroll = false
             override fun onPageScrolled(
                 position: Int,
@@ -148,7 +139,6 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 if (position == mCurPos) return
-//                Log.d(TAG, "onPageSelected 触发 startPlay")
                 startPlay(position)
             }
 
