@@ -26,10 +26,10 @@
             android:text="神豪败家子"/>
         <ImageView
             android:id="@+id/dialog_episodes_close"
-            android:layout_width="35dp"
+            android:layout_width="60dp"
             android:layout_height="30dp"
-            android:padding="1dp"
-            android:layout_margin="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="25dp"
             android:src="@mipmap/ic_more_dow"/>
 
 
@@ -47,14 +47,14 @@
         <FrameLayout
             android:id="@+id/viewpager_linear"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="35dp"
             android:background="#888"
             android:padding="2dp">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/include_viewpager_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
+                android:layout_height="32dp"
                 app:contentInsetStart="0dp"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:tabIndicatorColor="#333333"

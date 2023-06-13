@@ -4,8 +4,8 @@
     android:background="@drawable/bg_shape_dialog_item"
     android:id="@+id/dialog_item_root_content"
     android:layout_margin="5dp"
-    android:layout_width="60dp"
-    android:layout_height="60dp"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
     android:layout_gravity="center">
 
     <TextView
