@@ -1,4 +1,4 @@
-package com.smallplay.playlet.ui.fragment.home
+package com.smallplay.playlet.ui.fragment.play
 
 import android.nfc.Tag
 import android.os.Bundle
@@ -6,23 +6,22 @@ import android.util.Log
 import android.view.View
 import android.view.ViewParent
 import android.widget.FrameLayout
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener
-import com.smallplay.playlet.R
 import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.base.BaseFragment1
 import com.smallplay.playlet.data.model.bean.VideoResponse
-import com.smallplay.playlet.databinding.FragmentHomeBinding
+import com.smallplay.playlet.databinding.FragmentPlayBinding
 import com.smallplay.playlet.ui.activity.EpisodesDialog
 import com.smallplay.playlet.ui.adapter.VideoHomeAdapter
 import com.smallplay.playlet.ui.video.VerticalViewPager
 import com.smallplay.playlet.ui.video.cache.PreloadManager
 import com.smallplay.playlet.ui.video.render.VideoController
 import com.smallplay.playlet.ui.video.render.VideoRenderViewFactory
-import com.smallplay.playlet.viewmodel.state.HomeViewModel
+import com.smallplay.playlet.viewmodel.state.PlayViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import me.hgj.jetpackmvvm.ext.nav
-import me.hgj.jetpackmvvm.ext.navigateAction
 import xyz.doikki.videoplayer.player.BaseVideoView.SimpleOnStateChangeListener
 import xyz.doikki.videoplayer.player.VideoView
 import xyz.doikki.videoplayer.util.L
@@ -31,7 +30,7 @@ import xyz.doikki.videoplayer.util.L
 /**
  * 描述　:
  */
-class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
+class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
 
     //适配器
     private var videoHomeAdapter: VideoHomeAdapter? = null
@@ -41,7 +40,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
     private var mCurPos: Int = 0
     private var mEpisodeDialog: EpisodesDialog? = null
 
-    private val TAG = "HomeFragment----------------"
+    private val TAG = "PlayFragment----------------"
 
     override fun initView(savedInstanceState: Bundle?) {
 
@@ -49,26 +48,31 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
         initVideoView()
 
         mPreloadManager = context?.let { PreloadManager.getInstance(it) }
+
+        if (appViewModel.dialogVisible.value == 1) {
+            mEpisodeDialog = EpisodesDialog()
+            mEpisodeDialog?.show(childFragmentManager, "EpisodesDialog")
+        }
+
+        mCurPos = arguments?.getInt("curPos")!!
     }
 
     /**
      * 懒加载
      */
     override fun lazyLoadData() {
-        //请求视频列表数据 第一次要去请求下
-        appViewModel.getVideoData(true, isHomePage = true)
+        requireActivity().onBackPressedDispatcher.addCallback(this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    nav().navigateUp()
+                }
+            })
+        vvp.currentItem = mCurPos
+        startPlay(mCurPos)
     }
 
     override fun createObserver() {
         appViewModel.run {
-
-            //监听首页视频列表请求的数据变化
-            videoHomeDataState.observe(viewLifecycleOwner, Observer {
-                //ParkFragment跳过来默认播放第一集
-                vvp.adapter = VideoHomeAdapter(it.listData)
-                startPlay(0)
-            })
-//
             curPlayVideoNo.observe(viewLifecycleOwner, Observer {
                 //定为到要预览的位置
                 Log.d(TAG, "监听到 播放 $it")
@@ -82,13 +86,10 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
                 startPlay(it)
 //                vvp.post(Runnable { startPlay(it) })
             })
-            appViewModel.dialogVisible.observeInFragment(this@HomeFragment, Observer {
+            appViewModel.dialogVisible.observeInFragment(this@PlayFragment, Observer {
                 if (it == 1) {
-                    nav().navigateAction(R.id.action_to_playFragment, Bundle().apply {
-                        putInt("curPos", mCurPos)
-                    })
-//                    mEpisodeDialog = EpisodesDialog()
-//                    mEpisodeDialog?.show(childFragmentManager, "EpisodesDialog")
+                    mEpisodeDialog = EpisodesDialog()
+                    mEpisodeDialog?.show(childFragmentManager, "EpisodesDialog")
                 }
             })
         }
@@ -112,12 +113,9 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
                 if (playState == VideoView.STATE_PLAYBACK_COMPLETED) {
                     Log.d(TAG, "当前播放到位置mCurPos $mCurPos")
                     Log.d(TAG, "自动播放下一条， 当前是 ${appViewModel.curPlayVideoNo.value}")
-//                    appViewModel.curPlayVideoNo.value = appViewModel.curPlayVideoNo.value?.plus(
-//                        1
-//                    )
-                    nav().navigateAction(R.id.action_to_playFragment, Bundle().apply {
-
-                    })
+                    appViewModel.curPlayVideoNo.value = appViewModel.curPlayVideoNo.value?.plus(
+                        1
+                    )
                     Log.d(TAG, "改变后是--  ${appViewModel.curPlayVideoNo.value}")
                 }
             }
@@ -126,7 +124,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 
     private fun initViewPager() {
         vvp.offscreenPageLimit = 4
-        vvp.adapter = videoHomeAdapter
+        vvp.adapter = VideoHomeAdapter(appViewModel.videoHomeDataState.value?.listData)
         vvp!!.overScrollMode = View.OVER_SCROLL_NEVER
         vvp!!.setOnPageChangeListener(object : SimpleOnPageChangeListener() {
             private var mCurItem = 0
@@ -151,11 +149,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
                 super.onPageSelected(position)
                 if (position == mCurPos) return
 //                Log.d(TAG, "onPageSelected 触发 startPlay")
-//                startPlay(position)
-//                滑动进入PlayFragment
-                nav().navigateAction(R.id.action_to_playFragment, Bundle().apply {
-                    putInt("curPos", mCurPos)
-                })
+                startPlay(position)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -237,7 +231,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
         }
     }
 
-    open fun onBackPressed() {
+    fun onBackPressed() {
         if (mVideoView == null || !mVideoView!!.onBackPressed()) {
 //            super.onBackPressed()
         }

@@ -22,47 +22,51 @@
         tools:visibility="visible"/>
 
 
-    <SeekBar
-        android:id="@+id/seekBar"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="-19dp"
-        android:background="@null"
-        android:max="1000"
-        android:maxHeight="4dp"
-        android:minHeight="4dp"
-        android:paddingEnd="0dp"
-        android:paddingStart="0dp"
-        android:thumb="@null"
-        android:thumbOffset="0dp" />
+        android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="50dp"
-        android:padding="20dp"
-        android:textSize="16sp"
-        android:lineSpacingExtra="4dp"
-        android:textColor="@android:color/white"
-        android:elevation="5dp"
-        android:text="蚀骨情深"/>
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="-19dp"
+            android:background="@null"
+            android:max="1000"
+            android:maxHeight="4dp"
+            android:minHeight="4dp"
+            android:paddingEnd="0dp"
+            android:paddingStart="0dp"
+            android:thumb="@null"
+            android:thumbOffset="0dp" />
 
-    <TextView
-        android:id="@+id/tv_cur_episodes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="50dp"
-        android:paddingLeft="20dp"
-        android:textSize="14sp"
-        android:lineSpacingExtra="4dp"
-        android:textColor="#fff"
-        android:elevation="5dp"
-        android:text="第五集"/>
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="50dp"
+            android:padding="20dp"
+            android:textSize="16sp"
+            android:lineSpacingExtra="4dp"
+            android:textColor="@android:color/white"
+            android:elevation="5dp"
+            android:text="蚀骨情深"/>
 
+        <TextView
+            android:id="@+id/tv_cur_episodes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="50dp"
+            android:paddingLeft="20dp"
+            android:textSize="14sp"
+            android:lineSpacingExtra="4dp"
+            android:textColor="#fff"
+            android:elevation="5dp"
+            android:text="第五集"/>
+    </FrameLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"

@@ -1,5 +1,6 @@
 package com.smallplay.playlet.ui.adapter
 
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,8 @@ import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.data.model.bean.VideoResponse
 import com.smallplay.playlet.ui.video.cache.PreloadManager
 import com.smallplay.playlet.ui.video.render.VideoItemView
+import me.hgj.jetpackmvvm.ext.nav
+import me.hgj.jetpackmvvm.ext.navigateAction
 
 class VideoHomeAdapter(
     /**
@@ -67,7 +70,9 @@ class VideoHomeAdapter(
         viewHolder.mCurEpisode.text = "第${position + 1}集"
         viewHolder.mAllEpisode.text = "共${count}集"
         viewHolder.mPosition = position
-        viewHolder.mBtnOpenDialog.setOnClickListener{appViewModel.dialogVisible.value = 1}
+        viewHolder.mBtnOpenDialog.setOnClickListener{
+            appViewModel.dialogVisible.value = 1
+        }
         Log.d(TAG, "初始化------ $videoName  第 $position 集")
         container.addView(view)
         return view!!

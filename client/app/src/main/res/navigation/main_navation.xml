@@ -148,6 +148,10 @@
         android:id="@+id/webFragment"
         android:name="com.smallplay.playlet.ui.fragment.web.WebFragment"
         android:label="WebFragment" />
+    <fragment
+        android:id="@+id/playFragment"
+        android:name="com.smallplay.playlet.ui.fragment.play.PlayFragment"
+        android:label="WebFragment" />
 
     <fragment
         android:id="@+id/systemArrFragment"
@@ -224,6 +228,13 @@
     <action
         android:id="@+id/action_to_webFragment"
         app:destination="@id/webFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+    <action
+        android:id="@+id/action_to_playFragment"
+        app:destination="@id/playFragment"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"

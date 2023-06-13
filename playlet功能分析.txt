@@ -45,3 +45,6 @@ vip会员
 具体来说，你可以在MainActivity中创建并初始化该ViewModel，并在HomeFragment和ParkFragment中使用getActivity().getViewModelProvider().get(ViewModel.class)方法来获取MainActivity中的ViewModel对象，然后在Fragment中使用该ViewModel来进行数据处理。
 
 另外，如果你需要在Fragment中传递数据给ViewModel，可以使用ViewModel的public方法来实现，例如ViewModel中定义一个public方法setVideoData()，在Fragment中调用该方法来传递视频数据。如果你需要观察ViewModel中的数据变化，并在Fragment中更新UI，可以使用LiveData来实现。
+
+充值 聊天 会员限制 播放细调
+关于我们 充值金币 看视频扣费
