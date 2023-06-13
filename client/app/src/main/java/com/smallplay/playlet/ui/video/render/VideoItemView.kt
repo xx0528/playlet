@@ -26,7 +26,7 @@ class VideoItemView : FrameLayout, IControlComponent, OnSeekBarChangeListener {
     private var mBottomProgress: ProgressBar? = null
     private var mVideoProgress: SeekBar? = null
     private var mIsDragging = false
-
+    private val TAG = "VideoItemView-------------------"
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {}
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
@@ -40,7 +40,9 @@ class VideoItemView : FrameLayout, IControlComponent, OnSeekBarChangeListener {
         LayoutInflater.from(context).inflate(R.layout.layout_video_controller, this, true)
         thumb = findViewById<ImageView>(R.id.iv_thumb)
         mPlayBtn = findViewById<ImageView>(R.id.play_btn)
-        setOnClickListener { mControlWrapper!!.togglePlay() }
+        setOnClickListener {
+            mControlWrapper!!.togglePlay()
+        }
         mScaledTouchSlop = ViewConfiguration.get(context).scaledTouchSlop
         mBottomProgress = findViewById<ProgressBar>(R.id.bottom_progress)
         mVideoProgress = findViewById<SeekBar>(R.id.seekBar)
@@ -77,6 +79,7 @@ class VideoItemView : FrameLayout, IControlComponent, OnSeekBarChangeListener {
     }
 
     override fun attach(controlWrapper: ControlWrapper) {
+        Log.d(TAG, "attach 初始化  controlWrapper")
         mControlWrapper = controlWrapper
     }
 

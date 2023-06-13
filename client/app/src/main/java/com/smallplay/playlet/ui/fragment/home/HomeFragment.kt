@@ -53,7 +53,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
      */
     override fun lazyLoadData() {
         //请求视频列表数据 第一次要去请求下
-        appViewModel.getVideoData(true)
+        appViewModel.getVideoData(true, isHomePage = true)
     }
 
     override fun createObserver() {

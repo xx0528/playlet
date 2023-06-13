@@ -61,7 +61,7 @@ class AppViewModel : BaseViewModel() {
      * 获取首页视频列表数据
      * @param isRefresh 是否是刷新，即第一页
      */
-    fun getVideoData(isRefresh: Boolean) {
+    fun getVideoData(isRefresh: Boolean, isHomePage : Boolean = false) {
         if (isRefresh) {
             pageNo = 0
         }
@@ -86,7 +86,7 @@ class AppViewModel : BaseViewModel() {
                 )
 
             videoParkDataState.value = listDataUiState
-            if (isRefresh) {
+            if (isHomePage) {
                 setCurVideo(it.list[0].ID)
             }
         }, {

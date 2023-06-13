@@ -68,10 +68,11 @@ class ParkFragment : BaseFragment1<ParkViewModel, FragmentParkBinding>() {
      * 懒加载
      */
     override fun lazyLoadData() {
+        //首页已经请求过第一次了 这里就不请求了
         //设置界面 加载中
-        loadsir.showLoading()
+//        loadsir.showLoading()
         //请求视频列表数据
-        appViewModel.getVideoData(true)
+//        appViewModel.getVideoData(true)
     }
 
     override fun createObserver() {
