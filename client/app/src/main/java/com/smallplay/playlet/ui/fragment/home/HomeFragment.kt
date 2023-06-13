@@ -115,8 +115,9 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 //                    appViewModel.curPlayVideoNo.value = appViewModel.curPlayVideoNo.value?.plus(
 //                        1
 //                    )
+                    mCurPos++
                     nav().navigateAction(R.id.action_to_playFragment, Bundle().apply {
-
+                        putInt("curPos", mCurPos)
                     })
                     Log.d(TAG, "改变后是--  ${appViewModel.curPlayVideoNo.value}")
                 }

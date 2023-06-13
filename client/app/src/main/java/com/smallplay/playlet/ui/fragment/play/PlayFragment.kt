@@ -76,10 +76,10 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
             curPlayVideoNo.observe(viewLifecycleOwner, Observer {
                 //定为到要预览的位置
                 Log.d(TAG, "监听到 播放 $it")
-//                if (mEpisodeDialog != null) {
-//                    mEpisodeDialog?.dismiss()
-//                    mEpisodeDialog = null
-//                }
+                if (mEpisodeDialog != null) {
+                    mEpisodeDialog?.dismiss()
+                    mEpisodeDialog = null
+                }
                 vvp.currentItem = it
 //                videoHomeAdapter?.notifyDataSetChanged()
                 Log.d(TAG, "监听当前播放curPlayVideo 触发 startPlay")

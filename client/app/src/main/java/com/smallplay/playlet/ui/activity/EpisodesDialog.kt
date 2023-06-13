@@ -109,4 +109,9 @@ class EpisodesDialog : BottomSheetDialogFragment() {
 
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        appViewModel.dialogVisible.value = 0
+    }
 }
