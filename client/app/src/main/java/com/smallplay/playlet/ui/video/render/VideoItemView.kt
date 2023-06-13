@@ -41,7 +41,11 @@ class VideoItemView : FrameLayout, IControlComponent, OnSeekBarChangeListener {
         thumb = findViewById<ImageView>(R.id.iv_thumb)
         mPlayBtn = findViewById<ImageView>(R.id.play_btn)
         setOnClickListener {
-            mControlWrapper!!.togglePlay()
+            if (mControlWrapper != null) {
+                mControlWrapper!!.togglePlay()
+            } else {
+                Log.e(TAG, "mControlWrapper!!.togglePlay() null- -------------------")
+            }
         }
         mScaledTouchSlop = ViewConfiguration.get(context).scaledTouchSlop
         mBottomProgress = findViewById<ProgressBar>(R.id.bottom_progress)

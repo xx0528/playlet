@@ -58,8 +58,8 @@ class ParkFragment : BaseFragment1<ParkViewModel, FragmentParkBinding>() {
         videoParkAdapter.run {
             setOnItemClickListener { adapter, view, position ->
                 Log.d(TAG, "按钮按到 跳转视频--  ${getItem(position).videoName} 视频ID ${getItem(position).ID}")
-                appViewModel.setCurVideo(getItem(position).ID)
                 eventViewModel.navigationIdx.value = 0
+                appViewModel.setCurVideo(getItem(position).ID)
             }
         }
     }

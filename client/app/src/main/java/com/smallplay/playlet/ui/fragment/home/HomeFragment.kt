@@ -61,9 +61,9 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 
             //监听首页视频列表请求的数据变化
             videoHomeDataState.observe(viewLifecycleOwner, Observer {
-                vvp.adapter = null
-                videoHomeAdapter = VideoHomeAdapter(it.listData)
-                initViewPager()
+                //ParkFragment跳过来默认播放第一集
+                vvp.adapter = VideoHomeAdapter(it.listData)
+                startPlay(0)
             })
 //
             curPlayVideoNo.observe(viewLifecycleOwner, Observer {
@@ -76,7 +76,8 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
                 vvp.currentItem = it
 //                videoHomeAdapter?.notifyDataSetChanged()
                 Log.d(TAG, "监听当前播放curPlayVideo 触发 startPlay")
-                vvp.post(Runnable { startPlay(it) })
+                startPlay(0)
+//                vvp.post(Runnable { startPlay(it) })
             })
             appViewModel.dialogVisible.observeInFragment(this@HomeFragment, Observer {
                 if (it == 1) {
@@ -141,7 +142,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
                 super.onPageSelected(position)
                 if (position == mCurPos) return
 //                Log.d(TAG, "onPageSelected 触发 startPlay")
-//                startPlay(position)
+                startPlay(position)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -149,6 +150,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
                 Log.d(TAG, " onPageScrollStateChanged 状态变化 $state")
                 if (state == VerticalViewPager.SCROLL_STATE_DRAGGING) {
                     mCurItem = vvp!!.currentItem
+                    Log.d(TAG, "设置当前curItem ------- ")
                 }
                 if (state == VerticalViewPager.SCROLL_STATE_IDLE) {
                     mPreloadManager!!.resumePreload(mCurPos, mIsReverseScroll)
@@ -159,7 +161,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
         })
     }
 
-    open fun startPlay(position: Int) {
+    private fun startPlay(position: Int) {
         val count = vvp!!.childCount
         Log.d(TAG, " startPlay 播放--position $position")
         for (i in 0 until count) {

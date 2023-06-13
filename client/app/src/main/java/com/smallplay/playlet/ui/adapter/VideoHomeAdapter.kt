@@ -68,7 +68,7 @@ class VideoHomeAdapter(
         viewHolder.mAllEpisode.text = "共${count}集"
         viewHolder.mPosition = position
         viewHolder.mBtnOpenDialog.setOnClickListener{appViewModel.dialogVisible.value = 1}
-        Log.d(TAG, "初始化 $videoName  第 $position 集")
+        Log.d(TAG, "初始化------ $videoName  第 $position 集")
         container.addView(view)
         return view!!
     }
