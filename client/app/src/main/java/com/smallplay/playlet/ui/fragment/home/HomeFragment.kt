@@ -45,6 +45,8 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
 
+        appViewModel.curPage.value = "HomeFragment"
+
         initViewPager()
         initVideoView()
 
@@ -195,6 +197,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 
     override fun onResume() {
         super.onResume()
+        appViewModel.curPage.value = "HomeFragment"
         Log.d(TAG, "onResume ---- ")
         if (mVideoView != null) {
             Log.d(TAG, "mVideoView!!.resume ---- ")

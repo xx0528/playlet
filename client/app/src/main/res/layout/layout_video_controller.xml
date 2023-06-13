@@ -9,7 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"/>
-
+    <ImageView
+        android:id="@+id/btn_back"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:padding="10dp"
+        android:src="@mipmap/ic_back_gray"
+            />
     <ImageView
         android:id="@+id/play_btn"
         android:layout_width="@dimen/dkplayer_play_btn_size"
@@ -21,25 +28,25 @@
         android:visibility="gone"
         tools:visibility="visible"/>
 
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:background="@null"
+        android:max="1000"
+        android:maxHeight="4dp"
+        android:minHeight="4dp"
+        android:paddingEnd="0dp"
+        android:paddingStart="0dp"
+        android:thumb="@null"
+        android:thumbOffset="0dp" />
 
     <FrameLayout
+        android:id="@+id/tv_top_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
-
-        <SeekBar
-            android:id="@+id/seekBar"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="-19dp"
-            android:background="@null"
-            android:max="1000"
-            android:maxHeight="4dp"
-            android:minHeight="4dp"
-            android:paddingEnd="0dp"
-            android:paddingStart="0dp"
-            android:thumb="@null"
-            android:thumbOffset="0dp" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -66,13 +73,37 @@
             android:textColor="#fff"
             android:elevation="5dp"
             android:text="第五集"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="40dp">
+            <ImageView
+                android:id="@+id/like_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="right"
+                android:layout_marginBottom="5dp"
+                android:src="@mipmap/ic_shoucangxiao"/>
+            <TextView
+                android:id="@+id/like_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="#fff"
+                android:textSize="20sp"
+                android:text="4232"/>
+        </LinearLayout>
     </FrameLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="#80000000"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="2dp"
+        android:layout_marginBottom="0dp"
         android:gravity="center_vertical">
 
         <ImageView
@@ -91,7 +122,7 @@
             android:layout_marginLeft="50dp"/>
         <View
             android:id="@+id/btn_episode"
-            android:layout_width="130dp"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_alignLeft="@id/episode_text"
             android:layout_alignTop="@id/episode_text"
@@ -100,15 +131,26 @@
             android:background="@android:color/transparent" />
         <Button
             android:id="@+id/btn_change"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:layout_margin="6dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/bg_btn_change"
+            android:textSize="13sp"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:text="@string/change_next"/>
+        <ImageView
+            android:id="@+id/img_indicate"
             android:layout_width="75dp"
             android:layout_height="match_parent"
             android:layout_margin="6dp"
+            android:layout_gravity="center_vertical"
             android:layout_alignParentRight="true"
-            android:background="@drawable/bg_btn_change"
-            android:textSize="15dp"
-            android:textColor="#fff"
-            android:textStyle="bold"
-            android:text="@string/change_next"/>
+            android:visibility="gone"
+            android:src="@mipmap/icon_arrow_down"
+            />
 
     </RelativeLayout>
 
@@ -119,6 +161,8 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_gravity="bottom"
+        android:layout_marginBottom="90dp"
+        android:visibility="gone"
         android:max="1000"
         android:progressDrawable="@drawable/dkplayer_layer_progress_bar" />
 </FrameLayout>

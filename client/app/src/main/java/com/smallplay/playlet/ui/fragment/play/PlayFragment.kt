@@ -37,36 +37,44 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
     private var mVideoView: VideoView? = null
     private var mCurPos: Int = 0
     private var mEpisodeDialog: EpisodesDialog? = null
+    private var isInit: Boolean = false
 
     private val TAG = "PlayFragment----------------"
 
     override fun initView(savedInstanceState: Bundle?) {
+
+        appViewModel.curPage.value = "PlayFragment"
 
         initViewPager()
         initVideoView()
 
         mPreloadManager = context?.let { PreloadManager.getInstance(it) }
 
-        if (appViewModel.dialogVisible.value == 1) {
-            mEpisodeDialog = EpisodesDialog()
-            mEpisodeDialog?.show(childFragmentManager, "EpisodesDialog")
-        }
-
         mCurPos = arguments?.getInt("curPos")!!
+        isInit = true
     }
 
     /**
      * 懒加载
      */
     override fun lazyLoadData() {
+
         requireActivity().onBackPressedDispatcher.addCallback(this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    nav().navigateUp()
+                    for (i in 0 until 10) {
+                        nav().navigateUp()
+                    }
                 }
             })
         vvp.currentItem = mCurPos
         startPlay(mCurPos)
+
+        if (appViewModel.dialogVisible.value == 1) {
+            mEpisodeDialog = EpisodesDialog()
+            mEpisodeDialog?.show(childFragmentManager, "EpisodesDialog")
+        }
+
     }
 
     override fun createObserver() {
@@ -83,9 +91,18 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
                 startPlay(it)
             })
             appViewModel.dialogVisible.observeInFragment(this@PlayFragment, Observer {
-                if (it == 1) {
-                    mEpisodeDialog = EpisodesDialog()
-                    mEpisodeDialog?.show(childFragmentManager, "EpisodesDialog")
+                if (it == 1 && isInit) {
+                    if (mEpisodeDialog == null) {
+                        mEpisodeDialog = EpisodesDialog()
+                        mEpisodeDialog?.show(childFragmentManager, "EpisodesDialog")
+                    } else {
+                        Log.e(TAG, "已经创建了dialog")
+                    }
+                } else if (it == 0) {
+                    if (mEpisodeDialog != null) {
+                        mEpisodeDialog?.dismiss()
+                        mEpisodeDialog = null
+                    }
                 }
             })
         }
@@ -118,7 +135,18 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
 
     private fun initViewPager() {
         vvp.offscreenPageLimit = 4
-        vvp.adapter = VideoHomeAdapter(appViewModel.videoHomeDataState.value?.listData)
+        var videoAdapter = VideoHomeAdapter(appViewModel.videoHomeDataState.value?.listData)
+        videoAdapter.run {
+            setBackClick { ->
+                run {
+                    //不知为什么dialog返不回去 这里多反几次
+                    for (i in 0 until 10) {
+                        nav().navigateUp()
+                    }
+                }
+            }
+        }
+        vvp.adapter = videoAdapter
         vvp!!.overScrollMode = View.OVER_SCROLL_NEVER
         vvp!!.setOnPageChangeListener(object : SimpleOnPageChangeListener() {
             private var mCurItem = 0
@@ -195,6 +223,8 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
 
     override fun onResume() {
         super.onResume()
+
+        appViewModel.curPage.value = "PlayFragment"
         Log.d(TAG, "onResume ---- ")
         if (mVideoView != null) {
             Log.d(TAG, "mVideoView!!.resume ---- ")
@@ -219,6 +249,8 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
             Log.d(TAG, "mVideoView!!.release ---- ")
             mVideoView!!.release()
         }
+        //换一个 不然HomeFragment会有问题
+        appViewModel.setNextVideo()
     }
 
     fun onBackPressed() {

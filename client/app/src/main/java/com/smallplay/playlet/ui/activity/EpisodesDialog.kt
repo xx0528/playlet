@@ -1,6 +1,7 @@
 package com.smallplay.playlet.ui.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +16,12 @@ import com.smallplay.playlet.R
 import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.ext.bindViewPager2
 import com.smallplay.playlet.app.ext.init
+import com.smallplay.playlet.app.ext.jumpByLogin
 import com.smallplay.playlet.ui.fragment.dialog.EpisodeFragment
 import kotlinx.android.synthetic.main.dialog_episodes.*
 import kotlinx.android.synthetic.main.dialog_episodes.magic_indicator
 import kotlinx.android.synthetic.main.dialog_episodes.view_pager
+import me.hgj.jetpackmvvm.ext.nav
 import net.lucode.hackware.magicindicator.MagicIndicator
 
 
@@ -33,6 +36,7 @@ class EpisodesDialog : BottomSheetDialogFragment() {
     lateinit var mViewPager : ViewPager2
     lateinit var mImageView : ImageView
     lateinit var mMagicIndicator : MagicIndicator
+    private var TAG = "EpisodesDialog ------------- "
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +56,7 @@ class EpisodesDialog : BottomSheetDialogFragment() {
 
         mImageView = view.findViewById<ImageView>(R.id.dialog_episodes_close)
         mImageView.setOnClickListener {
-            dismiss()
+            appViewModel.dialogVisible.value = 0
         }
 
         mMagicIndicator = view.findViewById<MagicIndicator>(R.id.magic_indicator)
@@ -113,5 +117,7 @@ class EpisodesDialog : BottomSheetDialogFragment() {
     override fun onDestroy() {
         super.onDestroy()
         appViewModel.dialogVisible.value = 0
+//        Log.d(TAG, "dialog 销毁 返回上一层")
+//        nav().navigateUp()
     }
 }

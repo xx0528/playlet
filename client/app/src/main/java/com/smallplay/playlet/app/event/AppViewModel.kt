@@ -48,6 +48,9 @@ class AppViewModel : BaseViewModel() {
     //App状态栏透明
     var dialogVisible = EventLiveData<Int>()
 
+    //当前页面
+    var curPage = EventLiveData<String>()
+
     init {
         //默认值保存的账户信息，没有登陆过则为null
         userInfo.value = CacheUtil.getUser()

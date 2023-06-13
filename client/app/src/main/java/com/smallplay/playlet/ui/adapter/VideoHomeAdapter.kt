@@ -1,20 +1,21 @@
 package com.smallplay.playlet.ui.adapter
 
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.navigation.Navigation
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.smallplay.playlet.R
 import com.smallplay.playlet.app.appViewModel
+import com.smallplay.playlet.app.weight.customview.CollectView
+import com.smallplay.playlet.data.model.bean.AriticleResponse
 import com.smallplay.playlet.data.model.bean.VideoResponse
+import com.smallplay.playlet.ui.activity.MainActivity
 import com.smallplay.playlet.ui.video.cache.PreloadManager
 import com.smallplay.playlet.ui.video.render.VideoItemView
-import me.hgj.jetpackmvvm.ext.nav
-import me.hgj.jetpackmvvm.ext.navigateAction
 
 class VideoHomeAdapter(
     /**
@@ -28,7 +29,10 @@ class VideoHomeAdapter(
      */
     private val mViewPool: MutableList<View> = ArrayList()
 
-    private val TAG = "VideoHomeAdapter------==== "
+    private val TAG = "VideoHomeAdapter--------- "
+
+    private var backClickAction: () -> Unit = {  -> }
+
 
     fun setList(videoBeans: List<VideoResponse>?) {
         mVideoBeans = videoBeans
@@ -56,7 +60,7 @@ class VideoHomeAdapter(
         } else {
             viewHolder = view.tag as ViewHolder
         }
-        val (_, videoName, _, _, _, _, _, _, _, imgUrl, videoUrl) = mVideoBeans!![position]
+        val (_, videoName, _, _, _, likeCount, _, _, _, imgUrl, videoUrl) = mVideoBeans!![position]
         //开始预加载
         PreloadManager.getInstance(context)!!.addPreloadTask(videoUrl, position)
         Glide.with(context)
@@ -68,11 +72,32 @@ class VideoHomeAdapter(
             appViewModel.setNextVideo()
         }
         viewHolder.mCurEpisode.text = "第${position + 1}集"
-        viewHolder.mAllEpisode.text = "共${count}集"
         viewHolder.mPosition = position
         viewHolder.mBtnOpenDialog.setOnClickListener{
             appViewModel.dialogVisible.value = 1
         }
+
+        viewHolder.mBtnBack.setOnClickListener { backClickAction.invoke() }
+
+        viewHolder.mLikeCount.text = "$likeCount"
+
+        if (appViewModel.curPage.value == "HomeFragment") {
+            viewHolder.mTopLayout.visibility = View.VISIBLE
+            viewHolder.mImgIndicate.visibility = View.INVISIBLE
+            viewHolder.mAllEpisode.text = "共${count}集"
+            viewHolder.mBtnChange.visibility = View.VISIBLE
+            viewHolder.mBtnBack.visibility = View.INVISIBLE
+//            viewHolder.mBtnOpenDialog.layoutParams = RelativeLayout.LayoutParams(130, viewHolder.mBtnOpenDialog.height);
+
+        } else if (appViewModel.curPage.value == "PlayFragment") {
+            viewHolder.mTopLayout.visibility = View.INVISIBLE
+            viewHolder.mImgIndicate.visibility = View.VISIBLE
+            viewHolder.mBtnChange.visibility = View.INVISIBLE
+            viewHolder.mBtnBack.visibility = View.VISIBLE
+//            viewHolder.mBtnOpenDialog.layoutParams = RelativeLayout.LayoutParams(1000, viewHolder.mBtnOpenDialog.height);
+            viewHolder.mAllEpisode.text = "共${count}集"
+        }
+
         Log.d(TAG, "初始化------ $videoName  第 $position 集")
         container.addView(view)
         return view!!
@@ -101,6 +126,11 @@ class VideoHomeAdapter(
         var mVideoItemView: VideoItemView
         var mPlayerContainer: FrameLayout
         var mBtnChange: Button
+        var mTopLayout: View
+        var mImgIndicate: ImageView
+        var mLikeIcon: View
+        var mBtnBack: View
+        var mLikeCount: TextView
 
         init {
             mVideoItemView = itemView!!.findViewById(R.id.home_video_View)
@@ -111,8 +141,19 @@ class VideoHomeAdapter(
             mPlayerContainer = itemView.findViewById(R.id.home_video_container)
             mBtnOpenDialog = itemView.findViewById(R.id.btn_episode)
             mBtnChange = itemView.findViewById(R.id.btn_change)
+            mTopLayout = itemView.findViewById<View>(R.id.tv_top_layout)
+            mImgIndicate = itemView.findViewById<ImageView>(R.id.img_indicate)
+            mLikeIcon = itemView.findViewById<View>(R.id.like_icon)
+            mLikeCount = itemView.findViewById<TextView>(R.id.like_count)
+            mBtnBack = itemView.findViewById<TextView>(R.id.btn_back)
+
             itemView.tag = this
         }
+    }
+
+
+    fun setBackClick(clickBackAction: () -> Unit) {
+        this.backClickAction = clickBackAction
     }
 }
 
