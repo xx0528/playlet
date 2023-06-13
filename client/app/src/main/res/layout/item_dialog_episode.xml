@@ -12,13 +12,13 @@
         android:id="@+id/park_item_episodes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="14sp"
+        android:textSize="24sp"
         android:textColor="#000"
         android:textStyle="bold"
         android:textAlignment="center"
         android:gravity="center"
-        android:text="1"
-        android:layout_margin="20dp"/>
+        android:text="823"
+        android:layout_margin="1dp"/>
 
     <ImageView
         android:id="@+id/episodes_lock_icon"
