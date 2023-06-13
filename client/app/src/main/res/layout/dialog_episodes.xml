@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
         <ImageView
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:padding="12dp"
             android:src="@mipmap/icon_episodes"/>
         <TextView
@@ -21,14 +21,14 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="21dp"
+            android:textSize="17dp"
             android:textColor="#000"
             android:text="神豪败家子"/>
         <ImageView
             android:id="@+id/dialog_episodes_close"
-            android:layout_width="45dp"
-            android:layout_height="40dp"
-            android:padding="10dp"
+            android:layout_width="35dp"
+            android:layout_height="30dp"
+            android:padding="1dp"
             android:layout_margin="15dp"
             android:src="@mipmap/ic_more_dow"/>
 
@@ -71,7 +71,7 @@
             <net.lucode.hackware.magicindicator.MagicIndicator
                 android:id="@+id/magic_indicator"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp" />
