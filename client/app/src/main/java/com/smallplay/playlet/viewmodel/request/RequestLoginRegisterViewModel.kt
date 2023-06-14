@@ -55,7 +55,7 @@ class RequestLoginRegisterViewModel : BaseViewModel() {
             { HttpRequestCoroutine.register(username, password) }
             , loginResult,
             true,
-            "正在注册中..."
+            "正在联网中..."
         )
     }
 }

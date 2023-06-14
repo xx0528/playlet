@@ -1,3 +1,9 @@
+/*
+ * @Author: xx
+ * @Date: 2023-06-05 12:53:45
+ * @LastEditTime: 2023-06-14 16:18:14
+ * @Description:
+ */
 package playlet
 
 import (
@@ -11,8 +17,8 @@ type PlUserVideoRouter struct {
 // InitPlUserVideoRouter 初始化 PlVideo 路由信息
 func (s *PlUserVideoRouter) InitPlUserVideoRouter(Router *gin.RouterGroup) {
 	plUserVideoRouterWithoutRecord := Router.Group("plUserVideo")
-	var plVideoApi = v1.ApiGroupApp.PlayletApiGroup.PlVideoApi
+	var plUserApi = v1.ApiGroupApp.PlayletApiGroup.PlUserApi
 	{
-		plUserVideoRouterWithoutRecord.GET("getPlUserVideoList", plVideoApi.GetPlUserVideoList) // 获取PlVideo列表
+		plUserVideoRouterWithoutRecord.POST("plLogin", plUserApi.RegistAndLogin)
 	}
 }

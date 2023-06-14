@@ -1,5 +1,6 @@
 package com.smallplay.playlet.app.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -8,15 +9,18 @@ import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.StateListDrawable
 import android.os.Build
 import android.preference.PreferenceManager
+import android.provider.Settings
 import android.view.View
 import android.widget.ProgressBar
 import androidx.core.content.ContextCompat
 import com.blankj.utilcode.util.Utils
 import com.kingja.loadsir.core.LoadService
-import com.tencent.mmkv.MMKV
 import com.smallplay.playlet.R
 import com.smallplay.playlet.app.weight.loadCallBack.LoadingCallback
+import com.tencent.mmkv.MMKV
+import me.hgj.jetpackmvvm.base.appContext
 import java.lang.reflect.InvocationTargetException
+import java.util.*
 import kotlin.math.roundToInt
 
 
@@ -180,5 +184,10 @@ object SettingUtil {
         }
     }
 
+    @SuppressLint("HardwareIds")
+    fun getAccountByDevice(): String {
+        //        val tm = appContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        return Settings.Secure.getString(appContext.contentResolver, Settings.Secure.ANDROID_ID)
 
+    }
 }

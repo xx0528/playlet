@@ -8,14 +8,18 @@ import kotlinx.android.parcel.Parcelize
  */
 @SuppressLint("ParcelCreator")
 @Parcelize
-data class UserInfo(var admin: Boolean = false,
-                    var chapterTops: List<String> = listOf(),
-                    var collectIds: MutableList<String> = mutableListOf(),
-                    var email: String="",
-                    var icon: String="",
-                    var id: String="",
-                    var nickname: String="",
-                    var password: String="",
-                    var token: String="",
-                    var type: Int =0,
-                    var username: String="") : Parcelable
+data class UserInfo(
+var userName: String,
+var userId: String,
+var uuid: String,
+var guestId: String,
+var phone: String,
+var recharge: Double,
+var curGold: Long,
+var buyVideos: String,
+var registerTime: String,
+var lastLoginTime: String,
+var likeVideos: String,
+var enable: Int,
+var token: String,
+var expiresAt: Long) : Parcelable

@@ -3,8 +3,8 @@ package com.smallplay.playlet.app.util
 import android.text.TextUtils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import com.tencent.mmkv.MMKV
 import com.smallplay.playlet.data.model.bean.UserInfo
+import com.tencent.mmkv.MMKV
 
 object CacheUtil {
     /**

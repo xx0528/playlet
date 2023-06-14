@@ -38,9 +38,9 @@ class AddAriticleFragment : BaseFragment<AriticleViewModel, FragmentShareAriticl
         mDatabind.vm = mViewModel
 
         appViewModel.userInfo.value?.let {
-            if (it.nickname.isEmpty()) mViewModel.shareName.set(it.username) else mViewModel.shareName.set(
-                it.nickname
-            )
+//            if (it.nickname.isEmpty()) mViewModel.shareName.set(it.username) else mViewModel.shareName.set(
+//                it.nickname
+//            )
         }
         appViewModel.appColor.value?.let { SettingUtil.setShapColor(share_submit, it) }
 

@@ -12,9 +12,8 @@ class MeViewModel : BaseViewModel() {
 
     var name = StringObservableField("请先登录~")
 
-    var gold = IntObservableField(0)
-
-    var info = StringObservableField("id：--　排名：-")
+    var gold = StringObservableField("")
+    var info = StringObservableField("id：--")
 
     var imageUrl = StringObservableField(ColorUtil.randomImage())
 }

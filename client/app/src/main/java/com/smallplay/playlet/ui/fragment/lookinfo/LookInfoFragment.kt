@@ -122,20 +122,20 @@ class LookInfoFragment : BaseFragment<LookInfoViewModel, FragmentLookinfoBinding
         appViewModel.run {
             //监听账户信息是否改变 有值时(登录)将相关的数据设置为已收藏，为空时(退出登录)，将已收藏的数据变为未收藏
             userInfo.observeInFragment(this@LookInfoFragment) {
-                if (it != null) {
-                    it.collectIds.forEach { id ->
-                        for (item in articleAdapter.data) {
-                            if (id.toInt() == item.id) {
-                                item.collect = true
-                                break
-                            }
-                        }
-                    }
-                } else {
-                    for (item in articleAdapter.data) {
-                        item.collect = false
-                    }
-                }
+//                if (it != null) {
+//                    it.collectIds.forEach { id ->
+//                        for (item in articleAdapter.data) {
+//                            if (id.toInt() == item.id) {
+//                                item.collect = true
+//                                break
+//                            }
+//                        }
+//                    }
+//                } else {
+//                    for (item in articleAdapter.data) {
+//                        item.collect = false
+//                    }
+//                }
                 articleAdapter.notifyDataSetChanged()
             }
             //监听全局的收藏信息 收藏的Id跟本列表的数据id匹配则需要更新

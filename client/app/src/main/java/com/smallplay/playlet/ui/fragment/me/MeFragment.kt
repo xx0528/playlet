@@ -28,8 +28,6 @@ import me.hgj.jetpackmvvm.ext.util.notNull
 
 class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
 
-    private var rank: IntegralResponse? = null
-
     private val requestMeViewModel: RequestMeViewModel by viewModels()
 
     override fun initView(savedInstanceState: Bundle?) {
@@ -37,16 +35,16 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         mDatabind.vm = mViewModel
         mDatabind.click = ProxyClick()
         appViewModel.appColor.value?.let { setUiTheme(it, me_linear, me_integral) }
-        appViewModel.userInfo.value?.let { mViewModel.name.set(if (it.nickname.isEmpty()) it.username else it.nickname) }
-//        me_swipe.init {
-//            requestMeViewModel.getIntegral()
-//        }
+        appViewModel.userInfo.value?.let { mViewModel.name.set(if (it.userName.isEmpty()) it.userName else it.uuid) }
+        me_swipe.init {
+            requestMeViewModel.getUserInfo()
+        }
     }
 
     override fun lazyLoadData() {
         appViewModel.userInfo.value?.run {
-//            me_swipe.isRefreshing = true
-//            requestMeViewModel.getIntegral()
+            me_swipe.isRefreshing = true
+            requestMeViewModel.getUserInfo()
         }
     }
 
@@ -55,9 +53,8 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         requestMeViewModel.meData.observe(viewLifecycleOwner, Observer { resultState ->
             me_swipe.isRefreshing = false
             parseState(resultState, {
-                rank = it
-                mViewModel.info.set("id：${it.userId}　排名：${it.rank}")
-                mViewModel.gold.set(it.coinCount)
+                mViewModel.info.set("id：${it.userId}")
+                mViewModel.gold.set(it.curGold.toString())
             }, {
                 ToastUtils.showShort(it.errorMsg)
             })
@@ -69,13 +66,13 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
             })
             userInfo.observeInFragment(this@MeFragment, Observer {
                 it.notNull({
-//                    me_swipe.isRefreshing = true
-                    mViewModel.name.set(if (it.nickname.isEmpty()) it.username else it.nickname)
-//                    requestMeViewModel.getIntegral()
+                    me_swipe.isRefreshing = true
+                    mViewModel.name.set(if (it.userName.isEmpty()) it.userName else it.userId)
+                    requestMeViewModel.getUserInfo()
                 }, {
                     mViewModel.name.set(context?.getString(R.string.me_click_login_text))
-                    mViewModel.info.set("id：--　排名：--")
-                    mViewModel.gold.set(0)
+                    mViewModel.info.set("id：--　")
+                    mViewModel.gold.set("0")
                 })
             })
         }
@@ -90,20 +87,19 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
 
         /** 收藏 */
         fun collect() {
-            nav().jumpByLogin {
-                it.navigateAction(R.id.action_mainfragment_to_collectFragment)
-            }
+//            nav().jumpByLogin {
+//                it.navigateAction(R.id.action_mainfragment_to_collectFragment)
+//            }
         }
 
         /** 积分 */
         fun gold() {
-            nav().jumpByLogin {
-                it.navigateAction(R.id.action_mainfragment_to_integralFragment,
-                    Bundle().apply {
-                        putParcelable("rank", rank)
-                    }
-                )
-            }
+//            nav().jumpByLogin {
+//                it.navigateAction(R.id.action_mainfragment_to_integralFragment,
+//                    Bundle().apply {
+//                    }
+//                )
+//            }
         }
 
         /** 联系我们 */

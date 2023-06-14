@@ -130,14 +130,14 @@ class AskFragment : BaseFragment<TreeViewModel, IncludeListBinding>() {
             //监听账户信息是否改变 有值时(登录)将相关的数据设置为已收藏，为空时(退出登录)，将已收藏的数据变为未收藏
             userInfo.observeInFragment(this@AskFragment, Observer {
                 if (it != null) {
-                    it.collectIds.forEach { id ->
-                        for (item in articleAdapter.data) {
-                            if (id.toInt() == item.id) {
-                                item.collect = true
-                                break
-                            }
-                        }
-                    }
+//                    it.collectIds.forEach { id ->
+//                        for (item in articleAdapter.data) {
+//                            if (id.toInt() == item.id) {
+//                                item.collect = true
+//                                break
+//                            }
+//                        }
+//                    }
                 } else {
                     for (item in articleAdapter.data) {
                         item.collect = false

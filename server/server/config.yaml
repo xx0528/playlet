@@ -34,7 +34,7 @@ captcha:
   key-long: 6
   img-width: 240
   img-height: 80
-  open-captcha: 0
+  open-captcha: 5
   open-captcha-timeout: 3600
 cors:
   mode: strict-whitelist
@@ -85,10 +85,10 @@ hua-wei-obs:
   access-key: you-access-key
   secret-key: you-secret-key
 jwt:
-  signing-key: 656586af-2903-442f-80c8-18c480dd7896
+  signing-key: 656586af-29H3-442f-87c8-1832480dd7896
   expires-time: 7d
   buffer-time: 1d
-  issuer: qmPlus
+  issuer: playletPlus
 local:
   path: uploads/file
   store-path: uploads/file

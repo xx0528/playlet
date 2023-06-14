@@ -6,11 +6,15 @@ import android.util.Log
 import android.view.View
 import android.view.ViewParent
 import android.widget.FrameLayout
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener
 import com.smallplay.playlet.R
 import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.base.BaseFragment1
+import com.smallplay.playlet.app.ext.showMessage
+import com.smallplay.playlet.app.util.CacheUtil
+import com.smallplay.playlet.app.util.SettingUtil
 import com.smallplay.playlet.data.model.bean.VideoResponse
 import com.smallplay.playlet.databinding.FragmentHomeBinding
 import com.smallplay.playlet.ui.activity.EpisodesDialog
@@ -19,10 +23,12 @@ import com.smallplay.playlet.ui.video.VerticalViewPager
 import com.smallplay.playlet.ui.video.cache.PreloadManager
 import com.smallplay.playlet.ui.video.render.VideoController
 import com.smallplay.playlet.ui.video.render.VideoRenderViewFactory
+import com.smallplay.playlet.viewmodel.request.RequestLoginRegisterViewModel
 import com.smallplay.playlet.viewmodel.state.HomeViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import me.hgj.jetpackmvvm.ext.nav
 import me.hgj.jetpackmvvm.ext.navigateAction
+import me.hgj.jetpackmvvm.ext.parseState
 import xyz.doikki.videoplayer.player.BaseVideoView.SimpleOnStateChangeListener
 import xyz.doikki.videoplayer.player.VideoView
 import xyz.doikki.videoplayer.util.L
@@ -43,7 +49,11 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 
     private val TAG = "HomeFragment----------------"
 
+    private val requestLoginRegisterViewModel: RequestLoginRegisterViewModel by viewModels()
+
     override fun initView(savedInstanceState: Bundle?) {
+
+        addLoadingObserve(requestLoginRegisterViewModel)
 
         appViewModel.curPage.value = "HomeFragment"
 
@@ -57,11 +67,41 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
      * 懒加载
      */
     override fun lazyLoadData() {
-        //请求视频列表数据 第一次要去请求下
-        appViewModel.getVideoData(true, isHomePage = true)
+//        if (CacheUtil.isFirst()) {
+//            requestLoginRegisterViewModel.registerAndlogin(
+//                SettingUtil.getAccountByDevice() ,
+//                "GidMQhZN"
+//            )
+//        } else {
+//            CacheUtil.getUser()
+//            requestLoginRegisterViewModel.registerAndlogin(
+//                SettingUtil.getAccountByDevice() ,
+//                "GidMQhZN"
+//            )
+//        }
+        CacheUtil.getUser()
+        requestLoginRegisterViewModel.registerAndlogin(
+            SettingUtil.getAccountByDevice() ,
+            "GidMQhZN"
+        )
     }
 
     override fun createObserver() {
+        requestLoginRegisterViewModel.loginResult.observe(viewLifecycleOwner,Observer { resultState ->
+            parseState(resultState, {
+                //登录成功 通知账户数据发生改变鸟
+                CacheUtil.setUser(it)
+                CacheUtil.setIsLogin(true)
+                appViewModel.userInfo.value = it
+                //登录成功 请求数据
+                //请求视频列表数据 第一次要去请求下
+                appViewModel.getVideoData(true, isHomePage = true)
+            }, {
+                //登录失败
+                showMessage(it.errorMsg)
+            })
+        })
+
         appViewModel.run {
 
             //监听首页视频列表请求的数据变化

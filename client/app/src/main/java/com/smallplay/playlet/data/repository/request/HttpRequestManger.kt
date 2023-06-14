@@ -48,14 +48,16 @@ class HttpRequestManger {
      * 注册并登陆
      */
     suspend fun register(username: String, password: String): ApiResponse<UserInfo> {
-        val registerData = apiService.register(username, password, password)
-        //判断注册结果 注册成功，调用登录接口
-        if (registerData.isSucces()) {
-            return apiService.login(username, password)
-        } else {
-            //抛出错误异常
-            throw AppException(registerData.code, registerData.msg)
-        }
+//        val registerData = apiService.register(username, password, password)
+//        //判断注册结果 注册成功，调用登录接口
+//        if (registerData.isSucces()) {
+//            return apiService.login(username, password)
+//        } else {
+//            //抛出错误异常
+//            throw AppException(registerData.code, registerData.msg)
+//        }
+
+        return apiService.login(username, password)
     }
 
     /**

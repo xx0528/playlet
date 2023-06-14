@@ -1,7 +1,7 @@
 /*
  * @Author: xx
  * @Date: 2023-06-02 18:36:01
- * @LastEditTime: 2023-06-02 19:59:12
+ * @LastEditTime: 2023-06-14 15:00:33
  * @Description:
  */
 // 自动生成模板PlUser
@@ -11,13 +11,17 @@ import (
 	"time"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
+	"github.com/gofrs/uuid"
 )
 
 // PlUser 结构体
 type PlUser struct {
 	global.GVA_MODEL
 	UserName      string    `json:"userName" form:"userName" gorm:"column:user_name;comment:用户名;"`
-	UserId        string    `json:"userId" form:"userId" gorm:"column:user_id;comment:用户Id;"`
+	UserId        string    `json:"userId" form:"userId" gorm:"column:user_id;comment:用户设备Id;"`
+	UUID          uuid.UUID `json:"uuid" gorm:"index;comment:用户UUID"`              // 用户UUID
+	AuthorityId   uint      `json:"authorityId" gorm:"default:888;comment:用户角色ID"` // 用户角色ID
+	Password      string    `json:"-"  gorm:"comment:用户登录密码"`                      // 用户登录密码
 	GuestId       string    `json:"guestId" form:"guestId" gorm:"column:guest_id;comment:访客id;"`
 	Phone         string    `json:"phone" form:"phone" gorm:"column:phone;comment:手机;"`
 	Recharge      float64   `json:"recharge" form:"recharge" gorm:"column:recharge;comment:累计充值;"`
@@ -26,6 +30,7 @@ type PlUser struct {
 	RegisterTime  time.Time `json:"registerTime" form:"registerTime" gorm:"column:register_time;comment:注册时间;"`
 	LastLoginTime time.Time `json:"lastLoginTime" form:"lastLoginTime" gorm:"column:last_login_time;comment:最后登录时间;"`
 	LikeVideos    string    `json:"likeVideos" form:"likeVideos" gorm:"column:like_videos;type:text;comment:收藏剧集;"`
+	Enable        int       `json:"enable" gorm:"default:1;comment:用户是否被冻结 1正常 2冻结"` //用户是否被冻结 1正常 2冻结
 	CreatedBy     uint      `gorm:"column:created_by;comment:创建者"`
 	UpdatedBy     uint      `gorm:"column:updated_by;comment:更新者"`
 	DeletedBy     uint      `gorm:"column:deleted_by;comment:删除者"`

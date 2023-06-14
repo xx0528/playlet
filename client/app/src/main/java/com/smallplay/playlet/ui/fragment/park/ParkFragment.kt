@@ -86,14 +86,14 @@ class ParkFragment : BaseFragment1<ParkViewModel, FragmentParkBinding>() {
             //监听账户信息是否改变 有值时(登录)将相关的数据设置为已收藏，为空时(退出登录)，将已收藏的数据变为未收藏
             userInfo.observeInFragment(this@ParkFragment, Observer {
                 if (it != null) {
-                    it.collectIds.forEach { id ->
-                        for (item in videoParkAdapter.data) {
-//                            if (id.toInt() == item.id) {
-//                                item.collect = true
-//                                break
-//                            }
-                        }
-                    }
+//                    it.collectIds.forEach { id ->
+//                        for (item in videoParkAdapter.data) {
+////                            if (id.toInt() == item.id) {
+////                                item.collect = true
+////                                break
+////                            }
+//                        }
+//                    }
                 } else {
                     for (item in videoParkAdapter.data) {
 //                        item.collect = false

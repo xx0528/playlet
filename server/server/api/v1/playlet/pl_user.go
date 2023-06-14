@@ -1,22 +1,27 @@
 package playlet
 
 import (
+	"time"
+
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/playlet"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
-    playletReq "github.com/flipped-aurora/gin-vue-admin/server/model/playlet/request"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
-    "github.com/flipped-aurora/gin-vue-admin/server/service"
-    "github.com/gin-gonic/gin"
-    "go.uber.org/zap"
-    "github.com/flipped-aurora/gin-vue-admin/server/utils"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/playlet"
+	playletReq "github.com/flipped-aurora/gin-vue-admin/server/model/playlet/request"
+	playletRes "github.com/flipped-aurora/gin-vue-admin/server/model/playlet/response"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/system"
+	systemReq "github.com/flipped-aurora/gin-vue-admin/server/model/system/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/service"
+	"github.com/flipped-aurora/gin-vue-admin/server/utils"
+	"github.com/gin-gonic/gin"
+	"github.com/go-redis/redis/v8"
+	"go.uber.org/zap"
 )
 
 type PlUserApi struct {
 }
 
 var plUserService = service.ServiceGroupApp.PlayletServiceGroup.PlUserService
-
 
 // CreatePlUser 创建PlUser
 // @Tags PlUser
@@ -34,16 +39,16 @@ func (plUserApi *PlUserApi) CreatePlUser(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-    plUser.CreatedBy = utils.GetUserID(c)
-    verify := utils.Rules{
-        "UserId":{utils.NotEmpty()},
-    }
+	plUser.CreatedBy = utils.GetUserID(c)
+	verify := utils.Rules{
+		"UserId": {utils.NotEmpty()},
+	}
 	if err := utils.Verify(plUser, verify); err != nil {
-    		response.FailWithMessage(err.Error(), c)
-    		return
-    	}
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
 	if err := plUserService.CreatePlUser(&plUser); err != nil {
-        global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
 		response.OkWithMessage("创建成功", c)
@@ -66,9 +71,9 @@ func (plUserApi *PlUserApi) DeletePlUser(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-    plUser.DeletedBy = utils.GetUserID(c)
+	plUser.DeletedBy = utils.GetUserID(c)
 	if err := plUserService.DeletePlUser(plUser); err != nil {
-        global.GVA_LOG.Error("删除失败!", zap.Error(err))
+		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
 		response.OkWithMessage("删除成功", c)
@@ -86,14 +91,14 @@ func (plUserApi *PlUserApi) DeletePlUser(c *gin.Context) {
 // @Router /plUser/deletePlUserByIds [delete]
 func (plUserApi *PlUserApi) DeletePlUserByIds(c *gin.Context) {
 	var IDS request.IdsReq
-    err := c.ShouldBindJSON(&IDS)
+	err := c.ShouldBindJSON(&IDS)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-    deletedBy := utils.GetUserID(c)
-	if err := plUserService.DeletePlUserByIds(IDS,deletedBy); err != nil {
-        global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
+	deletedBy := utils.GetUserID(c)
+	if err := plUserService.DeletePlUserByIds(IDS, deletedBy); err != nil {
+		global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
 		response.OkWithMessage("批量删除成功", c)
@@ -116,16 +121,16 @@ func (plUserApi *PlUserApi) UpdatePlUser(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-    plUser.UpdatedBy = utils.GetUserID(c)
-      verify := utils.Rules{
-          "UserId":{utils.NotEmpty()},
-      }
-    if err := utils.Verify(plUser, verify); err != nil {
-      	response.FailWithMessage(err.Error(), c)
-      	return
-     }
+	plUser.UpdatedBy = utils.GetUserID(c)
+	verify := utils.Rules{
+		"UserId": {utils.NotEmpty()},
+	}
+	if err := utils.Verify(plUser, verify); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
 	if err := plUserService.UpdatePlUser(plUser); err != nil {
-        global.GVA_LOG.Error("更新失败!", zap.Error(err))
+		global.GVA_LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)
 	} else {
 		response.OkWithMessage("更新成功", c)
@@ -149,7 +154,7 @@ func (plUserApi *PlUserApi) FindPlUser(c *gin.Context) {
 		return
 	}
 	if replUser, err := plUserService.GetPlUser(plUser.ID); err != nil {
-        global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
 		response.OkWithData(gin.H{"replUser": replUser}, c)
@@ -173,14 +178,143 @@ func (plUserApi *PlUserApi) GetPlUserList(c *gin.Context) {
 		return
 	}
 	if list, total, err := plUserService.GetPlUserInfoList(pageInfo); err != nil {
-	    global.GVA_LOG.Error("获取失败!", zap.Error(err))
-        response.FailWithMessage("获取失败", c)
-    } else {
-        response.OkWithDetailed(response.PageResult{
-            List:     list,
-            Total:    total,
-            Page:     pageInfo.Page,
-            PageSize: pageInfo.PageSize,
-        }, "获取成功", c)
-    }
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}
+
+func (plUserApi *PlUserApi) GetPlUserInfo(c *gin.Context) {
+	uuid := utils.GetUserUuid(c)
+	userInfo, err := plUserService.GetPlUserByUUID(uuid)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	response.OkWithDetailed(userInfo, "登陆成功", c)
+}
+
+func (plUserApi *PlUserApi) RegistAndLogin(c *gin.Context) {
+	//这里需要鉴权 所以还是直接用 system.SysUser
+	var l playletReq.PlLoginReq
+	err := c.ShouldBind(&l)
+	key := c.ClientIP()
+
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = utils.Verify(l, utils.PlLoginVerify)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	// 判断验证码是否开启
+	openCaptcha := global.GVA_CONFIG.Captcha.OpenCaptcha               // 是否开启防爆次数
+	openCaptchaTimeOut := global.GVA_CONFIG.Captcha.OpenCaptchaTimeOut // 缓存超时时间
+	v, ok := global.BlackCache.Get(key)
+	if !ok {
+		global.BlackCache.Set(key, 1, time.Second*time.Duration(openCaptchaTimeOut))
+	}
+
+	var oc bool = openCaptcha == 0 || openCaptcha < interfaceToInt(v)
+
+	if !oc {
+		usr := &playlet.PlUser{UserId: l.Username, Password: l.Password}
+		user, err := plUserService.RegistAndLogin(usr)
+		if err != nil {
+			global.GVA_LOG.Error("登陆失败! 用户名不存在或者密码错误!", zap.Error(err))
+			// 验证码次数+1
+			global.BlackCache.Increment(key, 1)
+			response.FailWithMessage("用户名不存在或者密码错误", c)
+			return
+		}
+		if user.Enable != 1 {
+			global.GVA_LOG.Error("登陆失败! 用户被禁止登录!")
+			// 验证码次数+1
+			global.BlackCache.Increment(key, 1)
+			response.FailWithMessage("用户被禁止登录", c)
+			return
+		}
+		plUserApi.TokenNext(c, *user)
+		return
+	}
+	// 验证码次数+1
+	global.BlackCache.Increment(key, 1)
+}
+
+// TokenNext 登录以后签发jwt 发jwt还是走的后台用户
+func (plUserApi *PlUserApi) TokenNext(c *gin.Context, user playlet.PlUser) {
+	j := &utils.JWT{SigningKey: []byte(global.GVA_CONFIG.JWT.SigningKey)} // 唯一签名
+	claims := j.CreateClaims(systemReq.BaseClaims{
+		Username:    user.UserId,
+		ID:          user.ID,
+		UUID:        user.UUID,
+		NickName:    user.UserName,
+		AuthorityId: user.AuthorityId,
+	})
+	token, err := j.CreateToken(claims)
+	if err != nil {
+		global.GVA_LOG.Error("获取token失败!", zap.Error(err))
+		response.FailWithMessage("获取token失败", c)
+		return
+	}
+	if !global.GVA_CONFIG.System.UseMultipoint {
+		response.OkWithDetailed(playletRes.PlLoginRes{
+			PlUser:    user,
+			Token:     token,
+			ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+		}, "登录成功", c)
+		return
+	}
+
+	if jwtStr, err := jwtService.GetRedisJWT(user.UserName); err == redis.Nil {
+		if err := jwtService.SetRedisJWT(token, user.UserName); err != nil {
+			global.GVA_LOG.Error("设置登录状态失败!", zap.Error(err))
+			response.FailWithMessage("设置登录状态失败", c)
+			return
+		}
+		response.OkWithDetailed(playletRes.PlLoginRes{
+			PlUser:    user,
+			Token:     token,
+			ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+		}, "登录成功", c)
+	} else if err != nil {
+		global.GVA_LOG.Error("设置登录状态失败!", zap.Error(err))
+		response.FailWithMessage("设置登录状态失败", c)
+	} else {
+		var blackJWT system.JwtBlacklist
+		blackJWT.Jwt = jwtStr
+		if err := jwtService.JsonInBlacklist(blackJWT); err != nil {
+			response.FailWithMessage("jwt作废失败", c)
+			return
+		}
+		if err := jwtService.SetRedisJWT(token, user.UserName); err != nil {
+			response.FailWithMessage("设置登录状态失败", c)
+			return
+		}
+		response.OkWithDetailed(playletRes.PlLoginRes{
+			PlUser:    user,
+			Token:     token,
+			ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+		}, "登录成功", c)
+	}
+}
+
+// 类型转换
+func interfaceToInt(v interface{}) (i int) {
+	switch v := v.(type) {
+	case int:
+		i = v
+	default:
+		i = 0
+	}
+	return
 }
