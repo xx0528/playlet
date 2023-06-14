@@ -1,6 +1,5 @@
 package com.smallplay.playlet.ui.fragment.home
 
-import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -45,9 +44,8 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
     private var mController: VideoController? = null
     private var mVideoView: VideoView? = null
     private var mCurPos: Int = 0
-    private var mEpisodeDialog: EpisodesDialog? = null
 
-    private val TAG = "HomeFragment----------------"
+    private val TAG = "HomeFragment-----------"
 
     private val requestLoginRegisterViewModel: RequestLoginRegisterViewModel by viewModels()
 

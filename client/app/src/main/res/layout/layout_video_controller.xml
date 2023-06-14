@@ -89,6 +89,7 @@
             android:text="第五集"/>
 
         <LinearLayout
+            android:id="@+id/like_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"

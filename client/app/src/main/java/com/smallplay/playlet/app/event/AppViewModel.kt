@@ -2,6 +2,7 @@ package com.smallplay.playlet.app.event
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.blankj.utilcode.util.ToastUtils
 import com.kunminx.architecture.ui.callback.UnPeekLiveData
 import com.smallplay.playlet.app.network.stateCallback.ListDataUiState
 import me.hgj.jetpackmvvm.base.appContext
@@ -155,5 +156,28 @@ class AppViewModel : BaseViewModel() {
             }
         }
         return null
+    }
+
+    fun likeVideo(ID: Int) {
+        request({ HttpRequestCoroutine.likeVideo(ID) }, {
+            userInfo.value?.likeVideos = it
+        }, {
+        })
+    }
+
+    fun playVideo(ID: Int, episode: Int) {
+        request({ HttpRequestCoroutine.playVideo(ID, episode) }, {
+            if (it.code == 4) {
+                ToastUtils.showShort(it.msg)
+                return@request
+            }
+            if (it.code == 3) {
+                //购买解锁
+                userInfo.value = it.userInfo
+            }
+            ToastUtils.showShort(it.msg)
+            curPlayVideoNo.value = it.episode
+        }, {
+        })
     }
 }

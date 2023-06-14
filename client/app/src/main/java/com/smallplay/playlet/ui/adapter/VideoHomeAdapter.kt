@@ -5,15 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.navigation.Navigation
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.smallplay.playlet.R
 import com.smallplay.playlet.app.appViewModel
-import com.smallplay.playlet.app.weight.customview.CollectView
-import com.smallplay.playlet.data.model.bean.AriticleResponse
 import com.smallplay.playlet.data.model.bean.VideoResponse
-import com.smallplay.playlet.ui.activity.MainActivity
 import com.smallplay.playlet.ui.video.cache.PreloadManager
 import com.smallplay.playlet.ui.video.render.VideoItemView
 
@@ -29,10 +26,9 @@ class VideoHomeAdapter(
      */
     private val mViewPool: MutableList<View> = ArrayList()
 
-    private val TAG = "VideoHomeAdapter--------- "
+    private val TAG = "VideoHomeAdapter------ "
 
     private var backClickAction: () -> Unit = {  -> }
-
 
     fun setList(videoBeans: List<VideoResponse>?) {
         mVideoBeans = videoBeans
@@ -60,7 +56,7 @@ class VideoHomeAdapter(
         } else {
             viewHolder = view.tag as ViewHolder
         }
-        val (_, videoName, _, _, _, likeCount, _, _, _, imgUrl, videoUrl) = mVideoBeans!![position]
+        val (id, videoName, _, _, _, likeCount, _, _, _, imgUrl, videoUrl) = mVideoBeans!![position]
         //开始预加载
         PreloadManager.getInstance(context)!!.addPreloadTask(videoUrl, position)
         Glide.with(context)
@@ -75,6 +71,10 @@ class VideoHomeAdapter(
         viewHolder.mPosition = position
         viewHolder.mBtnOpenDialog.setOnClickListener{
             appViewModel.dialogVisible.value = 1
+        }
+
+        viewHolder.mLikeLayout.setOnClickListener{
+            appViewModel.likeVideo(id)
         }
 
         viewHolder.mBtnBack.setOnClickListener { backClickAction.invoke() }
@@ -99,6 +99,16 @@ class VideoHomeAdapter(
             viewHolder.mAllEpisode.text = "${videoName}·共${count}集"
             viewHolder.mCurEpisodeTop.visibility = View.VISIBLE
             viewHolder.mCurEpisodeTop.text = "第${position + 1}集"
+        }
+
+        val likeVideos = Gson().fromJson(appViewModel.userInfo.value?.likeVideos ?: "", Map::class.java)
+        if (likeVideos != null) {
+            var episode = likeVideos[id] as? Int
+            if (episode != null && episode >= 1) {
+                viewHolder.mLikeIcon.setImageResource(R.mipmap.ic_shoucangxiao2)
+            } else {
+                viewHolder.mLikeIcon.setImageResource(R.mipmap.ic_shoucangxiao)
+            }
         }
 
         Log.d(TAG, "初始化------ $videoName  第 $position 集")
@@ -131,10 +141,11 @@ class VideoHomeAdapter(
         var mBtnChange: Button
         var mTopLayout: View
         var mImgIndicate: ImageView
-        var mLikeIcon: View
+        var mLikeIcon: ImageView
         var mBtnBack: View
         var mLikeCount: TextView
         var mCurEpisodeTop: TextView
+        var mLikeLayout: View
 
         init {
             mVideoItemView = itemView!!.findViewById(R.id.home_video_View)
@@ -147,11 +158,11 @@ class VideoHomeAdapter(
             mBtnChange = itemView.findViewById(R.id.btn_change)
             mTopLayout = itemView.findViewById<View>(R.id.tv_top_layout)
             mImgIndicate = itemView.findViewById<ImageView>(R.id.img_indicate)
-            mLikeIcon = itemView.findViewById<View>(R.id.like_icon)
+            mLikeIcon = itemView.findViewById<ImageView>(R.id.like_icon)
             mLikeCount = itemView.findViewById<TextView>(R.id.like_count)
             mBtnBack = itemView.findViewById<TextView>(R.id.btn_back)
             mCurEpisodeTop = itemView.findViewById<TextView>(R.id.tv_cur_episodes_top)
-
+            mLikeLayout = itemView.findViewById<View>(R.id.like_layout)
 
             itemView.tag = this
         }

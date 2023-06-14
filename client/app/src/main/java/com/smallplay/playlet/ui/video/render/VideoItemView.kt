@@ -26,7 +26,7 @@ class VideoItemView : FrameLayout, IControlComponent, OnSeekBarChangeListener {
     private var mBottomProgress: ProgressBar? = null
     private var mVideoProgress: SeekBar? = null
     private var mIsDragging = false
-    private val TAG = "VideoItemView-------------------"
+    private val TAG = "VideoItemView----------"
     constructor(context: Context) : super(context) {}
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {}
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(

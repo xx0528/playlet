@@ -61,6 +61,21 @@ class HttpRequestManger {
     }
 
     /**
+     * 收藏视频
+     */
+    suspend fun likeVideo(ID: Int): ApiResponse<String> {
+        return apiService.likeVideo(ID)
+    }
+
+    /**
+     * 播放视频
+     */
+    suspend fun playVideo(ID: Int, episode: Int): ApiResponse<PlayVideoResponse> {
+        return apiService.playVideo(ID, episode)
+    }
+
+
+    /**
      * 获取项目标题数据
      */
     suspend fun getProjectData(

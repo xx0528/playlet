@@ -27,8 +27,30 @@ interface ApiService {
         @Field("password") pwd: String
     ): ApiResponse<UserInfo>
 
+    /**
+     * 获取playlet用户信息
+     */
     @GET("plUser/plGetUserInfo")
     suspend fun getUserInfo(): ApiResponse<UserInfo>
+
+    /**
+     * 播放一个视频
+     */
+    @FormUrlEncoded
+    @POST("plUser/playVideo")
+    suspend fun playVideo(
+        @Field("id") id: Int,
+        @Field("episode") episode: Int
+    ): ApiResponse<PlayVideoResponse>
+
+    /**
+     * 收藏视频
+     */
+    @FormUrlEncoded
+    @POST("plUser/likeVideo")
+    suspend fun likeVideo(
+        @Field("id") id: Int
+    ): ApiResponse<String>
 
     /**
      * 注册

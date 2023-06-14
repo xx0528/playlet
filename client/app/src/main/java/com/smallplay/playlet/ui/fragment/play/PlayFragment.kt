@@ -1,6 +1,5 @@
 package com.smallplay.playlet.ui.fragment.play
 
-import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -36,10 +35,11 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
     private var mController: VideoController? = null
     private var mVideoView: VideoView? = null
     private var mCurPos: Int = 0
+    private var mVideoID: Int = 0
     private var mEpisodeDialog: EpisodesDialog? = null
     private var isInit: Boolean = false
 
-    private val TAG = "PlayFragment----------------"
+    private val TAG = "PlayFragment---------"
 
     override fun initView(savedInstanceState: Bundle?) {
 
@@ -68,7 +68,7 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
                 }
             })
         vvp.currentItem = mCurPos
-        startPlay(mCurPos)
+        reqPlay(mCurPos)
 
         if (appViewModel.dialogVisible.value == 1) {
             mEpisodeDialog = EpisodesDialog()
@@ -167,7 +167,7 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 if (position == mCurPos) return
-                startPlay(position)
+                reqPlay(position)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -184,6 +184,13 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
                 }
             }
         })
+    }
+
+    private fun reqPlay(position: Int) {
+        var videoId = appViewModel.videoHomeDataState.value?.listData?.get(0)?.ID
+        if (videoId != null) {
+            appViewModel.playVideo(videoId, position)
+        }
     }
 
     private fun startPlay(position: Int) {
