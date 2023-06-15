@@ -12,6 +12,7 @@ import com.smallplay.playlet.app.ext.init
 import com.smallplay.playlet.app.ext.joinQQGroup
 import com.smallplay.playlet.app.ext.jumpByLogin
 import com.smallplay.playlet.app.ext.setUiTheme
+import com.smallplay.playlet.app.network.ApiService
 import com.smallplay.playlet.data.model.bean.BannerResponse
 import com.smallplay.playlet.data.model.bean.IntegralResponse
 import com.smallplay.playlet.databinding.FragmentMeBinding
@@ -105,7 +106,15 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         /** 联系我们 */
         fun chat() {
             nav().jumpByLogin {
-                it.navigateAction(R.id.action_mainfragment_to_todoListFragment)
+                it.navigateAction(R.id.action_to_webFragment, Bundle().apply {
+                    putParcelable(
+                        "bannerdata",
+                        BannerResponse(
+                            title = "",
+                            url = "${ApiService.Chat_SERVER_URL}"
+                        )
+                    )
+                })
             }
         }
 
