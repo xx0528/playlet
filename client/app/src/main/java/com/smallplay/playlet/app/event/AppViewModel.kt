@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.blankj.utilcode.util.ToastUtils
 import com.kunminx.architecture.ui.callback.UnPeekLiveData
+import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.network.stateCallback.ListDataUiState
 import me.hgj.jetpackmvvm.base.appContext
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
@@ -187,4 +188,12 @@ class AppViewModel : BaseViewModel() {
         }, {
         })
     }
+
+    fun reqPlay(position: Int) {
+        var videoId = videoHomeDataState.value?.listData?.get(0)?.ID
+        if (videoId != null) {
+            appViewModel.playVideo(videoId, position)
+        }
+    }
+
 }

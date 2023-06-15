@@ -194,6 +194,7 @@ func (plVideoApi *PlVideoApi) GetPlVideoList(c *gin.Context) {
 	}
 }
 
+// 获取视频列表
 func (plVideoApi *PlVideoApi) GetPlUserVideoList(c *gin.Context) {
 	pageInfo := playletReq.PlVideoSearch{}
 	numStr := c.Query("page")

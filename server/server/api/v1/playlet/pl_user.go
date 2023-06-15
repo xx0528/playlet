@@ -248,7 +248,7 @@ func (pUserApi *PlUserApi) PlayVideo(c *gin.Context) {
 
 	//不允许跳着播放
 	if reqInfo.Episode-buyNum > 1 {
-		reqInfo.Episode = int(math.Max(float64(buyNum+1), float64(videoInfo.Count)))
+		reqInfo.Episode = int(math.Min(float64(buyNum+1), float64(videoInfo.Count)))
 	}
 
 	// 有钱直接花
@@ -265,7 +265,7 @@ func (pUserApi *PlUserApi) PlayVideo(c *gin.Context) {
 			BuyVideo: fmt.Sprintf("%s  ID:%d 第%d集", videoInfo.VideoName, reqInfo.ID, reqInfo.Episode),
 		}
 		//更新数据
-		if err := plUserService.UpdatePlUser(user); err != nil {
+		if err := plUserService.UpdatePlUser(user); err == nil {
 			response.OkWithData(playletRes.PlPlayVideoRes{
 				PlVideoInfo: reqInfo,
 				Code:        3,
@@ -467,11 +467,8 @@ func getBuyVideoByID(info string, id int) int {
 	if buyNumIntf == nil {
 		return 0
 	}
-	if buyNum, ok := buyNumIntf.(int); ok {
-		return buyNum
-	}
-
-	return 0
+	buyNum := int(buyNumIntf.(float64))
+	return buyNum
 }
 
 func updateVideoRecord(info string, vInfo playletReq.PlVideoInfo, updateType string) string {

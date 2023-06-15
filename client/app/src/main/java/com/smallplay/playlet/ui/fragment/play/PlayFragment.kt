@@ -68,7 +68,7 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
                 }
             })
         vvp.currentItem = mCurPos
-        reqPlay(mCurPos)
+        appViewModel.reqPlay(mCurPos)
 
         if (appViewModel.dialogVisible.value == 1) {
             mEpisodeDialog = EpisodesDialog()
@@ -124,9 +124,10 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
             override fun onPlayStateChanged(playState: Int) {
                 if (playState == VideoView.STATE_PLAYBACK_COMPLETED) {
                     Log.d(TAG, "自动播放下一条， 当前是 ${appViewModel.curPlayVideoNo.value}")
-                    appViewModel.curPlayVideoNo.value = appViewModel.curPlayVideoNo.value?.plus(
-                        1
-                    )
+                    appViewModel.reqPlay(appViewModel.curPlayVideoNo.value?.plus(1) ?: appViewModel.curPlayVideoNo.value!!)
+//                    appViewModel.curPlayVideoNo.value = appViewModel.curPlayVideoNo.value?.plus(
+//                        1
+//                    )
                     Log.d(TAG, "改变后是--  ${appViewModel.curPlayVideoNo.value}")
                 }
             }
@@ -167,7 +168,7 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 if (position == mCurPos) return
-                reqPlay(position)
+                appViewModel.reqPlay(position)
             }
 
             override fun onPageScrollStateChanged(state: Int) {
@@ -184,13 +185,6 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
                 }
             }
         })
-    }
-
-    private fun reqPlay(position: Int) {
-        var videoId = appViewModel.videoHomeDataState.value?.listData?.get(0)?.ID
-        if (videoId != null) {
-            appViewModel.playVideo(videoId, position)
-        }
     }
 
     private fun startPlay(position: Int) {

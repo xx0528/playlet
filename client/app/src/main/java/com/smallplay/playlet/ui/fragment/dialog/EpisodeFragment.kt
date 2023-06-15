@@ -41,7 +41,8 @@ class EpisodeFragment : BaseFragment1<EpisodesViewModel, FragmentEpisodesBinding
         episodesAdapter.run {
             setOnItemClickListener { adapter, view, position ->
                 //选集播放
-                appViewModel.curPlayVideoNo.value = mEpisodePageNum*30 + position
+//                appViewModel.curPlayVideoNo.value = mEpisodePageNum*30 + position
+                appViewModel.reqPlay(mEpisodePageNum*30 + position)
             }
         }
     }
