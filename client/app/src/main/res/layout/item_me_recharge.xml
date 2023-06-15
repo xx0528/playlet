@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="4dp">
+
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/item_me_recharge_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="24dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/windowBackground"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/icon_gold"
+                tools:srcCompat="@drawable/default_project_img" />
+
+            <TextView
+                android:id="@+id/item_me_recharge_first"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#ff2233"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="首冲奖励" />
+            <TextView
+                android:id="@+id/item_me_recharge_cost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:layout_gravity="center_vertical"
+                android:textSize="50sp"
+                android:layout_marginBottom="24dp"
+                android:textStyle="bold"
+                tools:text="￥30" />
+            <TextView
+                android:id="@+id/item_me_recharge_give"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="150dp"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                tools:text="多送2元" />
+            <TextView
+                android:id="@+id/item_me_recharge_gold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#222"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="30dp"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="2dp"
+                tools:text="3000+2000赠币" />
+        </FrameLayout>
+</androidx.cardview.widget.CardView>
+
+

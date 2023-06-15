@@ -27,6 +27,13 @@ class HttpRequestManger {
     }
 
     /**
+     * 获取充值数据
+     */
+    suspend fun getVipData(pageNo: Int): ApiResponse<ApiPagerResponse<ArrayList<RechargeData>>> {
+        return apiService.getVipInfo(pageNo)
+    }
+
+    /**
      * 获取首页文章数据
      */
     suspend fun getHomeData(pageNo: Int): ApiResponse<ApiPagerResponse<ArrayList<AriticleResponse>>> {

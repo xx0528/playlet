@@ -36,6 +36,8 @@
     <string name="video_watch_text">%1$d人正在看</string>
     <string name="me_setting_text">系统设置</string>
     <string name="me_about_text">关于我们</string>
+    <string name="me_cost_text">消费记录</string>
+    <string name="me_recharge_text">充值记录</string>
     <string name="me_chat_text">联系我们</string>
     <string name="me_cur_gold_text">当前金币:</string>
     <string name="me_my_gold_text">我的金币</string>
@@ -62,4 +64,5 @@
     <string name="about">关于我们</string>
     <string name="episodes_update">更新至%d集</string>
     <string name="episodes_cur_watch">观看至%d集</string>
+    <string name="text_me_like_videos">您正在看的视频</string>
 </resources>

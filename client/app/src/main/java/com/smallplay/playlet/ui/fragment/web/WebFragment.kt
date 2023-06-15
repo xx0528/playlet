@@ -15,10 +15,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.blankj.utilcode.util.VibrateUtils
+import com.google.gson.Gson
 import com.just.agentweb.AgentWeb
 import kotlinx.android.synthetic.main.fragment_web.*
 import kotlinx.android.synthetic.main.include_toolbar.*
 import com.smallplay.playlet.R
+import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.base.BaseFragment
 import com.smallplay.playlet.app.eventViewModel
 import com.smallplay.playlet.app.ext.hideSoftKeyboard
@@ -49,7 +51,7 @@ class WebFragment : BaseFragment<WebViewModel, FragmentWebBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
         setHasOptionsMenu(false)
         mViewModel.url = arguments?.getString("url").toString()
-
+        mViewModel.recharge = arguments?.getInt("recharge")?.toInt() ?: -1
         toolbar.run {
             //设置menu 关键代码
 //            mActivity.setSupportActionBar(this)
@@ -97,8 +99,17 @@ class WebFragment : BaseFragment<WebViewModel, FragmentWebBinding>() {
     }
 
     @JavascriptInterface
-    fun getAccountInfo() : String {
-        return "账号信息"
+    fun getRechargeInfo() : String {
+        var retStr = "我要充值"
+        if (mViewModel.recharge >= 0) {
+            retStr = "$retStr ${mViewModel.recharge} 元"
+        }
+        retStr = "$retStr\n我的賬號是: ${appViewModel.userInfo.value?.userId}\n我的手機是: ${appViewModel.userInfo.value?.phone}"
+        val map = HashMap<String, Any>()
+        map["code"] = mViewModel.recharge
+        map["msg"] = retStr
+
+        return Gson().toJson(map)
     }
 
     override fun createObserver() {

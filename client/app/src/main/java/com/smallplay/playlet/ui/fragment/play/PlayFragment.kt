@@ -241,6 +241,8 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
             Log.d(TAG, "mVideoView!!.pause ---- ")
             mVideoView!!.pause()
         }
+        //暂停时记录进度
+
     }
 
     override fun onDestroy() {

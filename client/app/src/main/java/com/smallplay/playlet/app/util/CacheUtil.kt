@@ -3,6 +3,7 @@ package com.smallplay.playlet.app.util
 import android.text.TextUtils
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.smallplay.playlet.data.model.bean.LocalLikeVideos
 import com.smallplay.playlet.data.model.bean.UserInfo
 import com.tencent.mmkv.MMKV
 
@@ -33,6 +34,32 @@ object CacheUtil {
             setIsLogin(true)
         }
 
+    }
+
+    /**
+     * 获取本地视频观看记录
+     */
+    fun getLocalVideos() : ArrayList<LocalLikeVideos>? {
+        val kv = MMKV.mmkvWithID("app")
+        val videosStr = kv.decodeString("localLikeVideos")
+        return if (TextUtils.isEmpty(videosStr)) {
+            null
+        } else {
+            val type = object : TypeToken<ArrayList<LocalLikeVideos>>() {}.type
+            Gson().fromJson<ArrayList<LocalLikeVideos>>(videosStr, type)
+        }
+    }
+
+    /**
+     * 设置本地视频观看记录
+     */
+    fun setLocalVideos(localLikeVideos: ArrayList<LocalLikeVideos>?) {
+        val kv = MMKV.mmkvWithID("app")
+        if (localLikeVideos == null) {
+            kv.encode("localLikeVideos", "")
+        } else {
+            kv.encode("localLikeVideos", Gson().toJson(localLikeVideos))
+        }
     }
 
     /**

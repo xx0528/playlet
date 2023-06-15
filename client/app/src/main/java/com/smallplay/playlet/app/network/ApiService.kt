@@ -35,6 +35,11 @@ interface ApiService {
     suspend fun getUserInfo(): ApiResponse<UserInfo>
 
     /**
+     * 获取vip配置
+     */
+    @GET("plVip/GetPlVipList")
+    suspend fun getVipInfo(@Query("page") pageNo: Int): ApiResponse<ApiPagerResponse<ArrayList<RechargeData>>>
+    /**
      * 播放一个视频
      */
     @FormUrlEncoded

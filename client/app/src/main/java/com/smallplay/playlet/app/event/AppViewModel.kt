@@ -11,6 +11,7 @@ import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import me.hgj.jetpackmvvm.callback.livedata.event.EventLiveData
 import com.smallplay.playlet.app.util.CacheUtil
 import com.smallplay.playlet.app.util.SettingUtil
+import com.smallplay.playlet.data.model.bean.LocalLikeVideos
 import com.smallplay.playlet.data.model.bean.UserInfo
 import com.smallplay.playlet.data.model.bean.VideoResponse
 import com.smallplay.playlet.data.repository.request.HttpRequestCoroutine
@@ -44,9 +45,13 @@ class AppViewModel : BaseViewModel() {
     //首页视频列表数据
     var videoHomeDataState:  MutableLiveData<ListDataUiState<VideoResponse>> = MutableLiveData()
 
+    //视频本地记录列表数据
+    var localVideosState:  MutableLiveData<ListDataUiState<LocalLikeVideos>> = MutableLiveData()
+
     //当前选中视频
     var curPlayVideoNo : MutableLiveData<Int> = MutableLiveData()
-
+    //当前选中视频播放进度
+    var curPlayVideoTime : MutableLiveData<Int> = MutableLiveData()
     //App状态栏透明
     var dialogVisible = EventLiveData<Int>()
 
@@ -63,6 +68,8 @@ class AppViewModel : BaseViewModel() {
         appColor.value = SettingUtil.getColor(appContext)
         //初始化列表动画
         appAnimation.value = SettingUtil.getListMode()
+
+        localVideosState.value = CacheUtil.getLocalVideos()
     }
 
     /**

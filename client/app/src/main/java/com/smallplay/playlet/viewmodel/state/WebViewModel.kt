@@ -16,9 +16,11 @@ class WebViewModel : BaseViewModel() {
     //标题
     var showTitle: String = ""
 
-    //文章的网络访问路径
+    //访问网址
     var url: String = ""
 
+    //点击的充值按钮
+    var recharge: Int = -1
     //需要收藏的类型 具体参数说明请看 CollectType 枚举类
     var collectType = 0
 }
