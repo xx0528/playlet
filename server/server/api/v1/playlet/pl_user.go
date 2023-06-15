@@ -203,8 +203,7 @@ func (pUserApi *PlUserApi) PlayVideo(c *gin.Context) {
 		return
 	}
 	verify := utils.Rules{
-		"ID":      {utils.NotEmpty()},
-		"Episode": {utils.NotEmpty()},
+		"ID": {utils.NotEmpty()},
 	}
 	if err := utils.Verify(reqInfo, verify); err != nil {
 		response.FailWithMessage(err.Error(), c)
