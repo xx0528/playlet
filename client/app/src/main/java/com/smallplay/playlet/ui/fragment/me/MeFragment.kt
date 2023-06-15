@@ -107,12 +107,9 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         fun chat() {
             nav().jumpByLogin {
                 it.navigateAction(R.id.action_to_webFragment, Bundle().apply {
-                    putParcelable(
-                        "bannerdata",
-                        BannerResponse(
-                            title = "",
-                            url = "${ApiService.Chat_SERVER_URL}"
-                        )
+                    putString(
+                        "url",
+                        ApiService.Chat_SERVER_URL
                     )
                 })
             }

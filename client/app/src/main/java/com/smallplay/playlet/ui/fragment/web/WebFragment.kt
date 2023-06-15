@@ -1,5 +1,6 @@
 package com.smallplay.playlet.ui.fragment.web
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.Window
+import android.webkit.JavascriptInterface
 import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
@@ -45,47 +47,12 @@ class WebFragment : BaseFragment<WebViewModel, FragmentWebBinding>() {
     private val requestCollectViewModel: RequestCollectViewModel by viewModels()
 
     override fun initView(savedInstanceState: Bundle?) {
-        setHasOptionsMenu(true)
-        arguments?.run {
-            //点击文章进来的
-            getParcelable<AriticleResponse>("ariticleData")?.let {
-                mViewModel.ariticleId = it.id
-                mViewModel.showTitle = it.title
-                mViewModel.collect = it.collect
-                mViewModel.url = it.link
-                mViewModel.collectType = CollectType.Ariticle.type
-            }
-            //点击首页轮播图进来的
-            getParcelable<BannerResponse>("bannerdata")?.let {
-                mViewModel.ariticleId = it.id
-                mViewModel.showTitle = it.title
-                //从首页轮播图 没法判断是否已经收藏过，所以直接默认没有收藏
-                mViewModel.collect = false
-                mViewModel.url = it.url
-                mViewModel.collectType = CollectType.Url.type
-            }
-            //从收藏文章列表点进来的
-            getParcelable<CollectResponse>("collect")?.let {
-                mViewModel.ariticleId = it.originId
-                mViewModel.showTitle = it.title
-                //从收藏列表过来的，肯定 是 true 了
-                mViewModel.collect = true
-                mViewModel.url = it.link
-                mViewModel.collectType = CollectType.Ariticle.type
-            }
-            //点击收藏网址列表进来的
-            getParcelable<CollectUrlResponse>("collectUrl")?.let {
-                mViewModel.ariticleId = it.id
-                mViewModel.showTitle = it.name
-                //从收藏列表过来的，肯定 是 true 了
-                mViewModel.collect = true
-                mViewModel.url = it.link
-                mViewModel.collectType = CollectType.Url.type
-            }
-        }
+        setHasOptionsMenu(false)
+        mViewModel.url = arguments?.getString("url").toString()
+
         toolbar.run {
             //设置menu 关键代码
-            mActivity.setSupportActionBar(this)
+//            mActivity.setSupportActionBar(this)
             initClose(mViewModel.showTitle) {
                 hideSoftKeyboard(activity)
                 mAgentWeb?.let { web ->
@@ -104,9 +71,17 @@ class WebFragment : BaseFragment<WebViewModel, FragmentWebBinding>() {
             .ready()
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     override fun lazyLoadData() {
         //加载网页
         mAgentWeb = preWeb?.go(mViewModel.url)
+        var webView = mAgentWeb?.webCreator?.webView
+        if (webView != null)
+        {
+            webView.addJavascriptInterface(this, "androidJs");
+            var settings = webView.settings
+            settings.javaScriptEnabled = true
+        }
         requireActivity().onBackPressedDispatcher.addCallback(this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
@@ -119,6 +94,11 @@ class WebFragment : BaseFragment<WebViewModel, FragmentWebBinding>() {
                     }
                 }
             })
+    }
+
+    @JavascriptInterface
+    fun getAccountInfo() : String {
+        return "账号信息"
     }
 
     override fun createObserver() {
