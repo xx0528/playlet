@@ -16,7 +16,6 @@ import com.smallplay.playlet.app.util.CacheUtil
 import com.smallplay.playlet.app.util.SettingUtil
 import com.smallplay.playlet.data.model.bean.VideoResponse
 import com.smallplay.playlet.databinding.FragmentHomeBinding
-import com.smallplay.playlet.ui.activity.EpisodesDialog
 import com.smallplay.playlet.ui.adapter.VideoHomeAdapter
 import com.smallplay.playlet.ui.video.VerticalViewPager
 import com.smallplay.playlet.ui.video.cache.PreloadManager
@@ -120,6 +119,20 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
                     nav().navigateAction(R.id.action_to_playFragment, Bundle().apply {
                         putInt("curPos", mCurPos)
                     })
+                }
+            })
+
+            appViewModel.likeVideos.observeInFragment(this@HomeFragment, Observer {
+                val count = mViewBind.vvp.childCount
+                Log.d(TAG, "count --- $count")
+                for (i in 0 until count) {
+                    val itemView = vvp!!.getChildAt(i)
+                    val viewHolder: VideoHomeAdapter.ViewHolder = itemView.tag as VideoHomeAdapter.ViewHolder
+                    if (viewHolder.mPosition == mCurPos) {
+                        videoHomeDataState.value?.listData?.get(0)?.let { it1 ->
+                            viewHolder.setLikeIcon(it1.ID)
+                        }
+                    }
                 }
             })
         }

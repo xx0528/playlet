@@ -52,9 +52,12 @@ class AppViewModel : BaseViewModel() {
     //当前页面
     var curPage = EventLiveData<String>()
 
+    var likeVideos = EventLiveData<String>()
+
     init {
         //默认值保存的账户信息，没有登陆过则为null
         userInfo.value = CacheUtil.getUser()
+        likeVideos.value = userInfo.value?.likeVideos
         //默认值颜色
         appColor.value = SettingUtil.getColor(appContext)
         //初始化列表动画
@@ -160,7 +163,10 @@ class AppViewModel : BaseViewModel() {
 
     fun likeVideo(ID: Int) {
         request({ HttpRequestCoroutine.likeVideo(ID) }, {
-            userInfo.value?.likeVideos = it
+            Log.d(TAG, "likevideos -- ${userInfo.value?.likeVideos}")
+            likeVideos.value = it.likeVideos
+            userInfo.value?.likeVideos = it.likeVideos
+            Log.d(TAG, "likevideos 改变之后 -- ${userInfo.value?.likeVideos}")
         }, {
         })
     }
@@ -174,6 +180,7 @@ class AppViewModel : BaseViewModel() {
             if (it.code == 3) {
                 //购买解锁
                 userInfo.value = it.userInfo
+                likeVideos.value = it.userInfo.likeVideos
             }
             ToastUtils.showShort(it.msg)
             curPlayVideoNo.value = it.episode

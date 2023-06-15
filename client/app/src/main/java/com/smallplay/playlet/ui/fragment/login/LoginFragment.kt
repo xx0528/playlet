@@ -52,6 +52,7 @@ class LoginFragment : BaseFragment<LoginRegisterViewModel, FragmentLoginBinding>
                     CacheUtil.setUser(it)
                     CacheUtil.setIsLogin(true)
                     appViewModel.userInfo.value = it
+                    appViewModel.likeVideos.value = it.likeVideos
                     nav().navigateUp()
                 }, {
                     //登录失败

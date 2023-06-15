@@ -2,11 +2,11 @@
   <div>
     <div class="gva-search-box">
       <el-form :inline="true" :model="searchInfo" class="demo-form-inline" @keyup.enter="onSubmit">
-      <el-form-item label="创建时间">
-      <el-date-picker v-model="searchInfo.startCreatedAt" type="datetime" placeholder="开始时间"></el-date-picker>
-       —
-      <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束时间"></el-date-picker>
-      </el-form-item>
+        <el-form-item label="创建时间">
+          <el-date-picker v-model="searchInfo.startCreatedAt" type="datetime" placeholder="开始时间" />
+          —
+          <el-date-picker v-model="searchInfo.endCreatedAt" type="datetime" placeholder="结束时间" />
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="search" @click="onSubmit">查询</el-button>
           <el-button icon="refresh" @click="onReset">重置</el-button>
@@ -14,100 +14,100 @@
       </el-form>
     </div>
     <div class="gva-table-box">
-        <div class="gva-btn-list">
-            <el-button type="primary" icon="plus" @click="openDialog">新增</el-button>
-            <el-popover v-model:visible="deleteVisible" placement="top" width="160">
-            <p>确定要删除吗？</p>
-            <div style="text-align: right; margin-top: 8px;">
-                <el-button type="primary" link @click="deleteVisible = false">取消</el-button>
-                <el-button type="primary" @click="onDelete">确定</el-button>
-            </div>
-            <template #reference>
-                <el-button icon="delete" style="margin-left: 10px;" :disabled="!multipleSelection.length" @click="deleteVisible = true">删除</el-button>
-            </template>
-            </el-popover>
-        </div>
-        <el-table
+      <div class="gva-btn-list">
+        <el-button type="primary" icon="plus" @click="openDialog">新增</el-button>
+        <el-popover v-model:visible="deleteVisible" placement="top" width="160">
+          <p>确定要删除吗？</p>
+          <div style="text-align: right; margin-top: 8px;">
+            <el-button type="primary" link @click="deleteVisible = false">取消</el-button>
+            <el-button type="primary" @click="onDelete">确定</el-button>
+          </div>
+          <template #reference>
+            <el-button icon="delete" style="margin-left: 10px;" :disabled="!multipleSelection.length" @click="deleteVisible = true">删除</el-button>
+          </template>
+        </el-popover>
+      </div>
+      <el-table
         ref="multipleTable"
         style="width: 100%"
         tooltip-effect="dark"
         :data="tableData"
         row-key="ID"
         @selection-change="handleSelectionChange"
-        >
+      >
         <el-table-column type="selection" width="55" />
         <el-table-column align="left" label="日期" width="180">
-            <template #default="scope">{{ formatDate(scope.row.CreatedAt) }}</template>
+          <template #default="scope">{{ formatShortDate(scope.row.CreatedAt) }}</template>
         </el-table-column>
-        <el-table-column align="left" label="短剧名" prop="videoName" width="120" />
+        <el-table-column align="left" label="短剧名" prop="videoName" width="220" />
         <el-table-column align="left" label="短剧类型" prop="videoType" width="120" />
         <el-table-column align="left" label="类型名" prop="typeName" width="120" />
-        <el-table-column align="left" label="简介" prop="videoDesc" width="120" />
+        <!-- <el-table-column align="left" label="简介" prop="videoDesc" width="120" /> -->
         <el-table-column align="left" label="收藏数" prop="likeCount" width="120" />
         <el-table-column align="left" label="是否完结" prop="finish" width="120" />
         <el-table-column align="left" label="集数" prop="count" width="120" />
-        <el-table-column align="left" label="图片" prop="imgUrl" width="120" />
-        <el-table-column align="left" label="视频地址" prop="videoUrl" width="120" />
-         <el-table-column align="left" label="上架时间" width="180">
-            <template #default="scope">{{ formatDate(scope.row.createTime) }}</template>
-         </el-table-column>
+        <!-- <el-table-column align="left" label="图片" prop="imgUrl" width="120" /> -->
+        <el-table-column align="left" label="视频地址" prop="videoUrl" width="340" />
+        <el-table-column align="left" label="上架时间" width="180">
+          <template #default="scope">{{ formatShortDate(scope.row.createTime) }}</template>
+        </el-table-column>
         <el-table-column align="left" label="免费集数" prop="freeCount" width="120" />
         <el-table-column align="left" label="解锁集数" prop="lockCount" width="120" />
         <el-table-column align="left" label="按钮组">
-            <template #default="scope">
+          <template #default="scope">
             <el-button type="primary" link icon="edit" class="table-button" @click="updatePlVideoFunc(scope.row)">变更</el-button>
             <el-button type="primary" link icon="delete" @click="deleteRow(scope.row)">删除</el-button>
-            </template>
+          </template>
         </el-table-column>
-        </el-table>
-        <div class="gva-pagination">
-            <el-pagination
-            layout="total, sizes, prev, pager, next, jumper"
-            :current-page="page"
-            :page-size="pageSize"
-            :page-sizes="[10, 30, 50, 100]"
-            :total="total"
-            @current-change="handleCurrentChange"
-            @size-change="handleSizeChange"
-            />
-        </div>
+      </el-table>
+      <div class="gva-pagination">
+        <el-pagination
+          layout="total, sizes, prev, pager, next, jumper"
+          :current-page="page"
+          :page-size="pageSize"
+          :page-sizes="[10, 30, 50, 100]"
+          :total="total"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+        />
+      </div>
     </div>
     <el-dialog v-model="dialogFormVisible" :before-close="closeDialog" title="弹窗操作">
-      <el-form :model="formData" label-position="right" ref="elFormRef" :rules="rule" label-width="80px">
-        <el-form-item label="短剧名:"  prop="videoName" >
-          <el-input v-model="formData.videoName" :clearable="true"  placeholder="请输入" />
+      <el-form ref="elFormRef" :model="formData" label-position="right" :rules="rule" label-width="80px">
+        <el-form-item label="短剧名:" prop="videoName">
+          <el-input v-model="formData.videoName" :clearable="true" placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="短剧类型:"  prop="videoType" >
+        <el-form-item label="短剧类型:" prop="videoType">
           <el-input v-model.number="formData.videoType" :clearable="true" placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="类型名:"  prop="typeName" >
-          <el-input v-model="formData.typeName" :clearable="true"  placeholder="请输入" />
+        <el-form-item label="类型名:" prop="typeName">
+          <el-input v-model="formData.typeName" :clearable="true" placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="简介:"  prop="videoDesc" >
-          <el-input v-model="formData.videoDesc" :clearable="true"  placeholder="请输入" />
+        <el-form-item label="简介:" prop="videoDesc">
+          <el-input v-model="formData.videoDesc" :clearable="true" placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="收藏数:"  prop="likeCount" >
+        <el-form-item label="收藏数:" prop="likeCount">
           <el-input v-model.number="formData.likeCount" :clearable="true" placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="是否完结:"  prop="finish" >
+        <el-form-item label="是否完结:" prop="finish">
           <el-input v-model.number="formData.finish" :clearable="true" placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="集数:"  prop="count" >
+        <el-form-item label="集数:" prop="count">
           <el-input v-model.number="formData.count" :clearable="true" placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="图片:"  prop="imgUrl" >
-          <el-input v-model="formData.imgUrl" :clearable="true"  placeholder="请输入" />
+        <el-form-item label="图片:" prop="imgUrl">
+          <el-input v-model="formData.imgUrl" :clearable="true" placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="视频地址:"  prop="videoUrl" >
-          <el-input v-model="formData.videoUrl" :clearable="true"  placeholder="请输入" />
+        <el-form-item label="视频地址:" prop="videoUrl">
+          <el-input v-model="formData.videoUrl" :clearable="true" placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="上架时间:"  prop="createTime" >
-          <el-date-picker v-model="formData.createTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true"  />
+        <el-form-item label="上架时间:" prop="createTime">
+          <el-date-picker v-model="formData.createTime" type="date" style="width:100%" placeholder="选择日期" :clearable="true" />
         </el-form-item>
-        <el-form-item label="免费集数:"  prop="freeCount" >
+        <el-form-item label="免费集数:" prop="freeCount">
           <el-input v-model.number="formData.freeCount" :clearable="true" placeholder="请输入" />
         </el-form-item>
-        <el-form-item label="解锁集数:"  prop="lockCount" >
+        <el-form-item label="解锁集数:" prop="lockCount">
           <el-input v-model.number="formData.lockCount" :clearable="true" placeholder="请输入" />
         </el-form-item>
       </el-form>
@@ -138,62 +138,61 @@ import {
 } from '@/api/plVideo'
 
 // 全量引入格式化工具 请按需保留
-import { getDictFunc, formatDate, formatBoolean, filterDict } from '@/utils/format'
+import { getDictFunc, formatDate, formatShortDate, formatBoolean, filterDict } from '@/utils/format'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { ref, reactive } from 'vue'
 
 // 自动化生成的字典（可能为空）以及字段
 const formData = ref({
-        videoName: '',
-        videoType: 0,
-        typeName: '',
-        videoDesc: '',
-        likeCount: 0,
-        finish: 0,
-        count: 0,
-        imgUrl: '',
-        videoUrl: '',
-        createTime: new Date(),
-        freeCount: 0,
-        lockCount: 0,
-        })
+  videoName: '',
+  videoType: 0,
+  typeName: '',
+  videoDesc: '',
+  likeCount: 0,
+  finish: 0,
+  count: 0,
+  imgUrl: '',
+  videoUrl: '',
+  createTime: new Date(),
+  freeCount: 0,
+  lockCount: 0,
+})
 
 // 验证规则
 const rule = reactive({
-               videoName : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               }],
-               videoType : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               }],
-               count : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               }],
-               videoUrl : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               }],
-               freeCount : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               }],
-               lockCount : [{
-                   required: true,
-                   message: '',
-                   trigger: ['input','blur'],
-               }],
+  videoName: [{
+    required: true,
+    message: '',
+    trigger: ['input', 'blur'],
+  }],
+  videoType: [{
+    required: true,
+    message: '',
+    trigger: ['input', 'blur'],
+  }],
+  count: [{
+    required: true,
+    message: '',
+    trigger: ['input', 'blur'],
+  }],
+  videoUrl: [{
+    required: true,
+    message: '',
+    trigger: ['input', 'blur'],
+  }],
+  freeCount: [{
+    required: true,
+    message: '',
+    trigger: ['input', 'blur'],
+  }],
+  lockCount: [{
+    required: true,
+    message: '',
+    trigger: ['input', 'blur'],
+  }],
 })
 
 const elFormRef = ref()
-
 
 // =========== 表格控制部分 ===========
 const page = ref(1)
@@ -243,90 +242,87 @@ getTableData()
 // ============== 表格控制部分结束 ===============
 
 // 获取需要的字典 可能为空 按需保留
-const setOptions = async () =>{
+const setOptions = async() => {
 }
 
 // 获取需要的字典 可能为空 按需保留
 setOptions()
 
-
 // 多选数据
 const multipleSelection = ref([])
 // 多选
 const handleSelectionChange = (val) => {
-    multipleSelection.value = val
+  multipleSelection.value = val
 }
 
 // 删除行
 const deleteRow = (row) => {
-    ElMessageBox.confirm('确定要删除吗?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-    }).then(() => {
-            deletePlVideoFunc(row)
-        })
-    }
-
+  ElMessageBox.confirm('确定要删除吗?', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    deletePlVideoFunc(row)
+  })
+}
 
 // 批量删除控制标记
 const deleteVisible = ref(false)
 
 // 多选删除
 const onDelete = async() => {
-      const ids = []
-      if (multipleSelection.value.length === 0) {
-        ElMessage({
-          type: 'warning',
-          message: '请选择要删除的数据'
-        })
-        return
-      }
-      multipleSelection.value &&
+  const ids = []
+  if (multipleSelection.value.length === 0) {
+    ElMessage({
+      type: 'warning',
+      message: '请选择要删除的数据'
+    })
+    return
+  }
+  multipleSelection.value &&
         multipleSelection.value.map(item => {
           ids.push(item.ID)
         })
-      const res = await deletePlVideoByIds({ ids })
-      if (res.code === 0) {
-        ElMessage({
-          type: 'success',
-          message: '删除成功'
-        })
-        if (tableData.value.length === ids.length && page.value > 1) {
-          page.value--
-        }
-        deleteVisible.value = false
-        getTableData()
-      }
+  const res = await deletePlVideoByIds({ ids })
+  if (res.code === 0) {
+    ElMessage({
+      type: 'success',
+      message: '删除成功'
+    })
+    if (tableData.value.length === ids.length && page.value > 1) {
+      page.value--
     }
+    deleteVisible.value = false
+    getTableData()
+  }
+}
 
 // 行为控制标记（弹窗内部需要增还是改）
 const type = ref('')
 
 // 更新行
 const updatePlVideoFunc = async(row) => {
-    const res = await findPlVideo({ ID: row.ID })
-    type.value = 'update'
-    if (res.code === 0) {
-        formData.value = res.data.replVideo
-        dialogFormVisible.value = true
-    }
+  const res = await findPlVideo({ ID: row.ID })
+  type.value = 'update'
+  if (res.code === 0) {
+    formData.value = res.data.replVideo
+    dialogFormVisible.value = true
+  }
 }
 
-
 // 删除行
-const deletePlVideoFunc = async (row) => {
-    const res = await deletePlVideo({ ID: row.ID })
-    if (res.code === 0) {
-        ElMessage({
-                type: 'success',
-                message: '删除成功'
-            })
-            if (tableData.value.length === 1 && page.value > 1) {
-            page.value--
-        }
-        getTableData()
+const deletePlVideoFunc = async(row) => {
+  const res = await deletePlVideo({ ID: row.ID })
+  if (res.code === 0) {
+    ElMessage({
+      type: 'success',
+      message: '删除成功'
+    })
+    if (tableData.value.length === 1 && page.value > 1) {
+      page.value--
     }
+    getTableData()
+  }
 }
 
 // 弹窗控制标记
@@ -334,55 +330,55 @@ const dialogFormVisible = ref(false)
 
 // 打开弹窗
 const openDialog = () => {
-    type.value = 'create'
-    dialogFormVisible.value = true
+  type.value = 'create'
+  dialogFormVisible.value = true
 }
 
 // 关闭弹窗
 const closeDialog = () => {
-    dialogFormVisible.value = false
-    formData.value = {
-        videoName: '',
-        videoType: 0,
-        typeName: '',
-        videoDesc: '',
-        likeCount: 0,
-        finish: 0,
-        count: 0,
-        imgUrl: '',
-        videoUrl: '',
-        createTime: new Date(),
-        freeCount: 0,
-        lockCount: 0,
-        }
+  dialogFormVisible.value = false
+  formData.value = {
+    videoName: '',
+    videoType: 0,
+    typeName: '',
+    videoDesc: '',
+    likeCount: 0,
+    finish: 0,
+    count: 0,
+    imgUrl: '',
+    videoUrl: '',
+    createTime: new Date(),
+    freeCount: 0,
+    lockCount: 0,
+  }
 }
 // 弹窗确定
-const enterDialog = async () => {
-     elFormRef.value?.validate( async (valid) => {
-             if (!valid) return
-              let res
-              switch (type.value) {
-                case 'create':
-                  res = await createPlVideo(formData.value)
-                  break
-                case 'update':
-                  res = await updatePlVideo(formData.value)
-                  break
-                default:
-                  res = await createPlVideo(formData.value)
-                  break
-              }
-              if (res.code === 0) {
-                ElMessage({
-                  type: 'success',
-                  message: '创建/更改成功'
-                })
-                closeDialog()
-                getTableData()
-              }
-      })
+const enterDialog = async() => {
+     elFormRef.value?.validate(async(valid) => {
+       if (!valid) return
+       let res
+       switch (type.value) {
+         case 'create':
+           res = await createPlVideo(formData.value)
+           break
+         case 'update':
+           res = await updatePlVideo(formData.value)
+           break
+         default:
+           res = await createPlVideo(formData.value)
+           break
+       }
+       if (res.code === 0) {
+         ElMessage({
+           type: 'success',
+           message: '创建/更改成功'
+         })
+         closeDialog()
+         getTableData()
+       }
+     })
 }
 </script>
 
-<style>
+<style scoped>
 </style>

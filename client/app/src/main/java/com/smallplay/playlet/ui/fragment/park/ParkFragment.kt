@@ -13,9 +13,12 @@ import com.smallplay.playlet.app.ext.*
 import com.smallplay.playlet.app.weight.recyclerview.DefineLoadMoreView
 import com.smallplay.playlet.app.weight.recyclerview.SpaceItemDecoration
 import com.smallplay.playlet.databinding.FragmentParkBinding
+import com.smallplay.playlet.ui.adapter.VideoHomeAdapter
 import com.smallplay.playlet.ui.adapter.VideoParkAdapter
 import com.smallplay.playlet.viewmodel.state.ParkViewModel
 import com.yanzhenjie.recyclerview.SwipeRecyclerView
+import kotlinx.android.synthetic.main.fragment_home.*
+import me.hgj.jetpackmvvm.ext.nav
 
 
 /**
@@ -119,6 +122,11 @@ class ParkFragment : BaseFragment1<ParkViewModel, FragmentParkBinding>() {
 //                    }
                 }
             }
+
+
+            likeVideos.observeInFragment(this@ParkFragment, Observer {
+                videoParkAdapter.setLikeVideo(it)
+            })
         }
     }
 }

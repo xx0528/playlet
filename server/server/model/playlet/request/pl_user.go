@@ -19,3 +19,8 @@ type PlLoginReq struct {
 	Username string `json:"username" form:"username"` // 用户名
 	Password string `json:"password" form:"password"` // 密码
 }
+
+type PlVideoInfo struct {
+	ID      uint `json:"id" form:"id"`           // 视频id
+	Episode int  `json:"episode" form:"episode"` // 视频第几集
+}

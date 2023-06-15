@@ -1,7 +1,7 @@
 /*
  * @Author: xx
  * @Date: 2023-06-02 18:36:01
- * @LastEditTime: 2023-06-14 12:47:35
+ * @LastEditTime: 2023-06-14 16:28:37
  * @Description:
  */
 package playlet
@@ -25,6 +25,8 @@ func (s *PlUserRouter) InitPlUserRouter(Router *gin.RouterGroup) {
 		plUserRouter.DELETE("deletePlUser", plUserApi.DeletePlUser)           // 删除PlUser
 		plUserRouter.DELETE("deletePlUserByIds", plUserApi.DeletePlUserByIds) // 批量删除PlUser
 		plUserRouter.PUT("updatePlUser", plUserApi.UpdatePlUser)              // 更新PlUser
+		plUserRouter.POST("playVideo", plUserApi.PlayVideo)                   // 观看视频
+		plUserRouter.POST("likeVideo", plUserApi.LikeVideo)                   // 收藏视频
 	}
 	{
 		plUserRouterWithoutRecord.GET("findPlUser", plUserApi.FindPlUser)       // 根据ID获取PlUser

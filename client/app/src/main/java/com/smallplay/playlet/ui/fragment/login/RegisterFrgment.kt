@@ -48,6 +48,7 @@ class RegisterFrgment : BaseFragment<LoginRegisterViewModel, FragmentRegisterBin
                     CacheUtil.setIsLogin(true)
                     CacheUtil.setUser(it)
                     appViewModel.userInfo.value = it
+                    appViewModel.likeVideos.value = it.likeVideos
                     nav().navigateAction(R.id.action_registerFrgment_to_mainFragment)
                 }, {
                     showMessage(it.errorMsg)

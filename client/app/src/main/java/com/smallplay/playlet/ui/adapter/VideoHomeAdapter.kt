@@ -101,15 +101,7 @@ class VideoHomeAdapter(
             viewHolder.mCurEpisodeTop.text = "第${position + 1}集"
         }
 
-        val likeVideos = Gson().fromJson(appViewModel.userInfo.value?.likeVideos ?: "", Map::class.java)
-        if (likeVideos != null) {
-            var episode = likeVideos[id] as? Int
-            if (episode != null && episode >= 1) {
-                viewHolder.mLikeIcon.setImageResource(R.mipmap.ic_shoucangxiao2)
-            } else {
-                viewHolder.mLikeIcon.setImageResource(R.mipmap.ic_shoucangxiao)
-            }
-        }
+        viewHolder.setLikeIcon(id)
 
         Log.d(TAG, "初始化------ $videoName  第 $position 集")
         container.addView(view)
@@ -147,6 +139,7 @@ class VideoHomeAdapter(
         var mCurEpisodeTop: TextView
         var mLikeLayout: View
 
+        var TAG = "ViewHolder ----------- "
         init {
             mVideoItemView = itemView!!.findViewById(R.id.home_video_View)
             mTitle = mVideoItemView.findViewById(R.id.tv_title)
@@ -165,6 +158,20 @@ class VideoHomeAdapter(
             mLikeLayout = itemView.findViewById<View>(R.id.like_layout)
 
             itemView.tag = this
+        }
+
+        fun setLikeIcon(id: Int) {
+            Log.d(TAG, "appViewModel.likeVideos.value = ${appViewModel.likeVideos.value}")
+            val likeVideos = Gson().fromJson(appViewModel.likeVideos.value ?: "", Map::class.java)
+            if (likeVideos != null) {
+                var episode = (likeVideos[id.toString()] as? Double)?.toInt()
+                if (episode != null && episode >= 1) {
+                    mLikeIcon.setImageResource(R.mipmap.ic_shoucangxiao2)
+
+                } else {
+                    mLikeIcon.setImageResource(R.mipmap.ic_shoucangxiao)
+                }
+            }
         }
     }
 

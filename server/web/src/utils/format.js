@@ -1,3 +1,9 @@
+/*
+ * @Author: xx
+ * @Date: 2023-06-02 16:53:56
+ * @LastEditTime: 2023-06-15 13:30:23
+ * @Description: 
+ */
 import { formatTimeToStr } from '@/utils/date'
 import { getDict } from '@/utils/dictionary'
 
@@ -12,6 +18,15 @@ export const formatDate = (time) => {
   if (time !== null && time !== '') {
     var date = new Date(time)
     return formatTimeToStr(date, 'yyyy-MM-dd hh:mm:ss')
+  } else {
+    return ''
+  }
+}
+
+export const formatShortDate = (time) => {
+  if (time !== null && time !== '') {
+    var date = new Date(time)
+    return formatTimeToStr(date, 'yyyy-MM-dd')
   } else {
     return ''
   }

@@ -50,7 +50,7 @@ interface ApiService {
     @POST("plUser/likeVideo")
     suspend fun likeVideo(
         @Field("id") id: Int
-    ): ApiResponse<String>
+    ): ApiResponse<LikeVideoResponse>
 
     /**
      * 注册

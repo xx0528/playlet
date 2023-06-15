@@ -1,6 +1,10 @@
 package playlet
 
 import (
+	"encoding/json"
+	"fmt"
+	"math"
+	"strconv"
 	"time"
 
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
@@ -190,6 +194,135 @@ func (plUserApi *PlUserApi) GetPlUserList(c *gin.Context) {
 	}
 }
 
+// 播放一个视频
+func (pUserApi *PlUserApi) PlayVideo(c *gin.Context) {
+	var reqInfo playletReq.PlVideoInfo
+	err := c.ShouldBind(&reqInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	verify := utils.Rules{
+		"ID":      {utils.NotEmpty()},
+		"Episode": {utils.NotEmpty()},
+	}
+	if err := utils.Verify(reqInfo, verify); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	//获取视频信息
+	videoInfo, err := plVideoService.GetPlVideo(reqInfo.ID)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	//免费集数
+	if videoInfo.FreeCount >= reqInfo.Episode {
+		response.OkWithData(playletRes.PlPlayVideoRes{
+			PlVideoInfo: reqInfo,
+			Code:        1,
+			Msg:         "免费",
+		}, c)
+		return
+	}
+
+	//获取用户信息
+	uuid := utils.GetUserUuid(c)
+	user, err := plUserService.GetPlUserByUUID(uuid)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	// 购买过
+	buyNum := getBuyVideoByID(user.BuyVideos, int(reqInfo.ID))
+	if buyNum >= reqInfo.Episode {
+		response.OkWithData(playletRes.PlPlayVideoRes{
+			PlVideoInfo: reqInfo,
+			Code:        2,
+			Msg:         "已购",
+		}, c)
+		return
+	}
+
+	//不允许跳着播放
+	if reqInfo.Episode-buyNum > 1 {
+		reqInfo.Episode = int(math.Max(float64(buyNum+1), float64(videoInfo.Count)))
+	}
+
+	// 有钱直接花
+	if user.CurGold > global.GVA_CONFIG.Playlet.EpisodeCost {
+		//扣除金币
+		user.CurGold = user.CurGold - global.GVA_CONFIG.Playlet.EpisodeCost
+		user.BuyVideos = updateVideoRecord(user.BuyVideos, reqInfo, "buy")
+		plCost := playlet.PlCost{
+			UserName: user.UserName,
+			UserId:   user.UserId,
+			CostGold: global.GVA_CONFIG.Playlet.EpisodeCost,
+			Time:     time.Now(),
+			LeftGold: user.CurGold,
+			BuyVideo: fmt.Sprintf("%s  ID:%d 第%d集", videoInfo.VideoName, reqInfo.ID, reqInfo.Episode),
+		}
+		//更新数据
+		if err := plUserService.UpdatePlUser(user); err != nil {
+			response.OkWithData(playletRes.PlPlayVideoRes{
+				PlVideoInfo: reqInfo,
+				Code:        3,
+				Msg:         "解锁成功",
+			}, c)
+		}
+		//记录日志
+		if err := plCostService.CreatePlCost(&plCost); err != nil {
+			global.GVA_LOG.Error("记录购买失败", zap.Error(err))
+		}
+		return
+	}
+
+	response.OkWithData(playletRes.PlPlayVideoRes{
+		Code: 4,
+		Msg:  "无法播放，请充值",
+	}, c)
+}
+
+// 收藏视频
+func (pUserApi *PlUserApi) LikeVideo(c *gin.Context) {
+	var reqInfo playletReq.PlVideoInfo
+	err := c.ShouldBind(&reqInfo)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	verify := utils.Rules{
+		"ID": {utils.NotEmpty()},
+	}
+	if err := utils.Verify(reqInfo, verify); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	// 因为是收藏 这里直接给个大值就可以
+	reqInfo.Episode = 2
+
+	//获取用户信息
+	uuid := utils.GetUserUuid(c)
+	user, err := plUserService.GetPlUserByUUID(uuid)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	user.LikeVideos = updateVideoRecord(user.LikeVideos, reqInfo, "like")
+	//更新数据
+	if err := plUserService.UpdatePlUser(user); err == nil {
+		response.OkWithData(playletRes.PlLikeVideoRes{
+			LikeVideos: user.LikeVideos,
+		}, c)
+	} else {
+		response.FailWithMessage(err.Error(), c)
+	}
+}
+
+// 获取playlet用户信息
 func (plUserApi *PlUserApi) GetPlUserInfo(c *gin.Context) {
 	uuid := utils.GetUserUuid(c)
 	userInfo, err := plUserService.GetPlUserByUUID(uuid)
@@ -200,6 +333,7 @@ func (plUserApi *PlUserApi) GetPlUserInfo(c *gin.Context) {
 	response.OkWithDetailed(userInfo, "登陆成功", c)
 }
 
+// 登陆 没有账号就注册
 func (plUserApi *PlUserApi) RegistAndLogin(c *gin.Context) {
 	//这里需要鉴权 所以还是直接用 system.SysUser
 	var l playletReq.PlLoginReq
@@ -317,4 +451,49 @@ func interfaceToInt(v interface{}) (i int) {
 		i = 0
 	}
 	return
+}
+
+// 获取
+func getBuyVideoByID(info string, id int) int {
+	if len(info) <= 0 {
+		return 0
+	}
+	var data map[string]interface{}
+	if err := json.Unmarshal([]byte(info), &data); err != nil {
+		return 0
+	}
+
+	buyNumIntf := data[strconv.Itoa(id)]
+	if buyNumIntf == nil {
+		return 0
+	}
+	if buyNum, ok := buyNumIntf.(int); ok {
+		return buyNum
+	}
+
+	return 0
+}
+
+func updateVideoRecord(info string, vInfo playletReq.PlVideoInfo, updateType string) string {
+	if len(info) <= 0 {
+		data := make(map[string]interface{})
+		data[strconv.Itoa(int(vInfo.ID))] = vInfo.Episode
+		s, _ := json.Marshal(data)
+		return string(s)
+	}
+
+	var data map[string]interface{}
+	err := json.Unmarshal([]byte(info), &data)
+	if err == nil {
+		//如果是收藏 再点会取消收藏 这里置为0
+		id := strconv.Itoa(int(vInfo.ID))
+		if updateType == "like" && data[id] != nil && data[id].(float64) > 1 {
+			data[id] = 0
+		} else {
+			data[id] = vInfo.Episode
+		}
+		s, _ := json.Marshal(data)
+		return string(s)
+	}
+	return ""
 }

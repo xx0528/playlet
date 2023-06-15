@@ -63,7 +63,7 @@ class HttpRequestManger {
     /**
      * 收藏视频
      */
-    suspend fun likeVideo(ID: Int): ApiResponse<String> {
+    suspend fun likeVideo(ID: Int): ApiResponse<LikeVideoResponse> {
         return apiService.likeVideo(ID)
     }
 
