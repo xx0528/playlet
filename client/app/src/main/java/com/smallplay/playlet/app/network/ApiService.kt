@@ -15,7 +15,6 @@ interface ApiService {
 //        const val SERVER_URL = "http://192.168.0.106:8080/api/"
         const val SERVER_URL = "http://192.168.3.67:8080/api/"
         const val Chat_SERVER_URL = "http://192.168.3.67:8081/chatIndex?kefu_id=kefu2"
-        const val SERVER_URL1 = "https://wanandroid.com/"
     }
 
     /**

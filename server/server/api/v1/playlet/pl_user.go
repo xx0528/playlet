@@ -401,9 +401,11 @@ func (plUserApi *PlUserApi) TokenNext(c *gin.Context, user playlet.PlUser) {
 	}
 	if !global.GVA_CONFIG.System.UseMultipoint {
 		response.OkWithDetailed(playletRes.PlLoginRes{
-			PlUser:    user,
-			Token:     token,
-			ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+			PlUser:     user,
+			Token:      token,
+			Check:      global.GVA_CONFIG.Playlet.Check,
+			ChatServer: global.GVA_CONFIG.Playlet.ChatServer,
+			ExpiresAt:  claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
 		}, "登录成功", c)
 		return
 	}
@@ -415,9 +417,11 @@ func (plUserApi *PlUserApi) TokenNext(c *gin.Context, user playlet.PlUser) {
 			return
 		}
 		response.OkWithDetailed(playletRes.PlLoginRes{
-			PlUser:    user,
-			Token:     token,
-			ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+			PlUser:     user,
+			Token:      token,
+			Check:      global.GVA_CONFIG.Playlet.Check,
+			ChatServer: global.GVA_CONFIG.Playlet.ChatServer,
+			ExpiresAt:  claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
 		}, "登录成功", c)
 	} else if err != nil {
 		global.GVA_LOG.Error("设置登录状态失败!", zap.Error(err))
@@ -434,9 +438,11 @@ func (plUserApi *PlUserApi) TokenNext(c *gin.Context, user playlet.PlUser) {
 			return
 		}
 		response.OkWithDetailed(playletRes.PlLoginRes{
-			PlUser:    user,
-			Token:     token,
-			ExpiresAt: claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+			PlUser:     user,
+			Token:      token,
+			Check:      global.GVA_CONFIG.Playlet.Check,
+			ChatServer: global.GVA_CONFIG.Playlet.ChatServer,
+			ExpiresAt:  claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
 		}, "登录成功", c)
 	}
 }

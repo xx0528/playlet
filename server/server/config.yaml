@@ -200,3 +200,6 @@ zap:
   log-in-console: true
 playlet:
   episode-cost: 10
+  playlet-server: http://192.168.3.67:8080
+  chat-server: http://192.168.3.67:8081/chatIndex?kefu_id=kefu2
+  check: true

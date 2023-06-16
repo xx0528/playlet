@@ -22,4 +22,6 @@ var lastLoginTime: String,
 var likeVideos: String,
 var enable: Int,
 var token: String,
+var check: Boolean,
+var chatServer: String,
 var expiresAt: Long) : Parcelable

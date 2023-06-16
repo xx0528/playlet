@@ -1,6 +1,7 @@
 package com.smallplay.playlet.ui.fragment.me
 
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
@@ -58,7 +59,7 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         meRechargeAdapter.run {
             setOnItemClickListener { adapter, view, position ->
                 nav().navigateAction(R.id.action_to_webFragment, Bundle().apply {
-                    putString("url", ApiService.Chat_SERVER_URL)
+                    putString("url", appViewModel.userInfo.value?.chatServer)
                     putInt("recharge", meRechargeAdapter.data[position].costMoney)
                 })
             }
@@ -79,6 +80,12 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
             requestMeViewModel.getVipInfo()
             meLikeVideosAdapter.data = arrayListOf()
             CacheUtil.getLocalVideos()?.let { meLikeVideosAdapter.addData(it) }
+        }
+
+        if (appViewModel.userInfo.value?.check == true) {
+            item_recharge_layout.visibility = View.VISIBLE
+        } else {
+            item_recharge_layout.visibility = View.GONE
         }
     }
 
@@ -142,7 +149,7 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         fun chat() {
             nav().jumpByLogin {
                 it.navigateAction(R.id.action_to_webFragment, Bundle().apply {
-                    putString("url", ApiService.Chat_SERVER_URL)
+                    putString("url", appViewModel.userInfo.value?.chatServer)
                     putInt("recharge", -1)
                 })
             }
