@@ -47,14 +47,14 @@ class MeRechargeAdapter(data: MutableList<RechargeData>?) :
 
             var goldStr = "$buyGold"
             if (giveGold > 0) {
-                goldStr = "$goldStr+${giveGold}赠币"
+                goldStr = "$goldStr+${giveGold}" + context.getString(R.string.text_me_recharge_give_gold)
             }
             holder.setText(R.id.item_me_recharge_gold, goldStr)
 
             var giveView = holder.getView<TextView>(R.id.item_me_recharge_give)
             if (giveMoney > 0) {
                 giveView.visibility = View.VISIBLE
-                holder.setText(R.id.item_me_recharge_give, "多送${giveMoney}元")
+                holder.setText(R.id.item_me_recharge_give,  String.format(context.getString(R.string.text_me_give_money), giveMoney))
             } else {
                 giveView.visibility = View.INVISIBLE
             }

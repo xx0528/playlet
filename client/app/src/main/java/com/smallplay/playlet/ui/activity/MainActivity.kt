@@ -1,5 +1,6 @@
 package com.smallplay.playlet.ui.activity
 
+import android.content.res.Configuration
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
@@ -12,14 +13,15 @@ import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.blankj.utilcode.util.ToastUtils
-import com.tencent.bugly.beta.Beta
 import com.smallplay.playlet.R
 import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.base.BaseActivity1
 import com.smallplay.playlet.app.util.StatusBarUtil
 import com.smallplay.playlet.databinding.ActivityMainBinding
 import com.smallplay.playlet.viewmodel.state.MainViewModel
+import com.tencent.bugly.beta.Beta
 import me.hgj.jetpackmvvm.network.manager.NetState
+import java.util.*
 
 /**
  * 项目主页Activity
@@ -28,6 +30,12 @@ class MainActivity : BaseActivity1<MainViewModel, ActivityMainBinding>() {
 
     var exitTime = 0L
     override fun initView(savedInstanceState: Bundle?) {
+
+        //设置繁体
+        val configuration: Configuration = resources.configuration
+        configuration.locale = Locale.TAIWAN // 设置当前语言配置为繁体
+        resources.updateConfiguration(configuration, resources.displayMetrics)
+
         //进入首页检查更新
         Beta.checkUpgrade(false, true)
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -39,7 +47,7 @@ class MainActivity : BaseActivity1<MainViewModel, ActivityMainBinding>() {
                 } else {
                     //是主页
                     if (System.currentTimeMillis() - exitTime > 2000) {
-                        ToastUtils.showShort("再按一次退出程序")
+                        ToastUtils.showShort(getString(R.string.text_exit))
                         exitTime = System.currentTimeMillis()
                     } else {
                         finish()
@@ -95,9 +103,9 @@ class MainActivity : BaseActivity1<MainViewModel, ActivityMainBinding>() {
     override fun onNetworkStateChanged(netState: NetState) {
         super.onNetworkStateChanged(netState)
         if (netState.isSuccess) {
-            Toast.makeText(applicationContext, "我终于有网了啊!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, getString(R.string.text_connect), Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(applicationContext, "我怎么断网了!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, getString(R.string.text_disconnect), Toast.LENGTH_SHORT).show()
         }
     }
 

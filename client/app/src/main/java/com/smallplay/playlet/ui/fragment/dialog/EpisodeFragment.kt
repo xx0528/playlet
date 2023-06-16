@@ -2,15 +2,18 @@ package com.smallplay.playlet.ui.fragment.dialog
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ConvertUtils
+import com.google.gson.Gson
 import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.base.BaseFragment
 import com.smallplay.playlet.app.base.BaseFragment1
 import com.smallplay.playlet.app.ext.init
 import com.smallplay.playlet.app.weight.recyclerview.SpaceItemDecoration
 import com.smallplay.playlet.data.model.bean.EpisodesItem
+import com.smallplay.playlet.data.model.bean.UserInfo
 import com.smallplay.playlet.databinding.FragmentEpisodesBinding
 import com.smallplay.playlet.databinding.IncludeListBinding
 import com.smallplay.playlet.ui.adapter.EpisodesAdapter
@@ -29,6 +32,8 @@ class EpisodeFragment : BaseFragment1<EpisodesViewModel, FragmentEpisodesBinding
 
     //集数 第几页
     private var mEpisodePageNum = 0
+
+    val TAG = "EpisodeFragment-----"
 
     override fun initView(savedInstanceState: Bundle?) {
 
@@ -50,11 +55,23 @@ class EpisodeFragment : BaseFragment1<EpisodesViewModel, FragmentEpisodesBinding
     override fun initData() {
         var list = arrayListOf<EpisodesItem>()
         var videoInfo = appViewModel.videoHomeDataState.value?.listData?.get(0)
+
+        val buyVideos = Gson().fromJson(appViewModel.buyVideos.value ?: "", Map::class.java)
+        var buyEpisode = 0
+        if (buyVideos != null && videoInfo != null) {
+            for ((key, eps) in buyVideos) {
+                if (key.toString().toInt() == videoInfo.ID) {
+                    buyEpisode = (eps as Number).toInt()
+                    break
+                }
+            }
+        }
+
         if (videoInfo != null) {
             for (i in 1 until 31) {
                 var episodeNum = i + mEpisodePageNum * 30
                 if (episodeNum < videoInfo.count+1) {
-                    list.add(EpisodesItem(episodeNum, episodeNum > videoInfo.freeCount, episodeNum > videoInfo.lockCount))
+                    list.add(EpisodesItem(episodeNum, episodeNum > videoInfo.freeCount, buyEpisode >= episodeNum, episodeNum > videoInfo.lockCount))
                 }
             }
         }

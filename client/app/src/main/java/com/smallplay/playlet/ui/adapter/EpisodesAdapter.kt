@@ -1,6 +1,7 @@
 package com.smallplay.playlet.ui.adapter
 
 import android.view.View
+import android.widget.ImageView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.smallplay.playlet.R
@@ -17,6 +18,13 @@ class EpisodesAdapter(data: MutableList<EpisodesItem>?) :
 
     override fun convert(holder: BaseViewHolder, item: EpisodesItem) {
         holder.setText(R.id.park_item_episodes, "${item.num}")
+
+        if (item.unlock) {
+            holder.getView<ImageView>(R.id.episodes_lock_icon).setImageResource(R.mipmap.ic_jiesuo)
+        } else {
+            holder.getView<ImageView>(R.id.episodes_lock_icon).setImageResource(R.mipmap.ic_suoding)
+        }
+
         if (item.lock) {
             holder.getView<View>(R.id.episodes_lock_icon).visibility = View.VISIBLE
         } else {

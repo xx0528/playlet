@@ -58,12 +58,17 @@ class AppViewModel : BaseViewModel() {
     //当前页面
     var curPage = EventLiveData<String>()
 
+    //喜欢的视频
     var likeVideos = EventLiveData<String>()
+
+    //购买的视频
+    var buyVideos = EventLiveData<String>()
 
     init {
         //默认值保存的账户信息，没有登陆过则为null
         userInfo.value = CacheUtil.getUser()
         likeVideos.value = userInfo.value?.likeVideos
+        buyVideos.value = userInfo.value?.buyVideos
         //默认值颜色
         appColor.value = SettingUtil.getColor(appContext)
         //初始化列表动画
@@ -190,8 +195,9 @@ class AppViewModel : BaseViewModel() {
                 //购买解锁
                 userInfo.value = it.userInfo
                 likeVideos.value = it.userInfo.likeVideos
+                buyVideos.value = it.userInfo.buyVideos
+                ToastUtils.showShort(it.msg)
             }
-            ToastUtils.showShort(it.msg)
             curPlayVideoNo.value = it.episode
         }, {
         })

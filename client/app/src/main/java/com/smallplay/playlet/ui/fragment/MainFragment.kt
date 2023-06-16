@@ -1,5 +1,6 @@
 package com.smallplay.playlet.ui.fragment
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -11,6 +12,7 @@ import com.smallplay.playlet.app.ext.*
 import com.smallplay.playlet.databinding.FragmentMainBinding
 import com.smallplay.playlet.viewmodel.state.MainViewModel
 import kotlinx.android.synthetic.main.include_recyclerview.*
+import java.util.*
 
 /**
  * 描述　:项目主页Fragment
@@ -18,6 +20,13 @@ import kotlinx.android.synthetic.main.include_recyclerview.*
 class MainFragment : BaseFragment<MainViewModel, FragmentMainBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
+
+        //设置繁体
+        val configuration: Configuration = resources.configuration
+        configuration.locale = Locale.TAIWAN // 设置当前语言配置为繁体
+        resources.updateConfiguration(configuration, resources.displayMetrics)
+
+
         //初始化viewpager2
         mainViewpager.initMain(this)
         //初始化 bottomBar

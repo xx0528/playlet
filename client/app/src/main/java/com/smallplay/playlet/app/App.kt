@@ -1,5 +1,6 @@
 package com.smallplay.playlet.app
 
+import android.content.res.Configuration
 import androidx.multidex.MultiDex
 import cat.ereza.customactivityoncrash.config.CaocConfig
 import com.kingja.loadsir.callback.SuccessCallback
@@ -24,6 +25,7 @@ import xyz.doikki.videoplayer.ijk.IjkPlayerFactory
 import xyz.doikki.videoplayer.player.AndroidMediaPlayerFactory
 import xyz.doikki.videoplayer.player.VideoViewConfig
 import xyz.doikki.videoplayer.player.VideoViewManager
+import java.util.*
 
 /**
  * 描述　:

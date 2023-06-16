@@ -67,7 +67,7 @@ class VideoHomeAdapter(
         viewHolder.mBtnChange.setOnClickListener {
             appViewModel.setNextVideo()
         }
-        viewHolder.mCurEpisode.text = "第${position + 1}集"
+        viewHolder.mCurEpisode.text = String.format(context.getString(R.string.text_video_home_cur_episode), position)
         viewHolder.mPosition = position
         viewHolder.mBtnOpenDialog.setOnClickListener{
             appViewModel.dialogVisible.value = 1
@@ -84,7 +84,7 @@ class VideoHomeAdapter(
         if (appViewModel.curPage.value == "HomeFragment") {
             viewHolder.mTopLayout.visibility = View.VISIBLE
             viewHolder.mImgIndicate.visibility = View.INVISIBLE
-            viewHolder.mAllEpisode.text = "共${count}集"
+            viewHolder.mAllEpisode.text = String.format(context.getString(R.string.text_video_home_all_episode), count)
             viewHolder.mBtnChange.visibility = View.VISIBLE
             viewHolder.mBtnBack.visibility = View.INVISIBLE
             viewHolder.mCurEpisodeTop.visibility = View.INVISIBLE
@@ -96,9 +96,9 @@ class VideoHomeAdapter(
             viewHolder.mBtnChange.visibility = View.INVISIBLE
             viewHolder.mBtnBack.visibility = View.VISIBLE
 //            viewHolder.mBtnOpenDialog.layoutParams = RelativeLayout.LayoutParams(1000, viewHolder.mBtnOpenDialog.height);
-            viewHolder.mAllEpisode.text = "${videoName}·共${count}集"
+            viewHolder.mAllEpisode.text = "${videoName}·" + String.format(context.getString(R.string.text_video_home_all_episode), count)
             viewHolder.mCurEpisodeTop.visibility = View.VISIBLE
-            viewHolder.mCurEpisodeTop.text = "第${position + 1}集"
+            viewHolder.mCurEpisodeTop.text = String.format(context.getString(R.string.text_video_home_cur_episode), position + 1)
         }
 
         viewHolder.setLikeIcon(id)

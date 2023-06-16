@@ -17,7 +17,7 @@ class MeLikeVideosAdapter(data: MutableList<LocalLikeVideos>?) :
                 //项目布局的赋值
                 item.run {
                     holder.setText(R.id.item_me_like_video_title, videoName)
-                    holder.setText(R.id.item_me_like_video_episodes, "您看到了第${episode+1}集")
+                    holder.setText(R.id.item_me_like_video_episodes, String.format(context.getString(R.string.text_me_item_episode), episode+1))
 
                     Glide.with(context).load(imgUrl)
                         .transition(DrawableTransitionOptions.withCrossFade(500))
