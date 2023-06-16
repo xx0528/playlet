@@ -46,12 +46,12 @@ class AppViewModel : BaseViewModel() {
     var videoHomeDataState:  MutableLiveData<ListDataUiState<VideoResponse>> = MutableLiveData()
 
     //视频本地记录列表数据
-    var localVideosState:  MutableLiveData<ListDataUiState<LocalLikeVideos>> = MutableLiveData()
+    var localVideosState:  MutableLiveData<ArrayList<LocalLikeVideos>> = MutableLiveData()
 
     //当前选中视频
     var curPlayVideoNo : MutableLiveData<Int> = MutableLiveData()
     //当前选中视频播放进度
-    var curPlayVideoTime : MutableLiveData<Int> = MutableLiveData()
+    var curPlayVideoTime : MutableLiveData<Long> = MutableLiveData()
     //App状态栏透明
     var dialogVisible = EventLiveData<Int>()
 
@@ -68,8 +68,9 @@ class AppViewModel : BaseViewModel() {
         appColor.value = SettingUtil.getColor(appContext)
         //初始化列表动画
         appAnimation.value = SettingUtil.getListMode()
-
+        //本地收藏视频
         localVideosState.value = CacheUtil.getLocalVideos()
+        curPlayVideoTime.value = 0
     }
 
     /**
@@ -201,6 +202,26 @@ class AppViewModel : BaseViewModel() {
         if (videoId != null) {
             appViewModel.playVideo(videoId, position)
         }
+    }
+
+    fun saveLocalVideos(videoInfo : LocalLikeVideos) {
+        if (videoInfo != null && localVideosState.value != null) {
+            val newList = ArrayList<LocalLikeVideos>()
+            var isHave = false
+            for (item in localVideosState.value!!) {
+                if (item.ID == videoInfo.ID) {
+                    newList.add(videoInfo)
+                    isHave = true
+                } else {
+                    newList.add(item)
+                }
+            }
+            if (!isHave) {
+                newList.add(videoInfo)
+            }
+            localVideosState.value = newList
+        }
+        CacheUtil.setLocalVideos(localVideosState.value)
     }
 
 }

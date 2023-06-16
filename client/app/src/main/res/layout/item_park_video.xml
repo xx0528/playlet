@@ -21,7 +21,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/item_video_list_imageview"
+                android:id="@+id/item_me_like_imageview"
                 android:layout_width="match_parent"
                 android:layout_height="240dp"
                 android:layout_margin="2dp"

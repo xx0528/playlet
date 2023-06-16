@@ -1,5 +1,7 @@
 package com.smallplay.playlet.ui.adapter
 
+import android.view.View
+import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.chad.library.adapter.base.BaseDelegateMultiAdapter
@@ -23,20 +25,21 @@ class MeRechargeAdapter(data: MutableList<RechargeData>?) :
 
         //项目布局的赋值
         item.run {
+            var firstView = holder.getView<TextView>(R.id.item_me_recharge_first)
             if (firstRecharge == 0) {
-                holder.setEnabled(R.id.item_me_recharge_first, false)
+                firstView.visibility = View.INVISIBLE
             } else {
-                holder.setEnabled(R.id.item_me_recharge_first, true)
+                firstView.visibility = View.VISIBLE
             }
             //人民币
             if (moneyType == 0) {
-                holder.setText(R.id.item_me_recharge_cost, "CNY￥${costMoney}")
+                holder.setText(R.id.item_me_recharge_cost, "￥${costMoney}")
             // 港元
             } else if (moneyType == 1) {
-                holder.setText(R.id.item_me_recharge_cost, "HKD$${costMoney}")
+                holder.setText(R.id.item_me_recharge_cost, "HK$${costMoney}")
             // 台币
             } else if (moneyType == 2) {
-                holder.setText(R.id.item_me_recharge_cost, "TWD$${costMoney}")
+                holder.setText(R.id.item_me_recharge_cost, "NT$${costMoney}")
             // 美元
             } else if (moneyType == 3) {
                 holder.setText(R.id.item_me_recharge_cost, "$${costMoney}")
@@ -48,11 +51,12 @@ class MeRechargeAdapter(data: MutableList<RechargeData>?) :
             }
             holder.setText(R.id.item_me_recharge_gold, goldStr)
 
+            var giveView = holder.getView<TextView>(R.id.item_me_recharge_give)
             if (giveMoney > 0) {
-                holder.setEnabled(R.id.item_me_recharge_give, true)
+                giveView.visibility = View.VISIBLE
                 holder.setText(R.id.item_me_recharge_give, "多送${giveMoney}元")
             } else {
-                holder.setEnabled(R.id.item_me_recharge_give, false)
+                giveView.visibility = View.INVISIBLE
             }
         }
 

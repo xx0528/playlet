@@ -43,7 +43,7 @@ object CacheUtil {
         val kv = MMKV.mmkvWithID("app")
         val videosStr = kv.decodeString("localLikeVideos")
         return if (TextUtils.isEmpty(videosStr)) {
-            null
+            arrayListOf()
         } else {
             val type = object : TypeToken<ArrayList<LocalLikeVideos>>() {}.type
             Gson().fromJson<ArrayList<LocalLikeVideos>>(videosStr, type)

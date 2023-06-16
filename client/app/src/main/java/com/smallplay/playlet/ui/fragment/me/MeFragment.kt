@@ -14,6 +14,7 @@ import com.smallplay.playlet.app.base.BaseFragment
 import com.smallplay.playlet.app.eventViewModel
 import com.smallplay.playlet.app.ext.*
 import com.smallplay.playlet.app.network.ApiService
+import com.smallplay.playlet.app.util.CacheUtil
 import com.smallplay.playlet.app.weight.recyclerview.SpaceItemDecoration
 import com.smallplay.playlet.data.model.bean.BannerResponse
 import com.smallplay.playlet.data.model.bean.IntegralResponse
@@ -44,14 +45,14 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
 
         mDatabind.vm = mViewModel
         mDatabind.click = ProxyClick()
-        appViewModel.appColor.value?.let { setUiTheme(it, me_linear, me_integral) }
+        appViewModel.appColor.value?.let { setUiTheme(it, me_linear) }
         appViewModel.userInfo.value?.let { mViewModel.name.set(if (it.userName.isEmpty()) it.userName else it.uuid) }
 
         recycle_recharge_vip.init(LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false), meRechargeAdapter).let {
-            it.addItemDecoration(SpaceItemDecoration(0, ConvertUtils.dp2px(8f)))
+            it.addItemDecoration(SpaceItemDecoration(5,  ConvertUtils.dp2px(2f)))
         }
         recycle_like_video.init(LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false), meLikeVideosAdapter).let {
-            it.addItemDecoration(SpaceItemDecoration(0, ConvertUtils.dp2px(8f)))
+            it.addItemDecoration(SpaceItemDecoration(5, ConvertUtils.dp2px(2f)))
         }
 
         meRechargeAdapter.run {
@@ -76,6 +77,8 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         me_swipe.init {
             requestMeViewModel.getUserInfo()
             requestMeViewModel.getVipInfo()
+            meLikeVideosAdapter.data = arrayListOf()
+            CacheUtil.getLocalVideos()?.let { meLikeVideosAdapter.addData(it) }
         }
     }
 
@@ -84,6 +87,8 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
             me_swipe.isRefreshing = true
             requestMeViewModel.getUserInfo()
             requestMeViewModel.getVipInfo()
+            meLikeVideosAdapter.data = arrayListOf()
+            CacheUtil.getLocalVideos()?.let { meLikeVideosAdapter.addData(it) }
         }
     }
 
@@ -100,13 +105,16 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
                 })
             })
             meVip.observe(viewLifecycleOwner, Observer {
+                meRechargeAdapter.data = arrayListOf()
                 meRechargeAdapter.addData(it.listData)
+                meLikeVideosAdapter.data = arrayListOf()
+                CacheUtil.getLocalVideos()?.let { meLikeVideosAdapter.addData(it) }
             })
         }
 
         appViewModel.run {
             appColor.observeInFragment(this@MeFragment, Observer {
-                setUiTheme(it, me_linear, me_swipe, me_integral)
+                setUiTheme(it, me_linear, me_swipe)
             })
             userInfo.observeInFragment(this@MeFragment, Observer {
                 it.notNull({
@@ -140,13 +148,13 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
             }
         }
 
-        /** 关于我们 */
-        fun about() {
+        /** 消费记录 */
+        fun expense() {
             nav().navigateAction(R.id.action_to_webFragment, Bundle().apply {
                 putParcelable(
-                    "bannerdata",
+                    "",
                     BannerResponse(
-                        title = "关于我们",
+                        title = "消费记录",
                         url = "https://www.baidu.com/"
                     )
                 )
@@ -158,5 +166,9 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
             nav().navigateAction(R.id.action_mainfragment_to_settingFragment)
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
     }
 }

@@ -36,7 +36,7 @@ class VideoParkAdapter(data: MutableList<VideoResponse>?) :
             }
             Glide.with(context).load("${videoUrl}/cover.png")
                 .transition(DrawableTransitionOptions.withCrossFade(500))
-                .into(holder.getView(R.id.item_video_list_imageview))
+                .into(holder.getView(R.id.item_me_like_imageview))
 
             var likeIcon = holder.getView<ImageView>(R.id.item_park_like_icon)
             likeIcon.setOnClickListener{

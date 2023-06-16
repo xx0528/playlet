@@ -15,7 +15,7 @@ data class LocalLikeVideos(
     var finish: Int,			//是否完结 1 完结 0 更新
     var count: Int,			//集数
     var episode: Int,       //观看集数
-    var time: Int,          //观看到多少秒
+    var time: Long,          //观看到多少秒
     var imgUrl: String,			//图片
     var videoUrl: String			//视频地址
 ) : Parcelable

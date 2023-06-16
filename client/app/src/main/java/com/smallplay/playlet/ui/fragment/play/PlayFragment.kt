@@ -1,5 +1,6 @@
 package com.smallplay.playlet.ui.fragment.play
 
+import android.net.wifi.WifiManager.LocalOnlyHotspotCallback
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener
 import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.base.BaseFragment1
+import com.smallplay.playlet.data.model.bean.LocalLikeVideos
 import com.smallplay.playlet.data.model.bean.VideoResponse
 import com.smallplay.playlet.databinding.FragmentPlayBinding
 import com.smallplay.playlet.ui.activity.EpisodesDialog
@@ -212,6 +214,8 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
                     mController!!.addControlComponent(viewHolder.mVideoItemView, true)
                     viewHolder.mPlayerContainer.addView(mVideoView, 0)
 
+                    mController!!.setCurProgress(appViewModel.curPlayVideoTime.value!!)
+
                     mVideoView?.start()
                     mCurPos = position
                     Log.d(TAG, "设置当前播放位置${mCurPos}")
@@ -242,6 +246,27 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
             mVideoView!!.pause()
         }
         //暂停时记录进度
+        if (appViewModel.videoHomeDataState.value != null && mController != null && appViewModel.curPlayVideoNo.value != null) {
+            var curVideo = appViewModel.videoHomeDataState.value!!.listData[appViewModel.curPlayVideoNo.value!!]
+            if (curVideo != null) {
+                curVideo.run {
+                    var video : LocalLikeVideos = LocalLikeVideos(
+                        ID,
+                        videoName,
+                        videoType,
+                        typeName,
+                        videoDesc,
+                        finish,
+                        count,
+                        mCurPos,
+                        mController!!.getVideoDuration(),
+                        imgUrl,
+                        videoUrl
+                    )
+                    appViewModel.saveLocalVideos(video)
+                }
+            }
+        }
 
     }
 

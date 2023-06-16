@@ -22,6 +22,10 @@ class VideoController : BaseVideoController {
 //        addControlComponent(DebugInfoView(context))
     }
 
+    fun getVideoDuration() : Long {
+        return mControlWrapper.duration
+    }
+
     override fun getLayoutId(): Int {
         return 0
     }
@@ -29,5 +33,9 @@ class VideoController : BaseVideoController {
     override fun showNetWarning(): Boolean {
         //不显示移动网络播放警告
         return false
+    }
+
+    fun setCurProgress(time : Long) {
+        mControlWrapper.seekTo(time)
     }
 }
