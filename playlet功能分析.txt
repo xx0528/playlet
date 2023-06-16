@@ -32,20 +32,16 @@ vip会员
 
 安卓组件化编程
 
-这个项目主要逻辑基本上是一个Activity 加 多个 Fragment组成
-我现在想改写一下他这个项目，做成类似抖音的app
-这个项目原本的逻辑是 MainActivity 作为一个壳，上面套个MainFragment 里面有底部导航，和负责跳转
-然后就是底部导航按钮对应的Fragment页面 有HomeFragment ParkFragment MeFragment ，我是打算实现三个导航页 对应三个Fragment
-我看他之前的项目是一个Fragment里面会创建一个ViewModel对象 负责处理数据获取和处理，那么我现在有个问题
-我的HomeFragment 是用来全屏播放视频的，类似抖音的首页，我的ParkFragment是浏览视频列表的，ParkFragment里点击视频会跳转到HomeFragment里播放
-所以说实际上我的HomeFragment 和 ParkFragment用到的数据是一样的，我能使用同一个ViewModel吗，那么如果我使用了同一个ViewModel 改在什么地方初始化这个ViewModel和怎么获取呢？
-
-你可以在App级别的ViewModel中定义一个共享的数据，这样就不需要在不同的Fragment中创建多个ViewModel。可以在MainActivity的onCreate方法中根据需要初始化ViewModel，然后在HomeFragment和ParkFragment中使用该ViewModel来处理数据的获取和处理。
-
-具体来说，你可以在MainActivity中创建并初始化该ViewModel，并在HomeFragment和ParkFragment中使用getActivity().getViewModelProvider().get(ViewModel.class)方法来获取MainActivity中的ViewModel对象，然后在Fragment中使用该ViewModel来进行数据处理。
-
-另外，如果你需要在Fragment中传递数据给ViewModel，可以使用ViewModel的public方法来实现，例如ViewModel中定义一个public方法setVideoData()，在Fragment中调用该方法来传递视频数据。如果你需要观察ViewModel中的数据变化，并在Fragment中更新UI，可以使用LiveData来实现。
-
 充值 聊天 会员限制 播放细调 登陆
 关于我们 充值金币 看视频扣费
 本地存储 收藏 记录
+
+K币
+充值记录
+消费记录
+充值界面调大
+充值说明 1元 = 100K币 
+点击充值进去 自动发送的 我要充值更多 改怎么操作
+
+
+acs:ram::5449175755784161:role/playlet-server

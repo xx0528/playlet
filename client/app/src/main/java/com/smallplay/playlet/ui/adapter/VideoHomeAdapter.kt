@@ -67,7 +67,7 @@ class VideoHomeAdapter(
         viewHolder.mBtnChange.setOnClickListener {
             appViewModel.setNextVideo()
         }
-        viewHolder.mCurEpisode.text = String.format(context.getString(R.string.text_video_home_cur_episode), position)
+        viewHolder.mCurEpisode.text = String.format(context.getString(R.string.text_video_home_cur_episode), position + 1)
         viewHolder.mPosition = position
         viewHolder.mBtnOpenDialog.setOnClickListener{
             appViewModel.dialogVisible.value = 1

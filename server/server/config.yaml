@@ -1,8 +1,8 @@
 aliyun-oss:
-  endpoint: yourEndpoint
-  access-key-id: yourAccessKeyId
-  access-key-secret: yourAccessKeySecret
-  bucket-name: yourBucketName
+  endpoint: oss-ap-southeast-1.aliyuncs.com
+  access-key-id: LTAI5tKhLuEaBEGqQoRWjy11
+  access-key-secret: L7Kvi2hlUjyR9HmallVx8I1fC0c9XL
+  bucket-name: playlet-aa
   bucket-url: yourBucketUrl
   base-path: yourBasePath
 autocode:
@@ -164,7 +164,7 @@ system:
   env: public
   addr: 8888
   db-type: mysql
-  oss-type: local
+  oss-type: aliyun-oss
   use-multipoint: false
   use-redis: false
   iplimit-count: 15000

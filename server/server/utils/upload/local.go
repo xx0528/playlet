@@ -84,3 +84,7 @@ func (*Local) DeleteFile(key string) error {
 	}
 	return nil
 }
+
+func (*Local) GetFilePath(filePath string) (string, error) {
+	return "", nil
+}

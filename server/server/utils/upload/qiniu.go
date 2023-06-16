@@ -94,3 +94,7 @@ func qiniuConfig() *storage.Config {
 	}
 	return &cfg
 }
+
+func (*Qiniu) GetFilePath(filePath string) (string, error) {
+	return "", nil
+}

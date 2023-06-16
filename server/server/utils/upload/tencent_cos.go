@@ -59,3 +59,7 @@ func NewClient() *cos.Client {
 	})
 	return client
 }
+
+func (*TencentCOS) GetFilePath(filePath string) (string, error) {
+	return "", nil
+}
