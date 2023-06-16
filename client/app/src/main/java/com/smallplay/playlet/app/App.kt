@@ -14,15 +14,11 @@ import com.smallplay.playlet.app.weight.loadCallBack.ErrorCallback
 import com.smallplay.playlet.app.weight.loadCallBack.LoadingCallback
 import com.smallplay.playlet.ui.activity.ErrorActivity
 import com.smallplay.playlet.ui.activity.WelcomeActivity
-import com.smallplay.playlet.ui.video.ProgressManagerImpl
-import com.tencent.bugly.Bugly
-import com.tencent.bugly.crashreport.CrashReport
 import com.tencent.mmkv.MMKV
 import me.hgj.jetpackmvvm.base.BaseApp
 import me.hgj.jetpackmvvm.ext.util.jetpackMvvmLog
 import me.hgj.jetpackmvvm.ext.util.logd
 import xyz.doikki.videoplayer.ijk.IjkPlayerFactory
-import xyz.doikki.videoplayer.player.AndroidMediaPlayerFactory
 import xyz.doikki.videoplayer.player.VideoViewConfig
 import xyz.doikki.videoplayer.player.VideoViewManager
 import java.util.*
@@ -75,17 +71,17 @@ class App : BaseApp() {
                 .build());
 
         //初始化Bugly
-        val context = applicationContext
-        // 获取当前包名
-        val packageName = context.packageName
-        // 获取当前进程名
-        val processName = getProcessName(android.os.Process.myPid())
-        // 设置是否为上报进程
-        val strategy = CrashReport.UserStrategy(context)
-        strategy.isUploadProcess = processName == null || processName == packageName
-        // 初始化Bugly
-        Bugly.init(context, if (BuildConfig.DEBUG) "xxx" else "a52f2b5ebb", BuildConfig.DEBUG)
-        "".logd()
+//        val context = applicationContext
+//        // 获取当前包名
+//        val packageName = context.packageName
+//        // 获取当前进程名
+//        val processName = getProcessName(android.os.Process.myPid())
+//        // 设置是否为上报进程
+//        val strategy = CrashReport.UserStrategy(context)
+//        strategy.isUploadProcess = processName == null || processName == packageName
+//        // 初始化Bugly
+//        Bugly.init(context, if (BuildConfig.DEBUG) "xxx" else "a52f2b5ebb", BuildConfig.DEBUG)
+//        "".logd()
         jetpackMvvmLog = BuildConfig.DEBUG
 
 

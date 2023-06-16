@@ -83,9 +83,9 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         }
 
         if (appViewModel.userInfo.value?.check == true) {
-            item_recharge_layout.visibility = View.VISIBLE
-        } else {
             item_recharge_layout.visibility = View.GONE
+        } else {
+            item_recharge_layout.visibility = View.VISIBLE
         }
     }
 

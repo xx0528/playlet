@@ -17,7 +17,6 @@ import com.afollestad.materialdialogs.color.colorChooser
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.blankj.utilcode.util.AppUtils
-import com.tencent.bugly.beta.Beta
 import com.smallplay.playlet.R
 import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.ext.initClose
@@ -167,7 +166,6 @@ class SettingFragment : PreferenceFragmentCompat(),
         }
 
         findPreference<Preference>("version")?.setOnPreferenceClickListener {
-            Beta.checkUpgrade(true, false)
             false
         }
         findPreference<Preference>("copyRight")?.setOnPreferenceClickListener {

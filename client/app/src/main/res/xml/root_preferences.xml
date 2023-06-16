@@ -19,10 +19,10 @@
     <com.smallplay.playlet.app.weight.preference.PreferenceCategory
         android:key="other"
         android:title="@string/setting_other">
-        <Preference
-            android:key="mode"
-            android:summary="@string/setting_modetip"
-            android:title="@string/setting_mode" />
+<!--        <Preference-->
+<!--            android:key="mode"-->
+<!--            android:summary="@string/setting_modetip"-->
+<!--            android:title="@string/setting_mode" />-->
         <com.smallplay.playlet.app.weight.preference.IconPreference
             android:key="color"
             android:summary="@string/choose_theme_color_summary"

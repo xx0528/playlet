@@ -19,7 +19,6 @@ import com.smallplay.playlet.app.base.BaseActivity1
 import com.smallplay.playlet.app.util.StatusBarUtil
 import com.smallplay.playlet.databinding.ActivityMainBinding
 import com.smallplay.playlet.viewmodel.state.MainViewModel
-import com.tencent.bugly.beta.Beta
 import me.hgj.jetpackmvvm.network.manager.NetState
 import java.util.*
 
@@ -36,8 +35,6 @@ class MainActivity : BaseActivity1<MainViewModel, ActivityMainBinding>() {
         configuration.locale = Locale.TAIWAN // 设置当前语言配置为繁体
         resources.updateConfiguration(configuration, resources.displayMetrics)
 
-        //进入首页检查更新
-        Beta.checkUpgrade(false, true)
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val nav = Navigation.findNavController(this@MainActivity, R.id.host_fragment)
