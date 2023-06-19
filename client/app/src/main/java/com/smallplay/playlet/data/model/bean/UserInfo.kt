@@ -24,4 +24,5 @@ var enable: Int,
 var token: String,
 var check: Boolean,
 var chatServer: String,
+var rechargeDesc: String,
 var expiresAt: Long) : Parcelable

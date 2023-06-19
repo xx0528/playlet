@@ -47,20 +47,23 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         mDatabind.vm = mViewModel
         mDatabind.click = ProxyClick()
         appViewModel.appColor.value?.let { setUiTheme(it, me_linear) }
-        appViewModel.userInfo.value?.let { mViewModel.name.set(if (it.userName.isEmpty()) it.userName else it.uuid) }
+        appViewModel.userInfo.value?.let {
+            mViewModel.name.set(if (it.userName.isEmpty()) it.userName else it.uuid)
+            item_me_recharge_desc.text = it.rechargeDesc
+        }
 
         recycle_recharge_vip.init(LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false), meRechargeAdapter).let {
-            it.addItemDecoration(SpaceItemDecoration(5,  ConvertUtils.dp2px(2f)))
+            it.addItemDecoration(SpaceItemDecoration(15,  ConvertUtils.dp2px(2f)))
         }
         recycle_like_video.init(LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false), meLikeVideosAdapter).let {
-            it.addItemDecoration(SpaceItemDecoration(5, ConvertUtils.dp2px(2f)))
+            it.addItemDecoration(SpaceItemDecoration(15, ConvertUtils.dp2px(2f)))
         }
 
         meRechargeAdapter.run {
             setOnItemClickListener { adapter, view, position ->
                 nav().navigateAction(R.id.action_to_webFragment, Bundle().apply {
                     putString("url", appViewModel.userInfo.value?.chatServer)
-                    putInt("recharge", meRechargeAdapter.data[position].costMoney)
+                    putString("recharge", meRechargeAdapter.data[position].costMoney)
                 })
             }
         }
@@ -132,6 +135,7 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
                     mViewModel.name.set(context?.getString(R.string.me_click_login_text))
                     mViewModel.info.set("id：--　")
                     mViewModel.gold.set("0")
+                    item_me_recharge_desc.text = it.rechargeDesc
                 })
             })
         }
@@ -149,23 +153,21 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         fun chat() {
             nav().jumpByLogin {
                 it.navigateAction(R.id.action_to_webFragment, Bundle().apply {
+                    putString("type", "kefu")
                     putString("url", appViewModel.userInfo.value?.chatServer)
-                    putInt("recharge", -1)
+                    putString("recharge", "-1")
                 })
             }
         }
 
         /** 消费记录 */
         fun expense() {
-            nav().navigateAction(R.id.action_to_webFragment, Bundle().apply {
-                putParcelable(
-                    "",
-                    BannerResponse(
-                        title = "消费记录",
-                        url = "https://www.baidu.com/"
-                    )
-                )
-            })
+            nav().navigateAction(R.id.action_mainfragment_to_costFragment)
+        }
+
+        /** 充值记录 */
+        fun recharge() {
+            nav().navigateAction(R.id.action_mainfragment_to_rechargeFragment)
         }
 
         /** 设置*/

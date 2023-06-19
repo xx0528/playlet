@@ -73,4 +73,12 @@
     <string name="text_me_give_money">多送%d元</string>
     <string name="text_video_home_cur_episode" type="id">第%d集</string>
     <string name="text_video_home_all_episode" type="id">共%d集</string>
+    <string name="item_cost_text">消费K币</string>
+    <string name="item_cost_time">时间</string>
+    <string name="item_cost_left">剩余K币</string>
+    <string name="item_cost_buy">购买视频</string>
+    <string name="item_recharge_text">充值</string>
+    <string name="item_recharge_buy">购买K币</string>
+    <string name="item_recharge_give">赠送K币</string>
+    <string name="item_recharge_left">剩余K币</string>
 </resources>

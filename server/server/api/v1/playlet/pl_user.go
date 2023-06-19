@@ -261,7 +261,7 @@ func (pUserApi *PlUserApi) PlayVideo(c *gin.Context) {
 			CostGold: global.GVA_CONFIG.Playlet.EpisodeCost,
 			Time:     time.Now(),
 			LeftGold: user.CurGold,
-			BuyVideo: fmt.Sprintf("%s  ID:%d 第%d集", videoInfo.VideoName, reqInfo.ID, reqInfo.Episode),
+			BuyVideo: fmt.Sprintf("%d集(%s  ID:%d )", reqInfo.Episode, videoInfo.VideoName, reqInfo.ID),
 		}
 		//更新数据
 		if err := plUserService.UpdatePlUser(user); err == nil {
@@ -401,11 +401,12 @@ func (plUserApi *PlUserApi) TokenNext(c *gin.Context, user playlet.PlUser) {
 	}
 	if !global.GVA_CONFIG.System.UseMultipoint {
 		response.OkWithDetailed(playletRes.PlLoginRes{
-			PlUser:     user,
-			Token:      token,
-			Check:      global.GVA_CONFIG.Playlet.Check,
-			ChatServer: global.GVA_CONFIG.Playlet.ChatServer,
-			ExpiresAt:  claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+			PlUser:       user,
+			Token:        token,
+			RechargeDesc: global.GVA_CONFIG.Playlet.RechargeDesc,
+			Check:        global.GVA_CONFIG.Playlet.Check,
+			ChatServer:   global.GVA_CONFIG.Playlet.ChatServer,
+			ExpiresAt:    claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
 		}, "登录成功", c)
 		return
 	}
@@ -417,11 +418,12 @@ func (plUserApi *PlUserApi) TokenNext(c *gin.Context, user playlet.PlUser) {
 			return
 		}
 		response.OkWithDetailed(playletRes.PlLoginRes{
-			PlUser:     user,
-			Token:      token,
-			Check:      global.GVA_CONFIG.Playlet.Check,
-			ChatServer: global.GVA_CONFIG.Playlet.ChatServer,
-			ExpiresAt:  claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+			PlUser:       user,
+			Token:        token,
+			RechargeDesc: global.GVA_CONFIG.Playlet.RechargeDesc,
+			Check:        global.GVA_CONFIG.Playlet.Check,
+			ChatServer:   global.GVA_CONFIG.Playlet.ChatServer,
+			ExpiresAt:    claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
 		}, "登录成功", c)
 	} else if err != nil {
 		global.GVA_LOG.Error("设置登录状态失败!", zap.Error(err))
@@ -438,11 +440,12 @@ func (plUserApi *PlUserApi) TokenNext(c *gin.Context, user playlet.PlUser) {
 			return
 		}
 		response.OkWithDetailed(playletRes.PlLoginRes{
-			PlUser:     user,
-			Token:      token,
-			Check:      global.GVA_CONFIG.Playlet.Check,
-			ChatServer: global.GVA_CONFIG.Playlet.ChatServer,
-			ExpiresAt:  claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
+			PlUser:       user,
+			Token:        token,
+			RechargeDesc: global.GVA_CONFIG.Playlet.RechargeDesc,
+			Check:        global.GVA_CONFIG.Playlet.Check,
+			ChatServer:   global.GVA_CONFIG.Playlet.ChatServer,
+			ExpiresAt:    claims.RegisteredClaims.ExpiresAt.Unix() * 1000,
 		}, "登录成功", c)
 	}
 }

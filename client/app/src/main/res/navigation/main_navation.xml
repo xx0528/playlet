@@ -73,6 +73,22 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_mainfragment_to_costFragment"
+            app:destination="@id/costFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+
+        <action
+            android:id="@+id/action_mainfragment_to_rechargeFragment"
+            app:destination="@id/rechargeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
 
@@ -250,5 +266,16 @@
         android:id="@+id/settingFragment"
         android:name="com.smallplay.playlet.ui.fragment.setting.SettingFragment"
         android:label="SettingFragment" />
+
+    <fragment
+        android:id="@+id/costFragment"
+        android:name="com.smallplay.playlet.ui.fragment.record.CostFragment"
+        android:label="CostFragment" />
+
+    <fragment
+        android:id="@+id/rechargeFragment"
+        android:name="com.smallplay.playlet.ui.fragment.record.RechargeFragment"
+        android:label="RechargeFragment" />
+
 
 </navigation>

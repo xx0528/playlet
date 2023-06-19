@@ -57,6 +57,27 @@ interface ApiService {
     ): ApiResponse<LikeVideoResponse>
 
     /**
+     * 获取视频数据
+     */
+    @GET("plVideo/getPlUserVideoList")
+    suspend fun getVideoList(@Query("page") pageNo: Int): ApiResponse<ApiPagerResponse<ArrayList<VideoResponse>>>
+
+
+    /**
+     * 获取Cost列表数据 根据完成时间排序
+     */
+    @GET("plCost/getPlCostData")
+    suspend fun getCostData(@Query("page") page: Int): ApiResponse<ApiPagerResponse<ArrayList<CostResponse>>>
+
+
+    /**
+     * 获取Cost列表数据 根据完成时间排序
+     */
+    @GET("plRecharge/getPlRechargeData")
+    suspend fun getRechargeData(@Query("page") page: Int): ApiResponse<ApiPagerResponse<ArrayList<RechargeResponse>>>
+
+
+    /**
      * 注册
      */
     @FormUrlEncoded
@@ -304,13 +325,5 @@ interface ApiService {
     @POST("/lg/todo/done/{id}/json")
     @FormUrlEncoded
     suspend fun doneTodo(@Path("id") id: Int, @Field("status") status: Int): ApiResponse<Any?>
-
-
-
-    /**
-     * 获取视频数据
-     */
-    @GET("plVideo/getPlUserVideoList")
-    suspend fun getVideoList(@Query("page") pageNo: Int): ApiResponse<ApiPagerResponse<ArrayList<VideoResponse>>>
 
 }

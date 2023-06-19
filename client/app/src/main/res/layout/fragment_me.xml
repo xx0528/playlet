@@ -105,26 +105,33 @@
                             <LinearLayout
                                 android:id="@+id/item_recharge_layout"
                                 android:layout_width="match_parent"
-                                android:layout_height="100dp"
+                                android:layout_height="130dp"
                                 android:orientation="vertical">
                                 <LinearLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal">
                                     <TextView
-                                        android:layout_width="0dp"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_weight="1"
                                         android:textColor="@color/colorBlack333"
                                         android:layout_marginLeft="10dp"
                                         android:textStyle="bold"
                                         android:text="会员充值"/>
+                                    <TextView
+                                        android:id="@+id/item_me_recharge_desc"
+                                        android:layout_width="0dp"
+                                        android:layout_weight="1"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="#555555"
+                                        android:layout_marginLeft="18dp"
+                                        android:text="($1元 = 100K币)"/>
 
                                     <ImageView
                                         android:id="@+id/item_me_recharge_icon"
                                         android:layout_width="20dp"
                                         android:layout_height="20dp"
-                                        android:background="@color/windowBackground"
+                                        android:background="#00000000"
                                         android:scaleType="centerCrop"
                                         android:src="@mipmap/icon_gold" />
 
@@ -132,7 +139,7 @@
                                         android:id="@+id/me_gold"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginRight="20dp"
+                                        android:layout_marginRight="40dp"
                                         android:text="@{String.valueOf(vm.gold)}"
                                         android:textColor="@color/colorPrimary"
                                         android:textSize="15dp"
@@ -143,7 +150,7 @@
                                 <androidx.recyclerview.widget.RecyclerView
                                     android:id="@+id/recycle_recharge_vip"
                                     android:layout_width="match_parent"
-                                    android:layout_height="70dp"
+                                    android:layout_height="140dp"
                                     android:layout_marginLeft="10dp"
                                     android:layout_marginRight="10dp"
                                     android:scrollbars="none"/>
@@ -213,6 +220,67 @@
                                     android:src="@drawable/ic_right" />
                             </LinearLayout>
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:background="?attr/selectableItemBackground"
+                                android:gravity="center_vertical"
+                                android:onClick="@{()->click.expense()}"
+                                android:orientation="horizontal"
+                                android:paddingLeft="16dp"
+                                android:paddingRight="16dp">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_marginRight="16dp"
+                                    android:src="@mipmap/icon_cost" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/me_cost_text"
+                                    android:textColor="@color/colorBlack333"
+                                    android:textSize="14dp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:src="@drawable/ic_right" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="50dp"
+                                android:background="?attr/selectableItemBackground"
+                                android:gravity="center_vertical"
+                                android:onClick="@{()->click.recharge()}"
+                                android:orientation="horizontal"
+                                android:paddingLeft="16dp"
+                                android:paddingRight="16dp">
+
+                                <ImageView
+                                    android:layout_width="24dp"
+                                    android:layout_height="24dp"
+                                    android:layout_marginRight="16dp"
+                                    android:src="@mipmap/icon_recharge" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/me_recharge_text"
+                                    android:textColor="@color/colorBlack333"
+                                    android:textSize="14dp"
+                                    android:textStyle="bold" />
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:src="@drawable/ic_right" />
+                            </LinearLayout>
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
