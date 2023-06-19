@@ -39,8 +39,8 @@
     <string name="me_cost_text">消費記錄</string>
     <string name="me_recharge_text">充值記錄</string>
     <string name="me_chat_text">聯系我們</string>
-    <string name="me_cur_gold_text">當前金幣:</string>
-    <string name="me_my_gold_text">我的金幣</string>
+    <string name="me_cur_gold_text">當前K幣 : </string>
+    <string name="me_my_gold_text">我的K幣</string>
     <string name="me_click_login_text">點擊登陸~</string>
     <string name="dkplayer_replay">重新播放</string>
     <string name="dkplayer_lock_tip">請先解鎖屏幕！</string>

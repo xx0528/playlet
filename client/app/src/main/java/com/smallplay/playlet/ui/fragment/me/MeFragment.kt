@@ -48,7 +48,8 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         mDatabind.click = ProxyClick()
         appViewModel.appColor.value?.let { setUiTheme(it, me_linear) }
         appViewModel.userInfo.value?.let {
-            mViewModel.name.set(if (it.userName.isEmpty()) it.userName else it.uuid)
+            mViewModel.name.set(it.phone.ifEmpty { getString(R.string.click_bind_phome_text)})
+            mViewModel.info.set(it.phone.ifEmpty { it.uuid })
             item_me_recharge_desc.text = it.rechargeDesc
         }
 
@@ -90,6 +91,12 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         } else {
             item_recharge_layout.visibility = View.VISIBLE
         }
+
+        if (CacheUtil.getLocalVideos()?.isEmpty() == true) {
+            item_local_layout.visibility = View.GONE
+        } else {
+            item_local_layout.visibility = View.VISIBLE
+        }
     }
 
     override fun lazyLoadData() {
@@ -109,10 +116,21 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
                 me_swipe.isRefreshing = false
                 parseState(resultState, {
                     mViewModel.info.set("id：${it.userId}")
-                    mViewModel.gold.set(it.curGold.toString())
+                    mViewModel.gold.set( getString(R.string.me_cur_gold_text) + " ${it.curGold}")
+
+                    mViewModel.name.set(
+                        it.userName.ifEmpty {
+                            it.phone.ifEmpty {
+                                getString(R.string.click_bind_phome_text)
+                            }
+                        }
+                    )
+
+
                 }, {
                     ToastUtils.showShort(it.errorMsg)
                 })
+
             })
             meVip.observe(viewLifecycleOwner, Observer {
                 meRechargeAdapter.data = arrayListOf()
@@ -143,15 +161,15 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
 
     inner class ProxyClick {
 
-        /** 登录 */
-        fun login() {
-            nav().jumpByLogin {}
+        /** 绑定 */
+        fun bind() {
+            nav().jumpByBind{}
         }
 
 
         /** 联系我们 */
         fun chat() {
-            nav().jumpByLogin {
+            nav().jumpByBind {
                 it.navigateAction(R.id.action_to_webFragment, Bundle().apply {
                     putString("type", "kefu")
                     putString("url", appViewModel.userInfo.value?.chatServer)
@@ -162,12 +180,16 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
 
         /** 消费记录 */
         fun expense() {
-            nav().navigateAction(R.id.action_mainfragment_to_costFragment)
+            nav().jumpByBind {
+                it.navigateAction(R.id.action_mainfragment_to_costFragment)
+            }
         }
 
         /** 充值记录 */
         fun recharge() {
-            nav().navigateAction(R.id.action_mainfragment_to_rechargeFragment)
+            nav().jumpByBind {
+                nav().navigateAction(R.id.action_mainfragment_to_rechargeFragment)
+            }
         }
 
         /** 设置*/

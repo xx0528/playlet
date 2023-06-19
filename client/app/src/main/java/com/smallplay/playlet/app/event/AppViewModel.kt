@@ -213,16 +213,20 @@ class AppViewModel : BaseViewModel() {
     fun saveLocalVideos(videoInfo : LocalLikeVideos) {
         if (videoInfo != null && localVideosState.value != null) {
             val newList = ArrayList<LocalLikeVideos>()
+            Log.d(TAG, "要保存的videoID " + videoInfo.ID)
             var isHave = false
             for (item in localVideosState.value!!) {
+                Log.d(TAG, "已有的 ID  " + item.ID)
                 if (item.ID == videoInfo.ID) {
                     newList.add(videoInfo)
                     isHave = true
+                    Log.d(TAG,"判断出有了")
                 } else {
                     newList.add(item)
                 }
             }
             if (!isHave) {
+                Log.d(TAG,"添加  --- ")
                 newList.add(videoInfo)
             }
             localVideosState.value = newList

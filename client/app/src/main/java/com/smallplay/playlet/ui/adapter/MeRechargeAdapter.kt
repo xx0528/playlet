@@ -1,6 +1,7 @@
 package com.smallplay.playlet.ui.adapter
 
 import android.view.View
+import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -50,14 +51,25 @@ class MeRechargeAdapter(data: MutableList<RechargeData>?) :
 //            if (giveGold > 0) {
 //                goldStr = "$goldStr+${giveGold}" + context.getString(R.string.text_me_recharge_give_gold)
 //            }
+
+
+            var goldIcon = holder.getView<ImageView>(R.id.item_me_recharge_icon)
             holder.setText(R.id.item_me_recharge_gold, buyGold)
+            var buyGoldView = holder.getView<TextView>(R.id.item_me_recharge_gold)
+            if (buyGold == "0") {
+                buyGoldView.visibility = View.GONE
+            } else {
+                buyGoldView.visibility = View.VISIBLE
+            }
 
             var giveView = holder.getView<TextView>(R.id.item_me_recharge_give)
-            if (giveMoney.isNotEmpty()) {
+            if (giveMoney != "0") {
                 giveView.visibility = View.VISIBLE
                 holder.setText(R.id.item_me_recharge_give,  giveMoney)
+                goldIcon.visibility = View.VISIBLE
             } else {
                 giveView.visibility = View.INVISIBLE
+                goldIcon.visibility = View.INVISIBLE
             }
         }
 

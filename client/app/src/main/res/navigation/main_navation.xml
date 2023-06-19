@@ -104,6 +104,20 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
     </fragment>
+
+    <fragment
+        android:id="@+id/bindFragment"
+        android:name="com.smallplay.playlet.ui.fragment.bind.BindFragment"
+        android:label="LoginFragment">
+        <action
+            android:id="@+id/action_loginFragment_to_loginFrgment"
+            app:destination="@id/registerFrgment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+
     <fragment
         android:id="@+id/registerFrgment"
         android:name="com.smallplay.playlet.ui.fragment.login.RegisterFrgment"
@@ -262,6 +276,15 @@
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right" />
+
+    <action
+        android:id="@+id/action_to_bindFragment"
+        app:destination="@id/bindFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right" />
+
     <fragment
         android:id="@+id/settingFragment"
         android:name="com.smallplay.playlet.ui.fragment.setting.SettingFragment"

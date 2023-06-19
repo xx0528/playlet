@@ -150,6 +150,17 @@ fun NavController.jumpByLogin(action: (NavController) -> Unit) {
 }
 
 /**
+ * 拦截是否绑定
+ */
+fun NavController.jumpByBind(action: (NavController) -> Unit) {
+    if (CacheUtil.isBind()) {
+        action(this)
+    } else {
+        this.navigateAction(R.id.action_to_bindFragment)
+    }
+}
+
+/**
  * 拦截登录操作，如果没有登录执行方法 actionLogin 登录过了执行 action
  */
 fun NavController.jumpByLogin(

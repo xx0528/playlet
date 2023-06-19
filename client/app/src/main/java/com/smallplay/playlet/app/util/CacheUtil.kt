@@ -79,6 +79,22 @@ object CacheUtil {
     }
 
     /**
+     * 是否已经绑定手机号
+     */
+    fun isBind(): Boolean {
+        val kv = MMKV.mmkvWithID("app")
+        return kv.decodeBool("bind", false)
+    }
+
+    /**
+     * 设置是否已经绑定手机号
+     */
+    fun setIsBind(isBind: Boolean) {
+        val kv = MMKV.mmkvWithID("app")
+        kv.encode("bind", isBind)
+    }
+
+    /**
      * 是否是第一次登陆
      */
     fun isFirst(): Boolean {
