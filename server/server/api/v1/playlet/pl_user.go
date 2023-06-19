@@ -27,8 +27,6 @@ type PlUserApi struct {
 
 var plUserService = service.ServiceGroupApp.PlayletServiceGroup.PlUserService
 
-var fileService = service.ServiceGroupApp.ExampleServiceGroup.FileUploadAndDownloadService
-
 // CreatePlUser 创建PlUser
 // @Tags PlUser
 // @Summary 创建PlUser
@@ -219,18 +217,10 @@ func (pUserApi *PlUserApi) PlayVideo(c *gin.Context) {
 		return
 	}
 
-	videoUrl := fmt.Sprintf("%s/%d.mp4", videoInfo.VideoUrl, reqInfo.Episode)
-
 	//免费集数
 	if videoInfo.FreeCount >= reqInfo.Episode {
-		newUrl, err := fileService.GetFilePath(videoUrl)
-		if err != nil {
-			response.FailWithMessage(err.Error(), c)
-			return
-		}
 		response.OkWithData(playletRes.PlPlayVideoRes{
 			PlVideoInfo: reqInfo,
-			VideoUrl:    newUrl,
 			Code:        1,
 			Msg:         "免费",
 		}, c)
@@ -247,14 +237,8 @@ func (pUserApi *PlUserApi) PlayVideo(c *gin.Context) {
 	// 购买过
 	buyNum := getBuyVideoByID(user.BuyVideos, int(reqInfo.ID))
 	if buyNum >= reqInfo.Episode {
-		newUrl, err := fileService.GetFilePath(videoUrl)
-		if err != nil {
-			response.FailWithMessage(err.Error(), c)
-			return
-		}
 		response.OkWithData(playletRes.PlPlayVideoRes{
 			PlVideoInfo: reqInfo,
-			VideoUrl:    newUrl,
 			Code:        2,
 			Msg:         "已购",
 		}, c)
@@ -265,15 +249,9 @@ func (pUserApi *PlUserApi) PlayVideo(c *gin.Context) {
 	if reqInfo.Episode-buyNum > 1 {
 		reqInfo.Episode = int(math.Min(float64(buyNum+1), float64(videoInfo.Count)))
 	}
-	//shenhaobaoan/1.mp4
-	videoUrl = fmt.Sprintf("%s/%d.mp4", videoInfo.VideoUrl, reqInfo.Episode)
+
 	// 有钱直接花
 	if user.CurGold > global.GVA_CONFIG.Playlet.EpisodeCost {
-		newUrl, err := fileService.GetFilePath(videoUrl)
-		if err != nil {
-			response.FailWithMessage(err.Error(), c)
-			return
-		}
 		//扣除金币
 		user.CurGold = user.CurGold - global.GVA_CONFIG.Playlet.EpisodeCost
 		user.BuyVideos = updateVideoRecord(user.BuyVideos, reqInfo, "buy")
@@ -289,7 +267,6 @@ func (pUserApi *PlUserApi) PlayVideo(c *gin.Context) {
 		if err := plUserService.UpdatePlUser(user); err == nil {
 			response.OkWithData(playletRes.PlPlayVideoRes{
 				PlVideoInfo: reqInfo,
-				VideoUrl:    newUrl,
 				Code:        3,
 				Msg:         "解锁成功",
 			}, c)

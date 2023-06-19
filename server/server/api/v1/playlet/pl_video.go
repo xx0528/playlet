@@ -202,7 +202,7 @@ func (plVideoApi *PlVideoApi) GetPlUserVideoList(c *gin.Context) {
 	if err == nil {
 		pageInfo.Page = num
 	}
-	pageInfo.PageSize = 5
+	pageInfo.PageSize = 20
 	if list, total, err := plVideoService.GetPlVideoInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
