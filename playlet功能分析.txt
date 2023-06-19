@@ -42,6 +42,10 @@ K币
 充值界面调大
 充值说明 1元 = 100K币 
 点击充值进去 自动发送的 我要充值更多 改怎么操作
+绑定手机号
+昵称和密码
 
+LTAI5tKhLuEaBEGqQoRWjy11
+L7Kvi2hlUjyR9HmallVx8I1fC0c9XL
 
 acs:ram::5449175755784161:role/playlet-server
