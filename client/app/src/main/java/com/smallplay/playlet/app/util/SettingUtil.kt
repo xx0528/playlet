@@ -1,7 +1,9 @@
 package com.smallplay.playlet.app.util
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -10,9 +12,14 @@ import android.graphics.drawable.StateListDrawable
 import android.os.Build
 import android.preference.PreferenceManager
 import android.provider.Settings
+import android.telephony.TelephonyManager
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
+import com.blankj.utilcode.util.ToastUtils
 import com.blankj.utilcode.util.Utils
 import com.kingja.loadsir.core.LoadService
 import com.smallplay.playlet.R
@@ -189,5 +196,19 @@ object SettingUtil {
         //        val tm = appContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         return Settings.Secure.getString(appContext.contentResolver, Settings.Secure.ANDROID_ID)
 
+    }
+
+    @SuppressLint("MissingPermission", "HardwareIds")
+    fun getPhoneInfo(context: Context): Pair<String, String?> {
+        val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+        var phoneNumber = ""
+        var carrierName: String? = null
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+            phoneNumber = telephonyManager.line1Number ?: ""
+            carrierName = telephonyManager.networkOperatorName
+        } else {
+            ToastUtils.showLong("获取权限失败")
+        }
+        return Pair(phoneNumber, carrierName)
     }
 }

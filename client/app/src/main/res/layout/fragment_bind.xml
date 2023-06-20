@@ -7,6 +7,10 @@
         <variable
             name="viewmodel"
             type="com.smallplay.playlet.viewmodel.state.BindViewModel" />
+
+        <variable
+            name="click"
+            type="com.smallplay.playlet.ui.fragment.bind.BindFragment.ProxyClick" />
     </data>
 
     <LinearLayout
@@ -37,33 +41,34 @@
                     android:src="@mipmap/ic_launcher" />
 
                 <TextView
+                    android:id="@+id/bind_operator_Info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="中国联通提供认证服务"
+                    android:layout_gravity="center"
                     android:layout_marginTop="70dp"
-                    android:layout_gravity="center">
-                </TextView>
+                    android:text="中国联通提供认证服务" />
 
                 <TextView
+                    android:id="@+id/bind_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="15264785**23"
+                    android:layout_gravity="center"
                     android:layout_marginTop="10dp"
-                    android:textStyle="bold"
+                    android:text="15264785**23"
                     android:textSize="28dp"
-                    android:layout_gravity="center">
-                </TextView>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/bindSub"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:layout_marginTop="60dp"
-                    android:layout_marginBottom="12dp"
                     android:layout_marginLeft="40dp"
+                    android:layout_marginTop="60dp"
                     android:layout_marginRight="40dp"
+                    android:layout_marginBottom="12dp"
                     android:background="@drawable/button_shap"
                     android:gravity="center"
+                    android:onClick="@{()->click.bind()}"
                     android:text="本机号码一键登录"
                     android:textColor="@color/white"
                     android:textSize="16dp" />
@@ -73,12 +78,13 @@
                     android:id="@+id/loginSub"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="12dp"
                     android:layout_marginLeft="40dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="40dp"
+                    android:layout_marginBottom="12dp"
                     android:background="@drawable/button_shap2"
                     android:gravity="center"
+                    android:onClick="@{()->click.login()}"
                     android:text="已绑定号码登录"
                     android:textColor="@color/white"
                     android:textSize="16dp" />

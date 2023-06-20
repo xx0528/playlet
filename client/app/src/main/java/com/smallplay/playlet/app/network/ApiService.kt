@@ -78,6 +78,12 @@ interface ApiService {
 
 
     /**
+     * 绑定手机号
+     */
+    @GET("plUser/plBindPhone")
+    suspend fun bind(@Query("phone") phone: String): ApiResponse<UserInfo>
+
+    /**
      * 注册
      */
     @FormUrlEncoded

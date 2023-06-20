@@ -2,7 +2,6 @@ package com.smallplay.playlet.ui.fragment.web
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
@@ -10,9 +9,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.Window
 import android.webkit.JavascriptInterface
-import android.webkit.WebChromeClient
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
 import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
@@ -21,8 +17,6 @@ import androidx.lifecycle.Observer
 import com.blankj.utilcode.util.VibrateUtils
 import com.google.gson.Gson
 import com.just.agentweb.AgentWeb
-import com.just.agentweb.HttpHeaders
-import com.just.agentweb.WebViewClient
 import kotlinx.android.synthetic.main.fragment_web.*
 import kotlinx.android.synthetic.main.include_toolbar.*
 import com.smallplay.playlet.R
@@ -56,16 +50,8 @@ class WebFragment : BaseFragment<WebViewModel, FragmentWebBinding>() {
 
     override fun initView(savedInstanceState: Bundle?) {
         setHasOptionsMenu(false)
-        mViewModel.type = arguments?.getString("type").toString()
-        if (mViewModel.type == "kefu") {
-            mViewModel.recharge = arguments?.getString("recharge").toString()
-        } else if (mViewModel.type == "xiaofeijilu") {
-
-        } else if (mViewModel.type == "chongzhijilu") {
-
-        }
         mViewModel.url = arguments?.getString("url").toString()
-
+        mViewModel.recharge = arguments?.getInt("recharge")?.toInt() ?: -1
         toolbar.run {
             //设置menu 关键代码
 //            mActivity.setSupportActionBar(this)
@@ -97,27 +83,6 @@ class WebFragment : BaseFragment<WebViewModel, FragmentWebBinding>() {
             webView.addJavascriptInterface(this, "androidJs");
             var settings = webView.settings
             settings.javaScriptEnabled = true
-            webView.webViewClient = object : WebViewClient() {
-                override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-                    val headers: MutableMap<String, String> = HashMap()
-                    if (appViewModel.userInfo.value?.token != null) {
-                        headers["x-token"] = appViewModel.userInfo.value?.token!!
-                    }
-                    view.loadUrl(request.url.toString(), headers)
-                    return true
-                }
-                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                    super.onPageStarted(view, url, favicon)
-                    // 设置请求头
-                    if (url != null) {
-                        val headers = HashMap<String, String>()
-                        headers["User-Agent"] = "Mozilla/5.0"
-                        headers["Accept-Encoding"] = "gzip, deflate"
-                        headers["x-token"] = appViewModel.userInfo.value?.token!!
-                        view?.loadUrl(url, headers)
-                    }
-                }
-            }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this,
             object : OnBackPressedCallback(true) {
@@ -136,7 +101,7 @@ class WebFragment : BaseFragment<WebViewModel, FragmentWebBinding>() {
     @JavascriptInterface
     fun getRechargeInfo() : String {
         var retStr = "我要充值"
-        if (mViewModel.recharge != "-1") {
+        if (mViewModel.recharge >= 0) {
             retStr = "$retStr ${mViewModel.recharge} 元"
         }
         retStr = "$retStr\n我的賬號是: ${appViewModel.userInfo.value?.userId}\n我的手機是: ${appViewModel.userInfo.value?.phone}"

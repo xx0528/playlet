@@ -64,7 +64,7 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
             setOnItemClickListener { adapter, view, position ->
                 nav().navigateAction(R.id.action_to_webFragment, Bundle().apply {
                     putString("url", appViewModel.userInfo.value?.chatServer)
-                    putString("recharge", meRechargeAdapter.data[position].costMoney)
+                    putInt("recharge", meRechargeAdapter.data[position].costMoney.toInt())
                 })
             }
         }
@@ -91,7 +91,6 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         } else {
             item_recharge_layout.visibility = View.VISIBLE
         }
-
         if (CacheUtil.getLocalVideos()?.isEmpty() == true) {
             item_local_layout.visibility = View.GONE
         } else {
@@ -130,7 +129,6 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
                 }, {
                     ToastUtils.showShort(it.errorMsg)
                 })
-
             })
             meVip.observe(viewLifecycleOwner, Observer {
                 meRechargeAdapter.data = arrayListOf()
@@ -169,11 +167,10 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
 
         /** 联系我们 */
         fun chat() {
-            nav().jumpByBind {
+            nav().jumpByLogin {
                 it.navigateAction(R.id.action_to_webFragment, Bundle().apply {
-                    putString("type", "kefu")
                     putString("url", appViewModel.userInfo.value?.chatServer)
-                    putString("recharge", "-1")
+                    putInt("recharge", -1)
                 })
             }
         }

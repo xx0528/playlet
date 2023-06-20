@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import me.hgj.jetpackmvvm.ext.nav
 import me.hgj.jetpackmvvm.ext.navigateAction
 import me.hgj.jetpackmvvm.ext.parseState
+import me.hgj.jetpackmvvm.ext.view.notNull
 import xyz.doikki.videoplayer.player.BaseVideoView.SimpleOnStateChangeListener
 import xyz.doikki.videoplayer.player.VideoView
 import xyz.doikki.videoplayer.util.L
@@ -89,6 +90,11 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
                 //登录成功 通知账户数据发生改变鸟
                 CacheUtil.setUser(it)
                 CacheUtil.setIsLogin(true)
+                if (it.phone.isNotEmpty()) {
+                    CacheUtil.setIsBind(true)
+                } else {
+                    CacheUtil.setIsBind(false)
+                }
                 appViewModel.userInfo.value = it
                 //登录成功 请求数据
                 //请求视频列表数据 第一次要去请求下

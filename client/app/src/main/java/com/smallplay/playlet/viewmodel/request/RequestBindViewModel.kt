@@ -13,7 +13,16 @@ import me.hgj.jetpackmvvm.state.ResultState
  */
 class RequestBindViewModel : BaseViewModel() {
 
-    //方式1  自动脱壳过滤处理请求结果，判断结果是否成功
-    var loginResult = MutableLiveData<ResultState<UserInfo>>()
+    var bindResult = MutableLiveData<ResultState<UserInfo>>()
 
+    fun bindReq(phone: String) {
+        //1.这种是在 Activity/Fragment的监听回调中拿到已脱壳的数据（项目有基类的可以用）
+        request(
+            { apiService.bind(phone) }//请求体
+            , bindResult,//请求的返回结果，请求成功与否都会改变该值，在Activity或fragment中监听回调结果，具体可看loginActivity中的回调
+            true,//是否显示等待框，，默认false不显示 可以默认不传
+            "正在绑定中..."//等待框内容，可以默认不填请求网络中...
+        )
+
+    }
 }

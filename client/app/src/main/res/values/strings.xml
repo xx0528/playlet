@@ -82,4 +82,7 @@
     <string name="item_recharge_give">赠送K币</string>
     <string name="item_recharge_left">剩余K币</string>
     <string name="click_bind_phome_text">点击绑定手机号</string>
+    <string name="bind_text">绑定号码</string>
+    <string name="editor_psw_text">修改密码</string>
+    <string name="bind_phone_faild">获取号码失败</string>
 </resources>
