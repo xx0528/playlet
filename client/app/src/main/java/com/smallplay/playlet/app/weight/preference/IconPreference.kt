@@ -21,8 +21,10 @@ class IconPreference(context: Context, attrs: AttributeSet) : Preference(context
         widgetLayoutResource = R.layout.item_icon_preference_preview
     }
 
-    override fun onBindViewHolder(holder: PreferenceViewHolder?) {
-        super.onBindViewHolder(holder)
+    fun onBindViewHolder(holder: PreferenceViewHolder?) {
+        if (holder != null) {
+            super.onBindViewHolder(holder)
+        }
         val color = SettingUtil.getColor(context)
         circleImageView = holder?.itemView?.findViewById(R.id.iv_preview)
         circleImageView?.color = color

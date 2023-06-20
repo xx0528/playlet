@@ -17,7 +17,8 @@
         <activity
             android:name=".ui.activity.WelcomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/FullscreenThemse">
+            android:theme="@style/FullscreenThemse"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
