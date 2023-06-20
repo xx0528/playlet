@@ -11,7 +11,8 @@ interface ApiService {
     companion object {
 //        const val SERVER_URL = "http://47.90.250.28:8086/api/"
 //        const val SERVER_URL = "http://192.168.0.106:8080/api/"
-        const val SERVER_URL = "http://192.168.3.67:8080/api/"
+//        const val SERVER_URL = "http://192.168.3.67:8080/api/"
+        const val SERVER_URL = "http://47.245.100.227:8082/api/"
     }
 
     /**

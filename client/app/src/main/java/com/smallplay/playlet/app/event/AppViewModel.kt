@@ -190,7 +190,7 @@ class AppViewModel : BaseViewModel() {
     fun playVideo(ID: Int, episode: Int) {
         request({ HttpRequestCoroutine.playVideo(ID, episode) }, {
             if (it.code == 4) {
-                ToastUtils.showShort(it.msg)
+                ToastUtils.showLong(it.msg)
                 return@request
             }
             if (it.code == 3) {
@@ -198,7 +198,7 @@ class AppViewModel : BaseViewModel() {
                 userInfo.value = it.userInfo
                 likeVideos.value = it.userInfo.likeVideos
                 buyVideos.value = it.userInfo.buyVideos
-                ToastUtils.showShort(it.msg)
+                ToastUtils.showLong(it.msg)
             }
             curPlayVideoNo.value = it.episode
         }, {

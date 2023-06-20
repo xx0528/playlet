@@ -13,12 +13,12 @@ import android.os.Build
 import android.preference.PreferenceManager
 import android.provider.Settings
 import android.telephony.TelephonyManager
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
 import com.blankj.utilcode.util.ToastUtils
 import com.blankj.utilcode.util.Utils
 import com.kingja.loadsir.core.LoadService
@@ -33,6 +33,7 @@ import kotlin.math.roundToInt
 
 object SettingUtil {
 
+    var TAG:String = "SettingUtil ----- "
     /**
      * 获取当前主题颜色
      */
@@ -198,14 +199,29 @@ object SettingUtil {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     @SuppressLint("MissingPermission", "HardwareIds")
     fun getPhoneInfo(context: Context): Pair<String, String?> {
         val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
         var phoneNumber = ""
+        var subscribid = ""
         var carrierName: String? = null
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
             phoneNumber = telephonyManager.line1Number ?: ""
             carrierName = telephonyManager.networkOperatorName
+
+            val phone = telephonyManager.line1Number
+            Log.d(TAG, "subscriptionId号码: --${telephonyManager.subscriptionId}")
+            Log.d(TAG, "SIM号码: --$phone")
+            val simOperator = telephonyManager.simOperator
+            Log.d(TAG, "SIM运营商代码: --$simOperator")
+            val simOperatorName = telephonyManager.simOperatorName
+            Log.d(TAG, "SIM运营商:-- $simOperatorName")
+            val networkOperator = telephonyManager.networkOperator //联网才有用
+
+            Log.d(TAG, "网络运营商代码:-- $networkOperator")
+            val networkOperatorName = telephonyManager.networkOperatorName
+            Log.d(TAG, "网络运营商:-- $networkOperatorName")
         } else {
             ToastUtils.showLong("获取权限失败")
         }
