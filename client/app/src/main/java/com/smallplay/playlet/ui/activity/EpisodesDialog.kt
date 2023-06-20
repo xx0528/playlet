@@ -1,14 +1,12 @@
 package com.smallplay.playlet.ui.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -16,12 +14,7 @@ import com.smallplay.playlet.R
 import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.ext.bindViewPager2
 import com.smallplay.playlet.app.ext.init
-import com.smallplay.playlet.app.ext.jumpByLogin
 import com.smallplay.playlet.ui.fragment.dialog.EpisodeFragment
-import kotlinx.android.synthetic.main.dialog_episodes.*
-import kotlinx.android.synthetic.main.dialog_episodes.magic_indicator
-import kotlinx.android.synthetic.main.dialog_episodes.view_pager
-import me.hgj.jetpackmvvm.ext.nav
 import net.lucode.hackware.magicindicator.MagicIndicator
 
 
@@ -33,6 +26,7 @@ class EpisodesDialog : BottomSheetDialogFragment() {
     //标题集合
     var mDataList: ArrayList<String> = arrayListOf()
 
+    lateinit var mView: View
     lateinit var mViewPager : ViewPager2
     lateinit var mImageView : ImageView
     lateinit var mMagicIndicator : MagicIndicator
@@ -50,16 +44,16 @@ class EpisodesDialog : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.dialog_episodes, container, false)
-        mViewPager = view.findViewById<ViewPager2>(R.id.view_pager)
+        mView = inflater.inflate(R.layout.dialog_episodes, container, false)
+        mViewPager = mView.findViewById<ViewPager2>(R.id.view_pager)
         mViewPager.init(this, fragments)
 
-        mImageView = view.findViewById<ImageView>(R.id.dialog_episodes_close)
+        mImageView = mView.findViewById<ImageView>(R.id.dialog_episodes_close)
         mImageView.setOnClickListener {
             appViewModel.dialogVisible.value = 0
         }
 
-        mMagicIndicator = view.findViewById<MagicIndicator>(R.id.magic_indicator)
+        mMagicIndicator = mView.findViewById<MagicIndicator>(R.id.magic_indicator)
         mMagicIndicator.bindViewPager2(mViewPager, mDataList)
         return view
     }
@@ -76,7 +70,8 @@ class EpisodesDialog : BottomSheetDialogFragment() {
         var data = appViewModel.videoHomeDataState.value?.listData
         if (data != null) {
 
-            dialog_video_name.text = data[0].videoName
+            var videoName = mView.findViewById<TextView>(R.id.dialog_video_name)
+            videoName.text = data[0].videoName
 
             mDataList.clear()
             fragments.clear()

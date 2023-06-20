@@ -4,10 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
 import com.smallplay.playlet.app.network.apiService
 import com.smallplay.playlet.app.network.stateCallback.ListDataUiState
-import com.smallplay.playlet.data.model.bean.IntegralResponse
 import com.smallplay.playlet.data.model.bean.RechargeData
 import com.smallplay.playlet.data.model.bean.UserInfo
-import com.smallplay.playlet.data.model.bean.VideoResponse
 import com.smallplay.playlet.data.repository.request.HttpRequestCoroutine
 import me.hgj.jetpackmvvm.ext.request
 import me.hgj.jetpackmvvm.state.ResultState

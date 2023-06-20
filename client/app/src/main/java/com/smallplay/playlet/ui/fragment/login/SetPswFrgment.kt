@@ -4,20 +4,16 @@ import android.os.Bundle
 import android.widget.CompoundButton
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import kotlinx.android.synthetic.main.fragment_register.*
-import kotlinx.android.synthetic.main.include_toolbar.*
 import com.smallplay.playlet.R
 import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.base.BaseFragment
 import com.smallplay.playlet.app.ext.initClose
 import com.smallplay.playlet.app.ext.showMessage
-import com.smallplay.playlet.app.util.CacheUtil
 import com.smallplay.playlet.app.util.SettingUtil
 import com.smallplay.playlet.databinding.FragmentSetPswBinding
 import com.smallplay.playlet.viewmodel.request.RequestSetPswViewModel
 import com.smallplay.playlet.viewmodel.state.SetPswViewModel
 import me.hgj.jetpackmvvm.ext.nav
-import me.hgj.jetpackmvvm.ext.navigateAction
 import me.hgj.jetpackmvvm.ext.parseState
 
 /**
@@ -30,13 +26,13 @@ class SetPswFrgment : BaseFragment<SetPswViewModel, FragmentSetPswBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
         mDatabind.viewmodel = mViewModel
         mDatabind.click = ProxyClick()
-        toolbar.initClose(getString(R.string.editor_psw_text)) {
+        mDatabind.includeToolbar.toolbar.initClose(getString(R.string.editor_psw_text)) {
             nav().navigateUp()
         }
         //设置颜色跟主题颜色一致
         appViewModel.appColor.value?.let {
-            SettingUtil.setShapColor(registerSub, it)
-            toolbar.setBackgroundColor(it)
+            SettingUtil.setShapColor(mDatabind.registerSub, it)
+            mDatabind.includeToolbar.toolbar.setBackgroundColor(it)
         }
     }
 

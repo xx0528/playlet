@@ -3,19 +3,10 @@ package com.smallplay.playlet.ui.adapter
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.chad.library.adapter.base.BaseDelegateMultiAdapter
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.smallplay.playlet.R
-import com.smallplay.playlet.app.ext.setAdapterAnimation
-import com.smallplay.playlet.app.util.SettingUtil
-import com.smallplay.playlet.app.weight.customview.CollectView
-import com.smallplay.playlet.data.model.bean.CollectResponse
-import com.smallplay.playlet.data.model.bean.LocalLikeVideos
 import com.smallplay.playlet.data.model.bean.RechargeData
-import me.hgj.jetpackmvvm.ext.util.toHtml
 
 class MeRechargeAdapter(data: MutableList<RechargeData>?) :
     BaseQuickAdapter<RechargeData, BaseViewHolder>(

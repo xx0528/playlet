@@ -12,11 +12,9 @@ import com.blankj.utilcode.util.ConvertUtils
 import com.smallplay.playlet.R
 import com.smallplay.playlet.app.weight.recyclerview.GridDividerItemDecoration
 import com.smallplay.playlet.data.model.enums.TodoType
-import com.smallplay.playlet.ui.adapter.PriorityAdapter
 
 
 class PriorityDialog(context: Context, type: Int) : Dialog(context, R.style.BottomDialogStyle) {
-    private lateinit var shareAdapter: PriorityAdapter
     private var priorityInterface: PriorityInterface? = null
     private var proiorityData: ArrayList<TodoType> = ArrayList()
     var type = TodoType.TodoType1.type
@@ -43,15 +41,7 @@ class PriorityDialog(context: Context, type: Int) : Dialog(context, R.style.Bott
         TodoType.values().forEach {
             proiorityData.add(it)
         }
-        //初始化adapter
-        shareAdapter = PriorityAdapter(proiorityData, type).apply {
-            setOnItemClickListener { adapter, view1, position ->
-                priorityInterface?.run {
-                    onSelect(proiorityData[position])
-                }
-                dismiss()
-            }
-        }
+
         //初始化recyclerview
         val view = LayoutInflater.from(context).inflate(R.layout.todo_dialog, null)
         view.findViewById<RecyclerView>(R.id.tododialog_recycler).apply {
@@ -59,7 +49,6 @@ class PriorityDialog(context: Context, type: Int) : Dialog(context, R.style.Bott
                 layoutManager = GridLayoutManager(it, 3)
                 setHasFixedSize(true)
                 addItemDecoration(GridDividerItemDecoration(it, 0, ConvertUtils.dp2px(24f), false))
-                adapter = shareAdapter
             }
         }
 

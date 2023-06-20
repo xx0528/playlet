@@ -18,8 +18,6 @@ import androidx.lifecycle.Observer
 import com.blankj.utilcode.util.VibrateUtils
 import com.google.gson.Gson
 import com.just.agentweb.AgentWeb
-import kotlinx.android.synthetic.main.fragment_web.*
-import kotlinx.android.synthetic.main.include_toolbar.*
 import com.smallplay.playlet.R
 import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.base.BaseFragment
@@ -31,7 +29,6 @@ import com.smallplay.playlet.app.util.CacheUtil
 import com.smallplay.playlet.data.model.bean.*
 import com.smallplay.playlet.data.model.enums.CollectType
 import com.smallplay.playlet.databinding.FragmentWebBinding
-import com.smallplay.playlet.viewmodel.request.RequestCollectViewModel
 import com.smallplay.playlet.viewmodel.state.WebViewModel
 import me.hgj.jetpackmvvm.ext.nav
 
@@ -46,14 +43,12 @@ class WebFragment : BaseFragment<WebViewModel, FragmentWebBinding>() {
 
     private var preWeb: AgentWeb.PreAgentWeb? = null
 
-    /** */
-    private val requestCollectViewModel: RequestCollectViewModel by viewModels()
 
     override fun initView(savedInstanceState: Bundle?) {
         setHasOptionsMenu(false)
         mViewModel.url = arguments?.getString("url").toString()
         mViewModel.recharge = arguments?.getString("recharge")!!
-        toolbar.run {
+        mDatabind.includeBar.toolbar.run {
             //设置menu 关键代码
 //            mActivity.setSupportActionBar(this)
             initClose(mViewModel.showTitle) {
@@ -68,7 +63,7 @@ class WebFragment : BaseFragment<WebViewModel, FragmentWebBinding>() {
             }
         }
         preWeb = AgentWeb.with(this)
-            .setAgentWebParent(webcontent, LinearLayout.LayoutParams(-1, -1))
+            .setAgentWebParent(mDatabind.webcontent, LinearLayout.LayoutParams(-1, -1))
             .useDefaultIndicator()
             .createAgentWeb()
             .ready()
@@ -117,28 +112,7 @@ class WebFragment : BaseFragment<WebViewModel, FragmentWebBinding>() {
     }
 
     override fun createObserver() {
-        requestCollectViewModel.collectUiState.observe(viewLifecycleOwner, Observer {
-            if (it.isSuccess) {
-                mViewModel.collect = it.collect
-                eventViewModel.collectEvent.value = CollectBus(it.id, it.collect)
-                //刷新一下menu
-                mActivity.window?.invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL)
-                mActivity.invalidateOptionsMenu()
-            } else {
-                showMessage(it.errorMsg)
-            }
-        })
-        requestCollectViewModel.collectUrlUiState.observe(viewLifecycleOwner, Observer {
-            if (it.isSuccess) {
-                eventViewModel.collectEvent.value = CollectBus(it.id, it.collect)
-                mViewModel.collect = it.collect
-                //刷新一下menu
-                mActivity.window?.invalidatePanelMenu(Window.FEATURE_OPTIONS_PANEL)
-                mActivity.invalidateOptionsMenu()
-            } else {
-                showMessage(it.errorMsg)
-            }
-        })
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -177,34 +151,7 @@ class WebFragment : BaseFragment<WebViewModel, FragmentWebBinding>() {
                 //刷新网页
                 mAgentWeb?.urlLoader?.reload()
             }
-            R.id.web_collect -> {
-                //点击收藏 震动一下
-                VibrateUtils.vibrate(40)
-                //是否已经登录了，没登录需要跳转到登录页去
-                if (CacheUtil.isLogin()) {
-                    //是否已经收藏了
-                    if (mViewModel.collect) {
-                        if (mViewModel.collectType == CollectType.Url.type) {
-                            //取消收藏网址
-                            requestCollectViewModel.uncollectUrl(mViewModel.ariticleId)
-                        } else {
-                            //取消收藏文章
-                            requestCollectViewModel.uncollect(mViewModel.ariticleId)
-                        }
-                    } else {
-                        if (mViewModel.collectType == CollectType.Url.type) {
-                            //收藏网址
-                            requestCollectViewModel.collectUrl(mViewModel.showTitle, mViewModel.url)
-                        } else {
-                            //收藏文章
-                            requestCollectViewModel.collect(mViewModel.ariticleId)
-                        }
-                    }
-                } else {
-                    //跳转到登录页
-                    nav().navigate(R.id.action_to_loginFragment)
-                }
-            }
+
             R.id.web_liulanqi -> {
                 //用浏览器打开
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(mViewModel.url)))

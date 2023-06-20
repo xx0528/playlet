@@ -4,11 +4,6 @@ import android.os.Bundle
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.bottomsheets.BottomSheet
-import com.afollestad.materialdialogs.bottomsheets.setPeekHeight
-import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
-import com.afollestad.materialdialogs.list.listItems
 import com.blankj.utilcode.util.ConvertUtils
 import com.kingja.loadsir.core.LoadService
 import com.smallplay.playlet.R
@@ -21,10 +16,7 @@ import com.smallplay.playlet.ui.adapter.RechargeAdapter
 import com.smallplay.playlet.viewmodel.request.RequestRechargeViewModel
 import com.smallplay.playlet.viewmodel.state.CostViewModel
 import com.yanzhenjie.recyclerview.SwipeRecyclerView
-import kotlinx.android.synthetic.main.include_recyclerview.*
-import kotlinx.android.synthetic.main.include_toolbar.*
 import me.hgj.jetpackmvvm.ext.nav
-import me.hgj.jetpackmvvm.ext.navigateAction
 
 class RechargeFragment : BaseFragment1<CostViewModel, FragmentRechargeBinding>() {
 
@@ -38,13 +30,13 @@ class RechargeFragment : BaseFragment1<CostViewModel, FragmentRechargeBinding>()
     private val requestViewModel: RequestRechargeViewModel by viewModels()
 
     override fun initView(savedInstanceState: Bundle?) {
-        toolbar.run {
+        mViewBind.includeToolbar.toolbar.run {
             initClose(getString(R.string.me_recharge_text)) {
                 nav().navigateUp()
             }
         }
         //状态页配置 swipeRefresh参数表示你要包裹的布局
-        loadsir = loadServiceInit(swipeRefresh) {
+        loadsir = loadServiceInit(mViewBind.includeList.includeRecyclerview.swipeRefresh) {
             //点击错误重试时触发的操作
             loadsir.showLoading()
             //请求数据
@@ -52,7 +44,7 @@ class RechargeFragment : BaseFragment1<CostViewModel, FragmentRechargeBinding>()
         }
 
         //初始化recyclerView
-        recyclerView.init(LinearLayoutManager(context), rechargeAdapter).let {
+        mViewBind.includeList.includeRecyclerview.recyclerView.init(LinearLayoutManager(context), rechargeAdapter).let {
             it.addItemDecoration(SpaceItemDecoration(0, ConvertUtils.dp2px(8f)))
             it.initFooter(SwipeRecyclerView.LoadMoreListener {
                 //触发加载更多时请求数据
@@ -60,7 +52,7 @@ class RechargeFragment : BaseFragment1<CostViewModel, FragmentRechargeBinding>()
             })
         }
         //初始化 SwipeRefreshLayout
-        swipeRefresh.init {
+        mViewBind.includeList.includeRecyclerview.swipeRefresh.init {
             //触发刷新监听时请求数据
             requestViewModel.getRechargeData(true)
         }
@@ -88,7 +80,7 @@ class RechargeFragment : BaseFragment1<CostViewModel, FragmentRechargeBinding>()
     override fun createObserver() {
         requestViewModel.rechargeDataState.observe(viewLifecycleOwner, Observer {
             //设值 新写了个拓展函数，搞死了这个恶心的重复代码
-            loadListData(it, rechargeAdapter, loadsir, recyclerView,swipeRefresh)
+            loadListData(it, rechargeAdapter, loadsir, mViewBind.includeList.includeRecyclerview.recyclerView, mViewBind.includeList.includeRecyclerview.swipeRefresh)
         })
 
         eventViewModel.todoEvent.observeInFragment(this, Observer {
@@ -97,7 +89,7 @@ class RechargeFragment : BaseFragment1<CostViewModel, FragmentRechargeBinding>()
                 loadsir.showLoading()
             } else {
                 //有数据时，swipeRefresh 显示刷新状态
-                swipeRefresh.isRefreshing = true
+                mViewBind.includeList.includeRecyclerview.swipeRefresh.isRefreshing = true
             }
             //请求数据
             requestViewModel.getRechargeData(true)

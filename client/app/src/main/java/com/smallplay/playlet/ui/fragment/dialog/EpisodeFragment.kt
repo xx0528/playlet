@@ -2,26 +2,17 @@ package com.smallplay.playlet.ui.fragment.dialog
 
 
 import android.os.Bundle
-import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.blankj.utilcode.util.ConvertUtils
 import com.google.gson.Gson
 import com.smallplay.playlet.app.appViewModel
-import com.smallplay.playlet.app.base.BaseFragment
 import com.smallplay.playlet.app.base.BaseFragment1
 import com.smallplay.playlet.app.ext.init
 import com.smallplay.playlet.app.ext.jumpByBind
 import com.smallplay.playlet.app.util.CacheUtil
-import com.smallplay.playlet.app.weight.recyclerview.SpaceItemDecoration
 import com.smallplay.playlet.data.model.bean.EpisodesItem
-import com.smallplay.playlet.data.model.bean.UserInfo
 import com.smallplay.playlet.databinding.FragmentEpisodesBinding
-import com.smallplay.playlet.databinding.IncludeListBinding
 import com.smallplay.playlet.ui.adapter.EpisodesAdapter
 import com.smallplay.playlet.viewmodel.state.EpisodesViewModel
-import kotlinx.android.synthetic.main.fragment_episodes.*
-import kotlinx.android.synthetic.main.include_recyclerview.*
 import me.hgj.jetpackmvvm.ext.nav
 
 
@@ -45,7 +36,7 @@ class EpisodeFragment : BaseFragment1<EpisodesViewModel, FragmentEpisodesBinding
         }
 
         //初始化recyclerView
-        dialog_episodes_recycler_view.init(GridLayoutManager(context, 6, GridLayoutManager.VERTICAL, false), episodesAdapter)
+        mViewBind.dialogEpisodesRecyclerView.init(GridLayoutManager(context, 6, GridLayoutManager.VERTICAL, false), episodesAdapter)
         episodesAdapter.run {
             setOnItemClickListener { adapter, view, position ->
                 //选集播放

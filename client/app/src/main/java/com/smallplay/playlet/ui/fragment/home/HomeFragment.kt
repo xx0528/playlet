@@ -23,7 +23,6 @@ import com.smallplay.playlet.ui.video.render.VideoController
 import com.smallplay.playlet.ui.video.render.VideoRenderViewFactory
 import com.smallplay.playlet.viewmodel.request.RequestLoginRegisterViewModel
 import com.smallplay.playlet.viewmodel.state.HomeViewModel
-import kotlinx.android.synthetic.main.fragment_home.*
 import me.hgj.jetpackmvvm.ext.nav
 import me.hgj.jetpackmvvm.ext.navigateAction
 import me.hgj.jetpackmvvm.ext.parseState
@@ -117,13 +116,13 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
             //监听首页视频列表请求的数据变化
             videoHomeDataState.observe(viewLifecycleOwner, Observer {
                 //ParkFragment跳过来默认播放第一集
-                vvp.adapter = VideoHomeAdapter(it.listData)
+                mViewBind.vvp.adapter = VideoHomeAdapter(it.listData)
                 startPlay(0)
             })
 //
             curPlayVideoNo.observe(viewLifecycleOwner, Observer {
                 //定为到要预览的位置
-                vvp.currentItem = it
+                mViewBind.vvp.currentItem = it
                 Log.d(TAG, "监听当前播放curPlayVideo 触发 startPlay")
                 startPlay(it)
             })
@@ -139,7 +138,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
                 val count = mViewBind.vvp.childCount
                 Log.d(TAG, "count --- $count")
                 for (i in 0 until count) {
-                    val itemView = vvp!!.getChildAt(i)
+                    val itemView = mViewBind.vvp!!.getChildAt(i)
                     val viewHolder: VideoHomeAdapter.ViewHolder = itemView.tag as VideoHomeAdapter.ViewHolder
                     if (viewHolder.mPosition == mCurPos) {
                         videoHomeDataState.value?.listData?.get(0)?.let { it1 ->
@@ -178,10 +177,10 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
     }
 
     private fun initViewPager() {
-        vvp.offscreenPageLimit = 4
-        vvp.adapter = videoHomeAdapter
-        vvp!!.overScrollMode = View.OVER_SCROLL_NEVER
-        vvp!!.setOnPageChangeListener(object : SimpleOnPageChangeListener() {
+        mViewBind.vvp.offscreenPageLimit = 4
+        mViewBind.vvp.adapter = videoHomeAdapter
+        mViewBind.vvp!!.overScrollMode = View.OVER_SCROLL_NEVER
+        mViewBind.vvp!!.setOnPageChangeListener(object : SimpleOnPageChangeListener() {
             private var mCurItem = 0
 
             /**
@@ -212,7 +211,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
                 super.onPageScrollStateChanged(state)
                 Log.d(TAG, " onPageScrollStateChanged 状态变化 $state")
                 if (state == VerticalViewPager.SCROLL_STATE_DRAGGING) {
-                    mCurItem = vvp!!.currentItem
+                    mCurItem = mViewBind.vvp!!.currentItem
                     Log.d(TAG, "设置当前curItem ------- ")
                 }
                 if (state == VerticalViewPager.SCROLL_STATE_IDLE) {
@@ -225,10 +224,10 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
     }
 
     private fun startPlay(position: Int) {
-        val count = vvp!!.childCount
+        val count = mViewBind.vvp!!.childCount
         Log.d(TAG, " startPlay 播放--position $position")
         for (i in 0 until count) {
-            val itemView = vvp!!.getChildAt(i)
+            val itemView = mViewBind.vvp!!.getChildAt(i)
             val viewHolder: VideoHomeAdapter.ViewHolder = itemView.tag as VideoHomeAdapter.ViewHolder
             if (viewHolder.mPosition === position) {
                 mVideoView?.release()

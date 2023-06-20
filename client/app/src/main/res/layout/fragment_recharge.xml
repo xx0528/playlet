@@ -6,7 +6,7 @@
     android:orientation="vertical"
     >
 
-    <include layout="@layout/include_toolbar" />
+    <include layout="@layout/include_toolbar" android:id="@+id/includeToolbar"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -89,5 +89,5 @@
             android:textSize="9sp" />
     </LinearLayout>
 
-    <include layout="@layout/include_list"/>
+    <include layout="@layout/include_list" android:id="@+id/includeList"/>
 </LinearLayout>

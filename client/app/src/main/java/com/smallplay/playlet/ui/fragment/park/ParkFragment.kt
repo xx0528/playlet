@@ -13,12 +13,9 @@ import com.smallplay.playlet.app.ext.*
 import com.smallplay.playlet.app.weight.recyclerview.DefineLoadMoreView
 import com.smallplay.playlet.app.weight.recyclerview.SpaceItemDecoration
 import com.smallplay.playlet.databinding.FragmentParkBinding
-import com.smallplay.playlet.ui.adapter.VideoHomeAdapter
 import com.smallplay.playlet.ui.adapter.VideoParkAdapter
 import com.smallplay.playlet.viewmodel.state.ParkViewModel
 import com.yanzhenjie.recyclerview.SwipeRecyclerView
-import kotlinx.android.synthetic.main.fragment_home.*
-import me.hgj.jetpackmvvm.ext.nav
 
 
 /**
@@ -112,17 +109,6 @@ class ParkFragment : BaseFragment1<ParkViewModel, FragmentParkBinding>() {
             appAnimation.observeInFragment(this@ParkFragment) {
                 videoParkAdapter.setAdapterAnimation(it)
             }
-            //监听全局的收藏信息 收藏的Id跟本列表的数据id匹配则需要更新
-            eventViewModel.collectEvent.observeInFragment(this@ParkFragment) {
-                for (index in videoParkAdapter.data.indices) {
-//                    if (videoAdapter.data[index].id == it.id) {
-//                        videoAdapter.data[index].collect = it.collect
-//                        videoAdapter.notifyItemChanged(index)
-//                        break
-//                    }
-                }
-            }
-
 
             likeVideos.observeInFragment(this@ParkFragment, Observer {
                 videoParkAdapter.setLikeVideo(it)

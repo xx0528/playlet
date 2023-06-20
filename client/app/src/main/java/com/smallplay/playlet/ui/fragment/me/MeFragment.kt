@@ -4,28 +4,21 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.ToastUtils
-import kotlinx.android.synthetic.main.fragment_me.*
 import com.smallplay.playlet.R
 import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.base.BaseFragment
 import com.smallplay.playlet.app.eventViewModel
 import com.smallplay.playlet.app.ext.*
-import com.smallplay.playlet.app.network.ApiService
 import com.smallplay.playlet.app.util.CacheUtil
 import com.smallplay.playlet.app.weight.recyclerview.SpaceItemDecoration
-import com.smallplay.playlet.data.model.bean.BannerResponse
-import com.smallplay.playlet.data.model.bean.IntegralResponse
 import com.smallplay.playlet.databinding.FragmentMeBinding
 import com.smallplay.playlet.ui.adapter.MeLikeVideosAdapter
 import com.smallplay.playlet.ui.adapter.MeRechargeAdapter
-import com.smallplay.playlet.ui.adapter.VideoParkAdapter
 import com.smallplay.playlet.viewmodel.request.RequestMeViewModel
 import com.smallplay.playlet.viewmodel.state.MeViewModel
-import com.yanzhenjie.recyclerview.SwipeRecyclerView
 import me.hgj.jetpackmvvm.ext.nav
 import me.hgj.jetpackmvvm.ext.navigateAction
 import me.hgj.jetpackmvvm.ext.parseState
@@ -46,17 +39,17 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
 
         mDatabind.vm = mViewModel
         mDatabind.click = ProxyClick()
-        appViewModel.appColor.value?.let { setUiTheme(it, me_linear) }
+        appViewModel.appColor.value?.let { setUiTheme(it, mDatabind.meLinear) }
         appViewModel.userInfo.value?.let {
             mViewModel.name.set(it.phone.ifEmpty { getString(R.string.click_bind_phome_text)})
             mViewModel.info.set(it.phone.ifEmpty { it.uuid })
-            item_me_recharge_desc.text = it.rechargeDesc
+            mDatabind.itemMeRechargeDesc.text = it.rechargeDesc
         }
 
-        recycle_recharge_vip.init(LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false), meRechargeAdapter).let {
+        mDatabind.recycleRechargeVip.init(LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false), meRechargeAdapter).let {
             it.addItemDecoration(SpaceItemDecoration(15,  ConvertUtils.dp2px(2f)))
         }
-        recycle_like_video.init(LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false), meLikeVideosAdapter).let {
+        mDatabind.recycleLikeVideo.init(LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false), meLikeVideosAdapter).let {
             it.addItemDecoration(SpaceItemDecoration(15, ConvertUtils.dp2px(2f)))
         }
 
@@ -79,7 +72,7 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         }
 
 
-        me_swipe.init {
+        mDatabind.meSwipe.init {
             requestMeViewModel.getUserInfo()
             requestMeViewModel.getVipInfo()
             meLikeVideosAdapter.data = arrayListOf()
@@ -87,20 +80,20 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         }
 
         if (appViewModel.userInfo.value?.check == true) {
-            item_recharge_layout.visibility = View.GONE
+            mDatabind.itemRechargeLayout.visibility = View.GONE
         } else {
-            item_recharge_layout.visibility = View.VISIBLE
+            mDatabind.itemRechargeLayout.visibility = View.VISIBLE
         }
         if (CacheUtil.getLocalVideos()?.isEmpty() == true) {
-            item_local_layout.visibility = View.GONE
+            mDatabind.itemLocalLayout.visibility = View.GONE
         } else {
-            item_local_layout.visibility = View.VISIBLE
+            mDatabind.itemLocalLayout.visibility = View.VISIBLE
         }
     }
 
     override fun lazyLoadData() {
         appViewModel.userInfo.value?.run {
-            me_swipe.isRefreshing = true
+            mDatabind.meSwipe.isRefreshing = true
             requestMeViewModel.getUserInfo()
             requestMeViewModel.getVipInfo()
             meLikeVideosAdapter.data = arrayListOf()
@@ -112,7 +105,7 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
 
         requestMeViewModel.run {
             meData.observe(viewLifecycleOwner, Observer { resultState ->
-                me_swipe.isRefreshing = false
+                mDatabind.meSwipe.isRefreshing = false
                 parseState(resultState, {
                     mViewModel.info.set("id：${it.userId}")
                     mViewModel.gold.set( getString(R.string.me_cur_gold_text) + " ${it.curGold}")
@@ -145,11 +138,11 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
 
         appViewModel.run {
             appColor.observeInFragment(this@MeFragment, Observer {
-                setUiTheme(it, me_linear, me_swipe)
+                setUiTheme(it, mDatabind.meLinear, mDatabind.meSwipe)
             })
             userInfo.observeInFragment(this@MeFragment, Observer {
                 it.notNull({
-                    me_swipe.isRefreshing = true
+                    mDatabind.meSwipe.isRefreshing = true
                     mViewModel.name.set(if (it.userName.isEmpty()) it.userName else it.userId)
                     requestMeViewModel.getUserInfo()
                 }, {

@@ -1,6 +1,5 @@
 package com.smallplay.playlet.ui.fragment.play
 
-import android.net.wifi.WifiManager.LocalOnlyHotspotCallback
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -23,7 +22,6 @@ import com.smallplay.playlet.ui.video.cache.PreloadManager
 import com.smallplay.playlet.ui.video.render.VideoController
 import com.smallplay.playlet.ui.video.render.VideoRenderViewFactory
 import com.smallplay.playlet.viewmodel.state.PlayViewModel
-import kotlinx.android.synthetic.main.fragment_home.*
 import me.hgj.jetpackmvvm.ext.nav
 import xyz.doikki.videoplayer.player.BaseVideoView.SimpleOnStateChangeListener
 import xyz.doikki.videoplayer.player.VideoView
@@ -71,7 +69,7 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
                     }
                 }
             })
-        vvp.currentItem = mCurPos
+        mViewBind.vvp.currentItem = mCurPos
         appViewModel.reqPlay(mCurPos)
 
         if (appViewModel.dialogVisible.value == 1) {
@@ -90,7 +88,7 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
                     mEpisodeDialog?.dismiss()
                     mEpisodeDialog = null
                 }
-                vvp.currentItem = it
+                mViewBind.vvp.currentItem = it
                 Log.d(TAG, "监听当前播放curPlayVideo 触发 startPlay")
                 startPlay(it)
             })
@@ -145,7 +143,7 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
     }
 
     private fun initViewPager() {
-        vvp.offscreenPageLimit = 4
+        mViewBind.vvp.offscreenPageLimit = 4
         var videoAdapter = VideoHomeAdapter(appViewModel.videoHomeDataState.value?.listData)
         videoAdapter.run {
             setBackClick { ->
@@ -157,9 +155,9 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
                 }
             }
         }
-        vvp.adapter = videoAdapter
-        vvp!!.overScrollMode = View.OVER_SCROLL_NEVER
-        vvp!!.setOnPageChangeListener(object : SimpleOnPageChangeListener() {
+        mViewBind.vvp.adapter = videoAdapter
+        mViewBind.vvp!!.overScrollMode = View.OVER_SCROLL_NEVER
+        mViewBind.vvp!!.setOnPageChangeListener(object : SimpleOnPageChangeListener() {
             private var mCurItem = 0
 
             private var mIsReverseScroll = false
@@ -190,7 +188,7 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
                 super.onPageScrollStateChanged(state)
                 Log.d(TAG, " onPageScrollStateChanged 状态变化 $state")
                 if (state == VerticalViewPager.SCROLL_STATE_DRAGGING) {
-                    mCurItem = vvp!!.currentItem
+                    mCurItem = mViewBind.vvp!!.currentItem
                     Log.d(TAG, "设置当前curItem ------- ")
                 }
                 if (state == VerticalViewPager.SCROLL_STATE_IDLE) {
@@ -203,10 +201,10 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
     }
 
     private fun startPlay(position: Int) {
-        val count = vvp!!.childCount
+        val count = mViewBind.vvp!!.childCount
         Log.d(TAG, " startPlay 播放--position $position")
         for (i in 0 until count) {
-            val itemView = vvp!!.getChildAt(i)
+            val itemView = mViewBind.vvp!!.getChildAt(i)
             val viewHolder: VideoHomeAdapter.ViewHolder = itemView.tag as VideoHomeAdapter.ViewHolder
             if (viewHolder.mPosition === position) {
                 mVideoView?.release()
