@@ -300,5 +300,8 @@
         android:name="com.smallplay.playlet.ui.fragment.record.RechargeFragment"
         android:label="RechargeFragment" />
 
-
+    <fragment
+        android:id="@+id/setPswFragment"
+        android:name="com.smallplay.playlet.ui.fragment.login.SetPswFrgment"
+        android:label="SetPswFragment" />
 </navigation>

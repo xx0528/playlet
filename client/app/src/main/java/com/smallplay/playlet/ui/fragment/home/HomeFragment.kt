@@ -27,7 +27,6 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import me.hgj.jetpackmvvm.ext.nav
 import me.hgj.jetpackmvvm.ext.navigateAction
 import me.hgj.jetpackmvvm.ext.parseState
-import me.hgj.jetpackmvvm.ext.view.notNull
 import xyz.doikki.videoplayer.player.BaseVideoView.SimpleOnStateChangeListener
 import xyz.doikki.videoplayer.player.VideoView
 import xyz.doikki.videoplayer.util.L
@@ -77,15 +76,23 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 //                "GidMQhZN"
 //            )
 //        }
-        CacheUtil.getUser()
-        requestLoginRegisterViewModel.registerAndlogin(
-            SettingUtil.getAccountByDevice() ,
-            "GidMQhZN"
-        )
+        var userInfo = CacheUtil.getUser()
+        if (userInfo != null) {
+            requestLoginRegisterViewModel.registerAndlogin(
+                userInfo.userId,
+                userInfo.password
+            )
+        } else {
+            requestLoginRegisterViewModel.registerAndlogin(
+                SettingUtil.getAccountByDevice() ,
+                "GidMQhZN"
+            )
+        }
+
     }
 
     override fun createObserver() {
-        requestLoginRegisterViewModel.loginResult.observe(viewLifecycleOwner,Observer { resultState ->
+        requestLoginRegisterViewModel.registResult.observe(viewLifecycleOwner,Observer { resultState ->
             parseState(resultState, {
                 //登录成功 通知账户数据发生改变鸟
                 CacheUtil.setUser(it)

@@ -85,4 +85,14 @@
     <string name="bind_text">绑定号码</string>
     <string name="editor_psw_text">修改密码</string>
     <string name="bind_phone_faild">获取号码失败</string>
+    <string name="editor_psw_nickname_text">修改昵称密码</string>
+    <string name="nick_name_text">昵称</string>
+    <string name="safe_notice_text">为确保账户安全，请填写昵称密码</string>
+    <string name="psw_text">密码</string>
+    <string name="new_psw_text">确认密码</string>
+    <string name="input_nickname_text">请填写昵称</string>
+    <string name="input_psw_text">请填写密码</string>
+    <string name="input_psw_sure_text">请填写确认密码</string>
+    <string name="psw_less_text">密码最少6位</string>
+    <string name="psw_not_same_text">密码不一致</string>
 </resources>

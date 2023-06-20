@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.blankj.utilcode.util.ToastUtils
 import com.kunminx.architecture.ui.callback.UnPeekLiveData
 import com.smallplay.playlet.app.appViewModel
+import com.smallplay.playlet.app.ext.jumpByBind
 import com.smallplay.playlet.app.network.stateCallback.ListDataUiState
 import me.hgj.jetpackmvvm.base.appContext
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
@@ -15,6 +16,7 @@ import com.smallplay.playlet.data.model.bean.LocalLikeVideos
 import com.smallplay.playlet.data.model.bean.UserInfo
 import com.smallplay.playlet.data.model.bean.VideoResponse
 import com.smallplay.playlet.data.repository.request.HttpRequestCoroutine
+import me.hgj.jetpackmvvm.ext.nav
 import me.hgj.jetpackmvvm.ext.request
 
 /**
@@ -204,10 +206,14 @@ class AppViewModel : BaseViewModel() {
     }
 
     fun reqPlay(position: Int) {
-        var videoId = videoHomeDataState.value?.listData?.get(0)?.ID
-        if (videoId != null) {
-            appViewModel.playVideo(videoId, position)
+        var videoInfo = videoHomeDataState.value?.listData?.get(0)
+        if (videoInfo != null) {
+            var videoId = videoInfo.ID
+            if (videoId != null) {
+                appViewModel.playVideo(videoId, position)
+            }
         }
+
     }
 
     fun saveLocalVideos(videoInfo : LocalLikeVideos) {

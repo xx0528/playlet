@@ -64,7 +64,7 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
             setOnItemClickListener { adapter, view, position ->
                 nav().navigateAction(R.id.action_to_webFragment, Bundle().apply {
                     putString("url", appViewModel.userInfo.value?.chatServer)
-                    putInt("recharge", meRechargeAdapter.data[position].costMoney.toInt())
+                    putString("recharge", meRechargeAdapter.data[position].costMoney)
                 })
             }
         }
@@ -125,6 +125,11 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
                         }
                     )
 
+                    if (it.phone.isEmpty()) {
+                        CacheUtil.setIsBind(false)
+                    } else {
+                        CacheUtil.setIsBind(true)
+                    }
 
                 }, {
                     ToastUtils.showShort(it.errorMsg)
@@ -151,7 +156,7 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
                     mViewModel.name.set(context?.getString(R.string.me_click_login_text))
                     mViewModel.info.set("id：--　")
                     mViewModel.gold.set("0")
-                    item_me_recharge_desc.text = it.rechargeDesc
+                    item_me_recharge_desc.text = ""
                 })
             })
         }
@@ -167,11 +172,18 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
 
         /** 联系我们 */
         fun chat() {
-            nav().jumpByLogin {
+            nav().jumpByBind {
                 it.navigateAction(R.id.action_to_webFragment, Bundle().apply {
                     putString("url", appViewModel.userInfo.value?.chatServer)
-                    putInt("recharge", -1)
+                    putString("recharge", "")
                 })
+            }
+        }
+
+        /** 修改密码 */
+        fun editorPsw() {
+            nav().jumpByBind {
+                it.navigateAction(R.id.setPswFragment)
             }
         }
 

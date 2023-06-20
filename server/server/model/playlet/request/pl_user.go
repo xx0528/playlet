@@ -20,6 +20,11 @@ type PlLoginReq struct {
 	Password string `json:"password" form:"password"` // 密码
 }
 
+type PlLoginPhoneReq struct {
+	Phone    string `json:"phone" form:"phone"`       // 手机号
+	Password string `json:"password" form:"password"` // 密码
+}
+
 type PlVideoInfo struct {
 	ID      uint `json:"id" form:"id"`           // 视频id
 	Episode int  `json:"episode" form:"episode"` // 视频第几集

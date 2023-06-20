@@ -11,6 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener
 import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.base.BaseFragment1
+import com.smallplay.playlet.app.ext.jumpByBind
+import com.smallplay.playlet.app.util.CacheUtil
 import com.smallplay.playlet.data.model.bean.LocalLikeVideos
 import com.smallplay.playlet.data.model.bean.VideoResponse
 import com.smallplay.playlet.databinding.FragmentPlayBinding
@@ -126,7 +128,13 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
             override fun onPlayStateChanged(playState: Int) {
                 if (playState == VideoView.STATE_PLAYBACK_COMPLETED) {
                     Log.d(TAG, "自动播放下一条， 当前是 ${appViewModel.curPlayVideoNo.value}")
-                    appViewModel.reqPlay(appViewModel.curPlayVideoNo.value?.plus(1) ?: appViewModel.curPlayVideoNo.value!!)
+                    var pos = appViewModel.curPlayVideoNo.value?.plus(1) ?: appViewModel.curPlayVideoNo.value!!
+                    var freeCount = appViewModel.videoHomeDataState.value?.listData?.get(pos)?.freeCount
+                    if (pos >= freeCount!! && !CacheUtil.isBind()) {
+                        nav().jumpByBind{}
+                        return
+                    }
+                    appViewModel.reqPlay(pos)
 //                    appViewModel.curPlayVideoNo.value = appViewModel.curPlayVideoNo.value?.plus(
 //                        1
 //                    )
@@ -170,6 +178,11 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 if (position == mCurPos) return
+                var freeCount = appViewModel.videoHomeDataState.value?.listData?.get(position)?.freeCount
+                if (position >= freeCount!! && !CacheUtil.isBind()) {
+                    nav().jumpByBind{}
+                    return
+                }
                 appViewModel.reqPlay(position)
             }
 

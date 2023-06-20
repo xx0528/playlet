@@ -1,6 +1,7 @@
 package playlet
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -8,6 +9,7 @@ import (
 	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
 	"github.com/flipped-aurora/gin-vue-admin/server/model/playlet"
 	playletReq "github.com/flipped-aurora/gin-vue-admin/server/model/playlet/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/utils"
 	"github.com/gofrs/uuid"
 	"gorm.io/gorm"
 )
@@ -109,5 +111,21 @@ func (plUserService *PlUserService) RegistAndLogin(u *playlet.PlUser) (userInter
 		return u, err
 	}
 	err = global.GVA_DB.Model(&playlet.PlUser{}).Where("uuid = ?", user.UUID).Update("last_login_time", time.Now()).Error
+	return &user, err
+}
+
+func (plUserService *PlUserService) LoginByPhone(u *playlet.PlUser) (userInter *playlet.PlUser, err error) {
+	if nil == global.GVA_DB {
+		return nil, fmt.Errorf("db not init")
+	}
+
+	var user playlet.PlUser
+	err = global.GVA_DB.Where("phone = ?", u.Phone).First(&user).Error
+	if err == nil {
+		if ok := utils.BcryptCheck(u.Password, user.Password); !ok {
+			return nil, errors.New("密码错误")
+		}
+		err = global.GVA_DB.Model(&playlet.PlUser{}).Where("uuid = ?", user.UUID).Update("last_login_time", time.Now()).Error
+	}
 	return &user, err
 }

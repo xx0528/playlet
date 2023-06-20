@@ -51,7 +51,7 @@ class WebFragment : BaseFragment<WebViewModel, FragmentWebBinding>() {
     override fun initView(savedInstanceState: Bundle?) {
         setHasOptionsMenu(false)
         mViewModel.url = arguments?.getString("url").toString()
-        mViewModel.recharge = arguments?.getInt("recharge")?.toInt() ?: -1
+        mViewModel.recharge = arguments?.getString("recharge")!!
         toolbar.run {
             //设置menu 关键代码
 //            mActivity.setSupportActionBar(this)
@@ -101,7 +101,7 @@ class WebFragment : BaseFragment<WebViewModel, FragmentWebBinding>() {
     @JavascriptInterface
     fun getRechargeInfo() : String {
         var retStr = "我要充值"
-        if (mViewModel.recharge >= 0) {
+        if (mViewModel.recharge.isNotEmpty()) {
             retStr = "$retStr ${mViewModel.recharge} 元"
         }
         retStr = "$retStr\n我的賬號是: ${appViewModel.userInfo.value?.userId}\n我的手機是: ${appViewModel.userInfo.value?.phone}"

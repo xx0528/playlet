@@ -3,12 +3,9 @@ package com.smallplay.playlet.data.repository.request
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
-import com.smallplay.playlet.app.network.ApiService
-import com.smallplay.playlet.app.network.NetworkApi
 import com.smallplay.playlet.app.network.apiService
 import com.smallplay.playlet.app.util.CacheUtil
 import com.smallplay.playlet.data.model.bean.*
-import me.hgj.jetpackmvvm.network.AppException
 
 /**
  * 描述　: 处理协程的请求类
@@ -52,9 +49,15 @@ class HttpRequestManger {
     }
 
     /**
+     * 设置昵称密码
+     */
+    suspend fun setPswNickname(username: String, password: String) : ApiResponse<UserInfo> {
+        return apiService.setPswNickname(username, password)
+    }
+    /**
      * 注册并登陆
      */
-    suspend fun register(username: String, password: String): ApiResponse<UserInfo> {
+    suspend fun registerAndlogin(username: String, password: String): ApiResponse<UserInfo> {
 //        val registerData = apiService.register(username, password, password)
 //        //判断注册结果 注册成功，调用登录接口
 //        if (registerData.isSucces()) {
@@ -64,7 +67,7 @@ class HttpRequestManger {
 //            throw AppException(registerData.code, registerData.msg)
 //        }
 
-        return apiService.login(username, password)
+        return apiService.registAndLogin(username, password)
     }
 
     /**

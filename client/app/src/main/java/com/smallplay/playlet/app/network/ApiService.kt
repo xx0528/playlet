@@ -1,8 +1,6 @@
 package com.smallplay.playlet.app.network
 
 import com.smallplay.playlet.data.model.bean.*
-import okhttp3.ResponseBody
-import retrofit2.Response
 import retrofit2.http.*
 
 /**
@@ -21,7 +19,28 @@ interface ApiService {
      */
     @FormUrlEncoded
     @POST("plUserVideo/plLogin")
-    suspend fun login(
+    suspend fun registAndLogin(
+        @Field("username") username: String,
+        @Field("password") pwd: String
+    ): ApiResponse<UserInfo>
+
+    /**
+     * 登录
+     */
+    @FormUrlEncoded
+    @POST("plUser/plLoginByPhone")
+    suspend fun loginByPhone(
+        @Field("phone") phone: String,
+        @Field("password") pwd: String
+    ): ApiResponse<UserInfo>
+
+
+    /**
+     * 设置昵称密码
+     */
+    @FormUrlEncoded
+    @POST("plUser/plSetPswNickname")
+    suspend fun setPswNickname(
         @Field("username") username: String,
         @Field("password") pwd: String
     ): ApiResponse<UserInfo>

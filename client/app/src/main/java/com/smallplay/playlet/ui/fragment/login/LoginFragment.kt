@@ -40,13 +40,13 @@ class LoginFragment : BaseFragment<LoginRegisterViewModel, FragmentLoginBinding>
         //设置颜色跟主题颜色一致
         appViewModel.appColor.value?.let {
             SettingUtil.setShapColor(loginSub, it)
-            loginGoregister.setTextColor(it)
+//            loginGoregister.setTextColor(it)
             toolbar.setBackgroundColor(it)
         }
     }
 
     override fun createObserver() {
-        requestLoginRegisterViewModel.loginResult.observe(viewLifecycleOwner,Observer { resultState ->
+        requestLoginRegisterViewModel.registResult.observe(viewLifecycleOwner,Observer { resultState ->
                 parseState(resultState, {
                     //登录成功 通知账户数据发生改变鸟
                     CacheUtil.setUser(it)

@@ -1,7 +1,7 @@
 /*
  * @Author: xx
  * @Date: 2023-06-02 18:36:01
- * @LastEditTime: 2023-06-20 11:54:26
+ * @LastEditTime: 2023-06-20 16:35:49
  * @Description:
  */
 package playlet
@@ -29,10 +29,12 @@ func (s *PlUserRouter) InitPlUserRouter(Router *gin.RouterGroup) {
 		plUserRouter.POST("likeVideo", plUserApi.LikeVideo)                   // 收藏视频
 	}
 	{
-		plUserRouterWithoutRecord.GET("findPlUser", plUserApi.FindPlUser)       // 根据ID获取PlUser
-		plUserRouterWithoutRecord.GET("getPlUserList", plUserApi.GetPlUserList) // 获取PlUser列表
-		plUserRouterWithoutRecord.GET("plGetUserInfo", plUserApi.GetPlUserInfo) // 获取PlUser信息
-		plUserRouterWithoutRecord.GET("plBindPhone", plUserApi.BindPhone)       // 获取PlUser信息
+		plUserRouterWithoutRecord.GET("findPlUser", plUserApi.FindPlUser)            // 根据ID获取PlUser
+		plUserRouterWithoutRecord.GET("getPlUserList", plUserApi.GetPlUserList)      // 获取PlUser列表
+		plUserRouterWithoutRecord.GET("plGetUserInfo", plUserApi.GetPlUserInfo)      // pl用户获取PlUser信息
+		plUserRouterWithoutRecord.GET("plBindPhone", plUserApi.BindPhone)            // pl用户绑定手机
+		plUserRouterWithoutRecord.POST("plSetPswNickname", plUserApi.SetPswNickname) // pl用户绑定昵称密码
+		plUserRouterWithoutRecord.POST("plLoginByPhone", plUserApi.LoginByPhone)     // pl用户通过手机号登录
 
 	}
 }

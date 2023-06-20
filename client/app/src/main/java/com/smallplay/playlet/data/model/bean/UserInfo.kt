@@ -11,6 +11,7 @@ import kotlinx.android.parcel.Parcelize
 data class UserInfo(
 var userName: String,
 var userId: String,
+var password: String,
 var uuid: String,
 var guestId: String,
 var phone: String,

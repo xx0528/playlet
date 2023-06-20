@@ -468,6 +468,88 @@ func (plUserApi *PlUserApi) BindPhone(c *gin.Context) {
 	}
 }
 
+// 修改昵称密码
+func (plUserApi *PlUserApi) SetPswNickname(c *gin.Context) {
+	var l playletReq.PlLoginReq
+	err := c.ShouldBind(&l)
+
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = utils.Verify(l, utils.PlLoginVerify)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	uuid := utils.GetUserUuid(c)
+
+	userInfo, err := plUserService.GetPlUserByUUID(uuid)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	userInfo.UserName = l.Username
+	userInfo.Password = utils.BcryptHash(l.Password)
+	if err := plUserService.UpdatePlUser(userInfo); err != nil {
+		global.GVA_LOG.Error("绑定失败!", zap.Error(err))
+		response.FailWithMessage("绑定失败", c)
+	} else {
+		response.OkWithDetailed(userInfo, "绑定成功", c)
+	}
+}
+
+// 通过手机号登陆
+func (plUserApi *PlUserApi) LoginByPhone(c *gin.Context) {
+	//这里需要鉴权 所以还是直接用 system.SysUser
+	var l playletReq.PlLoginPhoneReq
+	err := c.ShouldBind(&l)
+	key := c.ClientIP()
+
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	err = utils.Verify(l, utils.PlLoginVerify)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+
+	// 判断验证码是否开启
+	openCaptcha := global.GVA_CONFIG.Captcha.OpenCaptcha               // 是否开启防爆次数
+	openCaptchaTimeOut := global.GVA_CONFIG.Captcha.OpenCaptchaTimeOut // 缓存超时时间
+	v, ok := global.BlackCache.Get(key)
+	if !ok {
+		global.BlackCache.Set(key, 1, time.Second*time.Duration(openCaptchaTimeOut))
+	}
+
+	var oc bool = openCaptcha == 0 || openCaptcha < interfaceToInt(v)
+
+	if !oc {
+		usr := &playlet.PlUser{Phone: l.Phone, Password: l.Password}
+		user, err := plUserService.LoginByPhone(usr)
+		if err != nil {
+			global.GVA_LOG.Error("登陆失败! 手机号不存在或者密码错误!", zap.Error(err))
+			// 验证码次数+1
+			global.BlackCache.Increment(key, 1)
+			response.FailWithMessage("手机号不存在或者密码错误", c)
+			return
+		}
+		if user.Enable != 1 {
+			global.GVA_LOG.Error("登陆失败! 用户被禁止登录!")
+			// 验证码次数+1
+			global.BlackCache.Increment(key, 1)
+			response.FailWithMessage("用户被禁止登录", c)
+			return
+		}
+		plUserApi.TokenNext(c, *user)
+		return
+	}
+	// 验证码次数+1
+	global.BlackCache.Increment(key, 1)
+}
+
 // 类型转换
 func interfaceToInt(v interface{}) (i int) {
 	switch v := v.(type) {

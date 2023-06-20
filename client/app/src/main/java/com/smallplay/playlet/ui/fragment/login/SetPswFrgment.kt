@@ -13,9 +13,9 @@ import com.smallplay.playlet.app.ext.initClose
 import com.smallplay.playlet.app.ext.showMessage
 import com.smallplay.playlet.app.util.CacheUtil
 import com.smallplay.playlet.app.util.SettingUtil
-import com.smallplay.playlet.databinding.FragmentRegisterBinding
-import com.smallplay.playlet.viewmodel.request.RequestLoginRegisterViewModel
-import com.smallplay.playlet.viewmodel.state.LoginRegisterViewModel
+import com.smallplay.playlet.databinding.FragmentSetPswBinding
+import com.smallplay.playlet.viewmodel.request.RequestSetPswViewModel
+import com.smallplay.playlet.viewmodel.state.SetPswViewModel
 import me.hgj.jetpackmvvm.ext.nav
 import me.hgj.jetpackmvvm.ext.navigateAction
 import me.hgj.jetpackmvvm.ext.parseState
@@ -23,14 +23,14 @@ import me.hgj.jetpackmvvm.ext.parseState
 /**
  * 描述　:
  */
-class RegisterFrgment : BaseFragment<LoginRegisterViewModel, FragmentRegisterBinding>() {
+class SetPswFrgment : BaseFragment<SetPswViewModel, FragmentSetPswBinding>() {
 
-    private val requestLoginRegisterViewModel:RequestLoginRegisterViewModel by viewModels()
+    private val requestSetPswViewModel: RequestSetPswViewModel by viewModels()
 
     override fun initView(savedInstanceState: Bundle?) {
         mDatabind.viewmodel = mViewModel
         mDatabind.click = ProxyClick()
-        toolbar.initClose("注册") {
+        toolbar.initClose(getString(R.string.editor_psw_text)) {
             nav().navigateUp()
         }
         //设置颜色跟主题颜色一致
@@ -41,15 +41,12 @@ class RegisterFrgment : BaseFragment<LoginRegisterViewModel, FragmentRegisterBin
     }
 
     override fun createObserver() {
-        requestLoginRegisterViewModel.registResult.observe(
+        requestSetPswViewModel.setPswResult.observe(
             viewLifecycleOwner,
             Observer { resultState ->
                 parseState(resultState, {
-                    CacheUtil.setIsLogin(true)
-                    CacheUtil.setUser(it)
                     appViewModel.userInfo.value = it
-                    appViewModel.likeVideos.value = it.likeVideos
-                    nav().navigateAction(R.id.action_registerFrgment_to_mainFragment)
+                    nav().navigateUp()
                 }, {
                     showMessage(it.errorMsg)
                 })
@@ -66,12 +63,12 @@ class RegisterFrgment : BaseFragment<LoginRegisterViewModel, FragmentRegisterBin
         /**注册*/
         fun register() {
             when {
-                mViewModel.username.get().isEmpty() -> showMessage("请填写账号")
-                mViewModel.password.get().isEmpty() -> showMessage("请填写密码")
-                mViewModel.password2.get().isEmpty() -> showMessage("请填写确认密码")
-                mViewModel.password.get().length < 6 -> showMessage("密码最少6位")
-                mViewModel.password.get() != mViewModel.password2.get() -> showMessage("密码不一致")
-                else -> requestLoginRegisterViewModel.registerAndlogin(
+                mViewModel.username.get().isEmpty() -> showMessage(getString(R.string.input_nickname_text))
+                mViewModel.password.get().isEmpty() -> showMessage(getString(R.string.input_psw_text))
+                mViewModel.password2.get().isEmpty() -> showMessage(getString(R.string.input_psw_sure_text))
+                mViewModel.password.get().length < 6 -> showMessage(getString(R.string.psw_less_text))
+                mViewModel.password.get() != mViewModel.password2.get() -> showMessage(getString(R.string.psw_not_same_text))
+                else -> requestSetPswViewModel.setPswNickname(
                     mViewModel.username.get(),
                     mViewModel.password.get()
                 )

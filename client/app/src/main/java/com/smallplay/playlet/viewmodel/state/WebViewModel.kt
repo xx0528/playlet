@@ -23,7 +23,7 @@ class WebViewModel : BaseViewModel() {
     var type: String = ""
 
     //点击的充值按钮
-    var recharge: String = "-1"
+    var recharge: String = ""
     //需要收藏的类型 具体参数说明请看 CollectType 枚举类
     var collectType = 0
 }

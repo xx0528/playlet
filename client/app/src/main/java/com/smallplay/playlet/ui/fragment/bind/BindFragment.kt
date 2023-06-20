@@ -69,6 +69,7 @@ class BindFragment : BaseFragment<BindViewModel, FragmentBindBinding>() {
                     appViewModel.userInfo.value = it
                     CacheUtil.setIsBind(true)
                     nav().navigateUp()
+                    nav().navigateAction(R.id.setPswFragment)
 //                    nav().navigateAction(R.id.action_loginFragment_to_loginFrgment)
                 }, {
                     ToastUtils.showShort(it.errorMsg)
@@ -84,7 +85,7 @@ class BindFragment : BaseFragment<BindViewModel, FragmentBindBinding>() {
         }
 
         fun login() {
-            nav().navigateAction(R.id.action_loginFragment_to_loginFrgment)
+            nav().navigateAction(R.id.loginFragment)
         }
     }
 

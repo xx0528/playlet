@@ -11,6 +11,8 @@ import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.base.BaseFragment
 import com.smallplay.playlet.app.base.BaseFragment1
 import com.smallplay.playlet.app.ext.init
+import com.smallplay.playlet.app.ext.jumpByBind
+import com.smallplay.playlet.app.util.CacheUtil
 import com.smallplay.playlet.app.weight.recyclerview.SpaceItemDecoration
 import com.smallplay.playlet.data.model.bean.EpisodesItem
 import com.smallplay.playlet.data.model.bean.UserInfo
@@ -20,6 +22,7 @@ import com.smallplay.playlet.ui.adapter.EpisodesAdapter
 import com.smallplay.playlet.viewmodel.state.EpisodesViewModel
 import kotlinx.android.synthetic.main.fragment_episodes.*
 import kotlinx.android.synthetic.main.include_recyclerview.*
+import me.hgj.jetpackmvvm.ext.nav
 
 
 /**
@@ -47,7 +50,13 @@ class EpisodeFragment : BaseFragment1<EpisodesViewModel, FragmentEpisodesBinding
             setOnItemClickListener { adapter, view, position ->
                 //选集播放
 //                appViewModel.curPlayVideoNo.value = mEpisodePageNum*30 + position
-                appViewModel.reqPlay(mEpisodePageNum*30 + position)
+                var freeCount = appViewModel.videoHomeDataState.value?.listData?.get(position)?.freeCount
+                if (position >= freeCount!! && !CacheUtil.isBind()) {
+                    appViewModel.dialogVisible.value = 0
+                    nav().jumpByBind{}
+                } else {
+                    appViewModel.reqPlay(mEpisodePageNum*30 + position)
+                }
             }
         }
     }
