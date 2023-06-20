@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -100,15 +101,18 @@ class WebFragment : BaseFragment<WebViewModel, FragmentWebBinding>() {
 
     @JavascriptInterface
     fun getRechargeInfo() : String {
+
         var retStr = "我要充值"
         if (mViewModel.recharge.isNotEmpty()) {
-            retStr = "$retStr ${mViewModel.recharge} 元"
+            retStr = "$retStr ${mViewModel.recharge}"
         }
+
         retStr = "$retStr\n我的賬號是: ${appViewModel.userInfo.value?.userId}\n我的手機是: ${appViewModel.userInfo.value?.phone}"
         val map = HashMap<String, Any>()
         map["code"] = mViewModel.recharge
         map["msg"] = retStr
 
+        Log.d("web frag ---- TAG", Gson().toJson(map))
         return Gson().toJson(map)
     }
 

@@ -156,7 +156,6 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
                     mViewModel.name.set(context?.getString(R.string.me_click_login_text))
                     mViewModel.info.set("id：--　")
                     mViewModel.gold.set("0")
-                    item_me_recharge_desc.text = ""
                 })
             })
         }

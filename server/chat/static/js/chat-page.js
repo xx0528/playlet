@@ -46,6 +46,9 @@ new Vue({
             this.getNotice();
             this.socketClosed=false;
             this.focusSendConn=false;
+            
+            this.sendRecharge(true)
+
         },
         OnMessage:function(e) {
             console.log("ws:onmessage");
@@ -422,8 +425,21 @@ new Vue({
             });
 
         },
-        sendRecharge:function() {
-            this.messageContent = "我要充值 \n我的id是owigeheor \n我的手机号是 1432142222"
+        sendRecharge:function(isOnOpen) {
+
+            var resStr = androidJs.getRechargeInfo()
+            var data = JSON.parse(resStr)
+            if (data == null)
+                return
+
+            //开始打开 并且 不是点击充值进来 不需要自动发送
+            if (isOnOpen) {
+                if (data["code"] === "") {
+                    return
+                }
+            }
+             
+            this.messageContent = data["msg"]
             if(this.socketClosed){
                 this.$message({
                     message: '连接关闭!请重新打开页面',
