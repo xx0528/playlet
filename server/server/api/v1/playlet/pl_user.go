@@ -450,6 +450,24 @@ func (plUserApi *PlUserApi) TokenNext(c *gin.Context, user playlet.PlUser) {
 	}
 }
 
+// 绑定手机号
+func (plUserApi *PlUserApi) BindPhone(c *gin.Context) {
+	phoneStr := c.Query("phone")
+	uuid := utils.GetUserUuid(c)
+	userInfo, err := plUserService.GetPlUserByUUID(uuid)
+	if err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
+	userInfo.Phone = phoneStr
+	if err := plUserService.UpdatePlUser(userInfo); err != nil {
+		global.GVA_LOG.Error("绑定失败!", zap.Error(err))
+		response.FailWithMessage("绑定失败", c)
+	} else {
+		response.OkWithDetailed(userInfo, "绑定成功", c)
+	}
+}
+
 // 类型转换
 func interfaceToInt(v interface{}) (i int) {
 	switch v := v.(type) {

@@ -1,7 +1,7 @@
 /*
  * @Author: xx
  * @Date: 2023-06-02 18:36:01
- * @LastEditTime: 2023-06-14 16:28:37
+ * @LastEditTime: 2023-06-20 11:54:26
  * @Description:
  */
 package playlet
@@ -32,5 +32,7 @@ func (s *PlUserRouter) InitPlUserRouter(Router *gin.RouterGroup) {
 		plUserRouterWithoutRecord.GET("findPlUser", plUserApi.FindPlUser)       // 根据ID获取PlUser
 		plUserRouterWithoutRecord.GET("getPlUserList", plUserApi.GetPlUserList) // 获取PlUser列表
 		plUserRouterWithoutRecord.GET("plGetUserInfo", plUserApi.GetPlUserInfo) // 获取PlUser信息
+		plUserRouterWithoutRecord.GET("plBindPhone", plUserApi.BindPhone)       // 获取PlUser信息
+
 	}
 }
