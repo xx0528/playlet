@@ -79,6 +79,6 @@ func (plVideoService *PlVideoService) GetPlVideoInfoList(info playletReq.PlVideo
 		return
 	}
 
-	err = db.Order("created_at desc").Limit(limit).Offset(offset).Find(&plVideos).Error
+	err = db.Order("id desc").Limit(limit).Offset(offset).Find(&plVideos).Error
 	return plVideos, total, err
 }
