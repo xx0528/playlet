@@ -10,20 +10,19 @@
         tools:context=".ui.activity.MainActivity">
 
         <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/mainViewpager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:id="@+id/mainViewpager"
-            />
-        <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+            android:layout_weight="1" />
+
+        <com.smallplay.playlet.app.weight.bottomNavigationView.BottomNavigationViewEx
             android:id="@+id/mainBottom"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/black"
-            app:menu="@menu/menu_navigation"
+            app:itemIconSize="20dp"
             app:itemIconTint="@color/bottom_selector"
             app:itemTextColor="@color/bottom_selector"
-            app:itemIconSize="20dp"
-            />
+            app:menu="@menu/menu_navigation" />
     </LinearLayout>
 </layout>

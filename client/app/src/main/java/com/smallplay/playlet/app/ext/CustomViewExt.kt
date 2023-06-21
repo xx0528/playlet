@@ -22,7 +22,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
 import com.kingja.loadsir.core.LoadService
 import com.kingja.loadsir.core.LoadSir
 import com.yanzhenjie.recyclerview.SwipeRecyclerView
@@ -30,6 +29,7 @@ import me.hgj.jetpackmvvm.base.appContext
 import com.smallplay.playlet.R
 import com.smallplay.playlet.app.network.stateCallback.ListDataUiState
 import com.smallplay.playlet.app.util.SettingUtil
+import com.smallplay.playlet.app.weight.bottomNavigationView.BottomNavigationViewEx
 import com.smallplay.playlet.app.weight.loadCallBack.EmptyCallback
 import com.smallplay.playlet.app.weight.loadCallBack.ErrorCallback
 import com.smallplay.playlet.app.weight.loadCallBack.LoadingCallback

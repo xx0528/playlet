@@ -63,8 +63,7 @@ class EpisodesDialog : BottomSheetDialogFragment() {
         // 禁用对话框的拖动和滑动手势
         if (dialog != null) {
             // 禁用底部表单的手势
-            BottomSheetBehavior.from<View>(dialog!!.findViewById<View>(R.id.design_bottom_sheet)).isDraggable =
-                false
+//            BottomSheetBehavior.from<View>(dialog!!.findViewById<View>(R.id.design_bottom_sheet)).isDraggable = false
         }
 
         var data = appViewModel.videoHomeDataState.value?.listData
