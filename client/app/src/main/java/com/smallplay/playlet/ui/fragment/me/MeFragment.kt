@@ -41,7 +41,7 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
         mDatabind.click = ProxyClick()
         appViewModel.appColor.value?.let { setUiTheme(it, mDatabind.meLinear) }
         appViewModel.userInfo.value?.let {
-            mViewModel.name.set(it.phone.ifEmpty { getString(R.string.click_bind_phome_text)})
+            mViewModel.name.set(it.phone.ifEmpty { it.userId })
             mViewModel.info.set(it.phone.ifEmpty { it.uuid })
             mDatabind.itemMeRechargeDesc.text = it.rechargeDesc
         }
@@ -102,6 +102,16 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
             requestMeViewModel.getVipInfo()
             meLikeVideosAdapter.data = arrayListOf()
             CacheUtil.getLocalVideos()?.let { meLikeVideosAdapter.addData(it) }
+
+            if (check) {
+                mDatabind.itemRechargeLayout.visibility = View.GONE
+                mDatabind.itemExpenseLayout.visibility = View.GONE
+                mDatabind.itemRechargeRecordLayout.visibility = View.GONE
+            } else {
+                mDatabind.itemRechargeLayout.visibility = View.VISIBLE
+                mDatabind.itemExpenseLayout.visibility = View.VISIBLE
+                mDatabind.itemRechargeLayout.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -117,7 +127,7 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
                     mViewModel.name.set(
                         it.userName.ifEmpty {
                             it.phone.ifEmpty {
-                                getString(R.string.click_bind_phome_text)
+                                it.userId
                             }
                         }
                     )

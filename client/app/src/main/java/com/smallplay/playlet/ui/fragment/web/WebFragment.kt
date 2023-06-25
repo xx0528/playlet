@@ -102,7 +102,7 @@ class WebFragment : BaseFragment<WebViewModel, FragmentWebBinding>() {
             retStr = "$retStr ${mViewModel.recharge}"
         }
 
-        retStr = "$retStr\n我的賬號是: ${appViewModel.userInfo.value?.userId}\n我的手機是: ${appViewModel.userInfo.value?.phone}"
+        retStr = "$retStr\n我的賬號是: ${appViewModel.userInfo.value?.userId}"
         val map = HashMap<String, Any>()
         map["code"] = mViewModel.recharge
         map["msg"] = retStr

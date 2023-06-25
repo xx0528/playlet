@@ -153,11 +153,12 @@ fun NavController.jumpByLogin(action: (NavController) -> Unit) {
  * 拦截是否绑定
  */
 fun NavController.jumpByBind(action: (NavController) -> Unit) {
-    if (CacheUtil.isBind()) {
-        action(this)
-    } else {
-        this.navigateAction(R.id.action_to_bindFragment)
-    }
+    action(this)
+//    if (CacheUtil.isBind()) {
+//        action(this)
+//    } else {
+//        this.navigateAction(R.id.action_to_bindFragment)
+//    }
 }
 
 /**
