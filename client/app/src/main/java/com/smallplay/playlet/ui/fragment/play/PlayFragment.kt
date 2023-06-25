@@ -84,7 +84,7 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
             curPlayVideoNo.observe(viewLifecycleOwner, Observer {
                 //定为到要预览的位置
                 Log.d(TAG, "监听到 播放 $it")
-                if (mEpisodeDialog != null) {
+                if (mEpisodeDialog != null && appViewModel.dialogVisible.value == 0) {
                     mEpisodeDialog?.dismiss()
                     mEpisodeDialog = null
                 }
