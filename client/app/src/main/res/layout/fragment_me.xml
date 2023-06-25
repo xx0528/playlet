@@ -271,6 +271,7 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/item_expense_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
                                 android:background="?attr/selectableItemBackground"
@@ -302,6 +303,7 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:id="@+id/item_recharge_record_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="50dp"
                                 android:background="?attr/selectableItemBackground"

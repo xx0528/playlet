@@ -156,8 +156,8 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
             }
         }
         mViewBind.vvp.adapter = videoAdapter
-        mViewBind.vvp!!.overScrollMode = View.OVER_SCROLL_NEVER
-        mViewBind.vvp!!.setOnPageChangeListener(object : SimpleOnPageChangeListener() {
+        mViewBind.vvp.overScrollMode = View.OVER_SCROLL_NEVER
+        mViewBind.vvp.setOnPageChangeListener(object : SimpleOnPageChangeListener() {
             private var mCurItem = 0
 
             private var mIsReverseScroll = false

@@ -81,7 +81,11 @@ class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
 
         if (appViewModel.userInfo.value?.check == true) {
             mDatabind.itemRechargeLayout.visibility = View.GONE
+            mDatabind.itemExpenseLayout.visibility = View.GONE
+            mDatabind.itemRechargeRecordLayout.visibility = View.GONE
         } else {
+            mDatabind.itemRechargeLayout.visibility = View.VISIBLE
+            mDatabind.itemExpenseLayout.visibility = View.VISIBLE
             mDatabind.itemRechargeLayout.visibility = View.VISIBLE
         }
         if (CacheUtil.getLocalVideos()?.isEmpty() == true) {
