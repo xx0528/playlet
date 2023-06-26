@@ -88,16 +88,16 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
                 Log.d(TAG, "监听当前播放curPlayVideo 触发 startPlay  $it")
                 startPlay(it)
             })
-            appViewModel.dialogVisible.observeInFragment(this@HomeFragment, Observer {
+            dialogVisible.observeInFragment(this@HomeFragment, Observer {
                 if (it == 1) {
                     nav().navigateAction(R.id.action_to_playFragment)
                     appViewModel.curHomeVideoNo.value = mCurPos
                 }
             })
 
-            appViewModel.likeVideos.observeInFragment(this@HomeFragment, Observer {
+            likeVideos.observeInFragment(this@HomeFragment, Observer {
                 val count = mViewBind.vvp.childCount
-                Log.d(TAG, "count --- $count")
+                Log.d(TAG, "count --- $count likeVideos -- ${likeVideos.value}")
                 for (i in 0 until count) {
                     val itemView = mViewBind.vvp.getChildAt(i)
                     val viewHolder: VideoHomeAdapter.ViewHolder = itemView.tag as VideoHomeAdapter.ViewHolder

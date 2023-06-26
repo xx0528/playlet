@@ -189,7 +189,8 @@ class AppViewModel : BaseViewModel() {
 
     fun likeVideo(ID: Int) {
         request({ HttpRequestCoroutine.likeVideo(ID) }, {
-            Log.d(TAG, "likevideos -- ${userInfo.value?.likeVideos}")
+            Log.d(TAG, "likevideos -- ${userInfo.value?.likeVideos}  -- ${likeVideos.value}")
+            likeVideos.value = ""
             likeVideos.value = it.likeVideos
             userInfo.value?.likeVideos = it.likeVideos
             Log.d(TAG, "likevideos 改变之后 -- ${userInfo.value?.likeVideos}")
