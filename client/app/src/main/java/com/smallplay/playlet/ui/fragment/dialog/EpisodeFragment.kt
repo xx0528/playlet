@@ -38,7 +38,8 @@ class EpisodeFragment : BaseFragment1<EpisodesViewModel, FragmentEpisodesBinding
             setOnItemClickListener { adapter, view, position ->
                 //选集播放
                 appViewModel.dialogVisible.value = 0
-                appViewModel.curPlayVideoNo.value = mEpisodePageNum*30 + position
+//                appViewModel.curPlayVideoNo.value = mEpisodePageNum*30 + position
+                appViewModel.reqPlay(mEpisodePageNum*30 + position)
 //                var freeCount = appViewModel.videoHomeDataState.value?.listData?.get(position)?.freeCount
 //                if (position >= freeCount!! && !CacheUtil.isBind()) {
 //                    appViewModel.dialogVisible.value = 0

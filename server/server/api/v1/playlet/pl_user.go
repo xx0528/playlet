@@ -218,7 +218,7 @@ func (pUserApi *PlUserApi) PlayVideo(c *gin.Context) {
 	}
 
 	//免费集数
-	if videoInfo.FreeCount >= reqInfo.Episode {
+	if videoInfo.FreeCount > reqInfo.Episode {
 		response.OkWithData(playletRes.PlPlayVideoRes{
 			PlVideoInfo: reqInfo,
 			Code:        1,

@@ -23,7 +23,7 @@ class TokenOutInterceptor : Interceptor {
             val mediaType = response.body()!!.contentType()
             val string = response.body()!!.string()
             val responseBody = ResponseBody.create(mediaType, string)
-            if (!string.contains("404 page not found")) {
+            if (!string.contains("404 page not found") && !string.contains("502 Bad")) {
                 val apiResponse = gson.fromJson(string, ApiResponse::class.java)
                 //判断逻辑 模拟一下
                 if (apiResponse != null && apiResponse.code == 99999) {
