@@ -1,11 +1,11 @@
 package com.smallplay.playlet.app.event
 
+import android.os.Bundle
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.blankj.utilcode.util.ToastUtils
 import com.kunminx.architecture.ui.callback.UnPeekLiveData
 import com.smallplay.playlet.app.appViewModel
-import com.smallplay.playlet.app.ext.jumpByBind
 import com.smallplay.playlet.app.network.stateCallback.ListDataUiState
 import me.hgj.jetpackmvvm.base.appContext
 import me.hgj.jetpackmvvm.base.viewmodel.BaseViewModel
@@ -16,7 +16,6 @@ import com.smallplay.playlet.data.model.bean.LocalLikeVideos
 import com.smallplay.playlet.data.model.bean.UserInfo
 import com.smallplay.playlet.data.model.bean.VideoResponse
 import com.smallplay.playlet.data.repository.request.HttpRequestCoroutine
-import me.hgj.jetpackmvvm.ext.nav
 import me.hgj.jetpackmvvm.ext.request
 
 /**
@@ -39,17 +38,18 @@ class AppViewModel : BaseViewModel() {
     var appAnimation = EventLiveData<Int>()
 
     //页面 视频数据页面从0开始
-    var pageNo = 0
+    var pageNo = 1
 
     //剧场视频列表数据
-    var videoParkDataState: MutableLiveData<ListDataUiState<VideoResponse>> = MutableLiveData()
+    var videoAllDataState: MutableLiveData<ListDataUiState<VideoResponse>> = MutableLiveData()
 
-    //首页视频列表数据
-    var videoHomeDataState:  MutableLiveData<ListDataUiState<VideoResponse>> = MutableLiveData()
+    //播放页视频列表数据
+    var videoPlayDataState:  MutableLiveData<ListDataUiState<VideoResponse>> = MutableLiveData()
 
     //视频本地记录列表数据
     var localVideosState:  MutableLiveData<ArrayList<LocalLikeVideos>> = MutableLiveData()
-
+    //当前首页选中视频
+    var curHomeVideoNo : MutableLiveData<Int> = MutableLiveData()
     //当前选中视频
     var curPlayVideoNo : MutableLiveData<Int> = MutableLiveData()
     //当前选中视频播放进度
@@ -78,6 +78,8 @@ class AppViewModel : BaseViewModel() {
         //本地收藏视频
         localVideosState.value = CacheUtil.getLocalVideos()
         curPlayVideoTime.value = 0
+        curHomeVideoNo.value = 0
+        curPlayVideoNo.value = 0
     }
 
     /**
@@ -86,31 +88,38 @@ class AppViewModel : BaseViewModel() {
      */
     fun getVideoData(isRefresh: Boolean, isHomePage : Boolean = false) {
         if (isRefresh) {
-            pageNo = 0
+            pageNo = 1
         }
+
+        var curHomeNo = curHomeVideoNo.value!!
         request({ HttpRequestCoroutine.getVideoData(pageNo) }, {
             //请求成功
             pageNo++
+            for (i in 0 until it.list.size) {
+                it.list[i].imgUrl = "${it.list[i].videoUrl}/cover.png"
+                it.list[i].videoUrl = "${it.list[i].videoUrl}/1.mp4"
+            }
             var listData: ArrayList<VideoResponse> = arrayListOf()
             listData = if (isRefresh) {
                 it.list
             } else {
-                videoParkDataState.value?.listData?.addAll(it.list)
-                videoParkDataState.value?.listData!!
+                videoAllDataState.value?.listData?.addAll(it.list)
+                videoAllDataState.value?.listData!!
             }
             val listDataUiState =
                 ListDataUiState(
                     isSuccess = true,
-                    isRefresh = isRefresh,
+                    isRefresh = true,
                     isEmpty = it.isEmpty(),
                     hasMore = it.hasMore(),
                     isFirstEmpty = isRefresh && it.isEmpty(),
                     listData = listData
                 )
 
-            videoParkDataState.value = listDataUiState
+            videoAllDataState.value = listDataUiState
             if (isHomePage) {
-                setCurVideo(it.list[0].ID)
+                setCurVideo(it.list[curHomeNo].ID)
+                curHomeVideoNo.value = curHomeNo
             }
         }, {
             //请求失败
@@ -121,20 +130,21 @@ class AppViewModel : BaseViewModel() {
                     isRefresh = isRefresh,
                     listData = arrayListOf<VideoResponse>()
                 )
-            videoParkDataState.value = listDataUiState
+            videoAllDataState.value = listDataUiState
         })
     }
 
     fun setNextVideo() {
-        for (i in 0 until (videoParkDataState.value?.listData?.size ?: 0)) {
-            val item = videoParkDataState.value?.listData?.get(i)
+        for (i in 0 until (videoAllDataState.value?.listData?.size ?: 0)) {
+            val item = videoAllDataState.value?.listData?.get(i)
             if (item != null) {
-                if (item.ID == (videoHomeDataState.value?.listData?.get(0)?.ID ?: 0)) {
+                if (item.ID == (videoPlayDataState.value?.listData?.get(0)?.ID ?: 0)) {
                     var idx = i + 1
-                    if (idx >= videoParkDataState.value?.listData?.size!!) {
+                    if (idx >= videoAllDataState.value?.listData?.size!!) {
                         idx = 0
                     }
-                    videoParkDataState.value?.listData?.get(idx)?.ID?.let { setCurVideo(it) }
+                    curHomeVideoNo.value = idx
+                    videoAllDataState.value?.listData?.get(idx)?.ID?.let { setCurVideo(it) }
                     break
                 }
             }
@@ -149,7 +159,7 @@ class AppViewModel : BaseViewModel() {
 
         if (videoInfo != null) {
             for (i in 1 until videoInfo.count+1) {
-                val newVideo = videoInfo.copy(imgUrl = "${videoInfo.videoUrl}/cover.png", videoUrl = "${videoInfo.videoUrl}/$i.mp4")
+                val newVideo = videoInfo.copy(videoUrl = videoInfo.videoUrl.replace("1.mp4", "$i.mp4"))
                 arrayList.add(newVideo)
             }
         }
@@ -162,14 +172,14 @@ class AppViewModel : BaseViewModel() {
                 isFirstEmpty = false,
                 listData = arrayList
             )
-        videoHomeDataState.value = listDataUiState
+        videoPlayDataState.value = listDataUiState
         curPlayVideoNo.value = 0
     }
 
     private fun getVideoByID(ID : Int) : VideoResponse? {
-        Log.d(TAG, "当前视频的个数 -- ${videoParkDataState.value?.listData?.size} 要和获取的ID $ID")
-        for(item in videoParkDataState.value?.listData!!) {
-            Log.d(TAG,"itemID -- ${item.ID} - 名字 - ${item.videoName}")
+//        Log.d(TAG, "当前视频的个数 -- ${videoAllDataState.value?.listData?.size} 要和获取的ID $ID")
+        for(item in videoAllDataState.value?.listData!!) {
+//            Log.d(TAG,"itemID -- ${item.ID} - 名字 - ${item.videoName}")
             if (item.ID == ID) {
                 return item
             }
@@ -206,7 +216,7 @@ class AppViewModel : BaseViewModel() {
     }
 
     fun reqPlay(position: Int) {
-        var videoInfo = videoHomeDataState.value?.listData?.get(0)
+        var videoInfo = videoPlayDataState.value?.listData?.get(0)
         if (videoInfo != null) {
             var videoId = videoInfo.ID
             if (videoId != null) {
@@ -219,10 +229,10 @@ class AppViewModel : BaseViewModel() {
     fun saveLocalVideos(videoInfo : LocalLikeVideos) {
         if (videoInfo != null && localVideosState.value != null) {
             val newList = ArrayList<LocalLikeVideos>()
-            Log.d(TAG, "要保存的videoID " + videoInfo.ID)
+//            Log.d(TAG, "要保存的videoID " + videoInfo.ID)
             var isHave = false
             for (item in localVideosState.value!!) {
-                Log.d(TAG, "已有的 ID  " + item.ID)
+//                Log.d(TAG, "已有的 ID  " + item.ID)
                 if (item.ID == videoInfo.ID) {
                     newList.add(videoInfo)
                     isHave = true
@@ -240,4 +250,16 @@ class AppViewModel : BaseViewModel() {
         CacheUtil.setLocalVideos(localVideosState.value)
     }
 
+    fun getLocalVideosInfo(id: Int? = null) : LocalLikeVideos? {
+        var curId = id
+        if (id == null) {
+            curId = videoPlayDataState.value?.listData?.get(0)?.ID
+        }
+        for (item in localVideosState.value!!) {
+            if (item.ID == curId) {
+                return item
+            }
+        }
+        return null
+    }
 }

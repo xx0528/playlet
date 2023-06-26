@@ -30,6 +30,7 @@ import me.hgj.jetpackmvvm.ext.util.notNull
 
 class MeFragment : BaseFragment<MeViewModel, FragmentMeBinding>() {
 
+    private val TAG = "MeFragment---"
     private val requestMeViewModel: RequestMeViewModel by viewModels()
 
     private val meRechargeAdapter: MeRechargeAdapter by lazy { MeRechargeAdapter(arrayListOf()) }

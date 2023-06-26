@@ -91,7 +91,7 @@
     <fragment
         android:id="@+id/playFragment"
         android:name="com.smallplay.playlet.ui.fragment.play.PlayFragment"
-        android:label="WebFragment" />
+        android:label="PlayFragment" />
 
     <action
         android:id="@+id/action_to_webFragment"

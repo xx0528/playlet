@@ -66,7 +66,7 @@ class EpisodesDialog : BottomSheetDialogFragment() {
             BottomSheetBehavior.from<View>(dialog!!.findViewById<View>(R.id.design_bottom_sheet)).isDraggable = false
         }
 
-        var data = appViewModel.videoHomeDataState.value?.listData
+        var data = appViewModel.videoPlayDataState.value?.listData
         if (data != null) {
 
             var videoName = mView.findViewById<TextView>(R.id.dialog_video_name)

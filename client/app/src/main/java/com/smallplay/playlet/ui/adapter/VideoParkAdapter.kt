@@ -34,7 +34,7 @@ class VideoParkAdapter(data: MutableList<VideoResponse>?) :
                     holder.setText(R.id.item_video_list_episodes,  context.getString(R.string.video_update_text, count))
                 }
             }
-            Glide.with(context).load("${videoUrl}/cover.png")
+            Glide.with(context).load(imgUrl)
                 .transition(DrawableTransitionOptions.withCrossFade(500))
                 .into(holder.getView(R.id.item_me_like_imageview))
 

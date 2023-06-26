@@ -10,8 +10,6 @@ import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener
 import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.base.BaseFragment1
-import com.smallplay.playlet.app.ext.jumpByBind
-import com.smallplay.playlet.app.util.CacheUtil
 import com.smallplay.playlet.data.model.bean.LocalLikeVideos
 import com.smallplay.playlet.data.model.bean.VideoResponse
 import com.smallplay.playlet.databinding.FragmentPlayBinding
@@ -52,7 +50,8 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
 
         mPreloadManager = context?.let { PreloadManager.getInstance(it) }
 
-        mCurPos = arguments?.getInt("curPos")!!
+        //当前应该播放第几集 从历史记录里取
+        mCurPos = appViewModel.getLocalVideosInfo()?.episode ?: 0
         isInit = true
     }
 
@@ -127,11 +126,11 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
                 if (playState == VideoView.STATE_PLAYBACK_COMPLETED) {
                     Log.d(TAG, "自动播放下一条， 当前是 ${appViewModel.curPlayVideoNo.value}")
                     var pos = appViewModel.curPlayVideoNo.value?.plus(1) ?: appViewModel.curPlayVideoNo.value!!
-                    var freeCount = appViewModel.videoHomeDataState.value?.listData?.get(pos)?.freeCount
-                    if (pos >= freeCount!! && !CacheUtil.isBind()) {
-                        nav().jumpByBind{}
-                        return
-                    }
+//                    var freeCount = appViewModel.videoHomeDataState.value?.listData?.get(pos)?.freeCount
+//                    if (pos >= freeCount!! && !CacheUtil.isBind()) {
+//                        nav().jumpByBind{}
+//                        return
+//                    }
                     appViewModel.reqPlay(pos)
 //                    appViewModel.curPlayVideoNo.value = appViewModel.curPlayVideoNo.value?.plus(
 //                        1
@@ -144,7 +143,7 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
 
     private fun initViewPager() {
         mViewBind.vvp.offscreenPageLimit = 4
-        var videoAdapter = VideoHomeAdapter(appViewModel.videoHomeDataState.value?.listData)
+        var videoAdapter = VideoHomeAdapter(appViewModel.videoPlayDataState.value?.listData)
         videoAdapter.run {
             setBackClick { ->
                 run {
@@ -176,11 +175,11 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 if (position == mCurPos) return
-                var freeCount = appViewModel.videoHomeDataState.value?.listData?.get(position)?.freeCount
-                if (position >= freeCount!! && !CacheUtil.isBind()) {
-                    nav().jumpByBind{}
-                    return
-                }
+//                var freeCount = appViewModel.videoHomeDataState.value?.listData?.get(position)?.freeCount
+//                if (position >= freeCount!! && !CacheUtil.isBind()) {
+//                    nav().jumpByBind{}
+//                    return
+//                }
                 appViewModel.reqPlay(position)
             }
 
@@ -214,7 +213,7 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
                         parent.removeView(mVideoView)
                     }
                 }
-                val videoBean: VideoResponse? = appViewModel.videoHomeDataState.value?.listData?.get(position)
+                val videoBean: VideoResponse? = appViewModel.videoPlayDataState.value?.listData?.get(position)
                 if (videoBean != null) {
                     Log.d(TAG, "获取到的 position = $position  videoBean 的 videoName = ${videoBean.videoName} videoUrl = ${videoBean.videoUrl}")
 
@@ -257,8 +256,8 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
             mVideoView!!.pause()
         }
         //暂停时记录进度
-        if (appViewModel.videoHomeDataState.value != null && mController != null && appViewModel.curPlayVideoNo.value != null) {
-            var curVideo = appViewModel.videoHomeDataState.value!!.listData[appViewModel.curPlayVideoNo.value!!]
+        if (appViewModel.videoPlayDataState.value != null && mController != null && appViewModel.curPlayVideoNo.value != null) {
+            var curVideo = appViewModel.videoPlayDataState.value!!.listData[appViewModel.curPlayVideoNo.value!!]
             if (curVideo != null) {
                 curVideo.run {
                     var video : LocalLikeVideos = LocalLikeVideos(
@@ -289,7 +288,7 @@ class PlayFragment : BaseFragment1<PlayViewModel, FragmentPlayBinding>() {
             mVideoView!!.release()
         }
         //换一个 不然HomeFragment会有问题
-        appViewModel.setNextVideo()
+//        appViewModel.setNextVideo()
     }
 
     fun onBackPressed() {

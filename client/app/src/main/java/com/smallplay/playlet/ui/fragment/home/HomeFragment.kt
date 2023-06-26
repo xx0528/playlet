@@ -5,15 +5,11 @@ import android.util.Log
 import android.view.View
 import android.view.ViewParent
 import android.widget.FrameLayout
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener
 import com.smallplay.playlet.R
 import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.base.BaseFragment1
-import com.smallplay.playlet.app.ext.showMessage
-import com.smallplay.playlet.app.util.CacheUtil
-import com.smallplay.playlet.app.util.SettingUtil
 import com.smallplay.playlet.data.model.bean.VideoResponse
 import com.smallplay.playlet.databinding.FragmentHomeBinding
 import com.smallplay.playlet.ui.adapter.VideoHomeAdapter
@@ -21,11 +17,9 @@ import com.smallplay.playlet.ui.video.VerticalViewPager
 import com.smallplay.playlet.ui.video.cache.PreloadManager
 import com.smallplay.playlet.ui.video.render.VideoController
 import com.smallplay.playlet.ui.video.render.VideoRenderViewFactory
-import com.smallplay.playlet.viewmodel.request.RequestLoginRegisterViewModel
 import com.smallplay.playlet.viewmodel.state.HomeViewModel
 import me.hgj.jetpackmvvm.ext.nav
 import me.hgj.jetpackmvvm.ext.navigateAction
-import me.hgj.jetpackmvvm.ext.parseState
 import xyz.doikki.videoplayer.player.BaseVideoView.SimpleOnStateChangeListener
 import xyz.doikki.videoplayer.player.VideoView
 import xyz.doikki.videoplayer.util.L
@@ -45,11 +39,9 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 
     private val TAG = "HomeFragment-----------"
 
-    private val requestLoginRegisterViewModel: RequestLoginRegisterViewModel by viewModels()
 
     override fun initView(savedInstanceState: Bundle?) {
-
-        addLoadingObserve(requestLoginRegisterViewModel)
+        Log.d(TAG, "初始化----")
 
         appViewModel.curPage.value = "HomeFragment"
 
@@ -75,62 +67,31 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 //                "GidMQhZN"
 //            )
 //        }
-        var userInfo = CacheUtil.getUser()
-        if (userInfo != null) {
-            requestLoginRegisterViewModel.registerAndlogin(
-                userInfo.userId,
-                userInfo.password
-            )
-        } else {
-            requestLoginRegisterViewModel.registerAndlogin(
-                SettingUtil.getAccountByDevice() ,
-                "GidMQhZN"
-            )
-        }
-
+//        Log.d(TAG, "播放第一个视频")
+//        startPlay(0)
     }
 
     override fun createObserver() {
-        requestLoginRegisterViewModel.registResult.observe(viewLifecycleOwner,Observer { resultState ->
-            parseState(resultState, {
-                //登录成功 通知账户数据发生改变鸟
-                CacheUtil.setUser(it)
-                CacheUtil.setIsLogin(true)
-                if (it.phone.isNotEmpty()) {
-                    CacheUtil.setIsBind(true)
-                } else {
-                    CacheUtil.setIsBind(false)
-                }
-                appViewModel.userInfo.value = it
-                //登录成功 请求数据
-                //请求视频列表数据 第一次要去请求下
-                appViewModel.getVideoData(true, isHomePage = true)
-            }, {
-                //登录失败
-                showMessage(it.errorMsg)
-            })
-        })
 
         appViewModel.run {
 
             //监听首页视频列表请求的数据变化
-            videoHomeDataState.observe(viewLifecycleOwner, Observer {
+            videoAllDataState.observe(viewLifecycleOwner, Observer {
                 //ParkFragment跳过来默认播放第一集
                 mViewBind.vvp.adapter = VideoHomeAdapter(it.listData)
-                startPlay(0)
+//                startPlay(0)
             })
 //
-            curPlayVideoNo.observe(viewLifecycleOwner, Observer {
+            curHomeVideoNo.observe(viewLifecycleOwner, Observer {
                 //定为到要预览的位置
                 mViewBind.vvp.currentItem = it
-                Log.d(TAG, "监听当前播放curPlayVideo 触发 startPlay")
+                Log.d(TAG, "监听当前播放curPlayVideo 触发 startPlay  $it")
                 startPlay(it)
             })
             appViewModel.dialogVisible.observeInFragment(this@HomeFragment, Observer {
                 if (it == 1) {
-                    nav().navigateAction(R.id.action_to_playFragment, Bundle().apply {
-                        putInt("curPos", mCurPos)
-                    })
+                    nav().navigateAction(R.id.action_to_playFragment)
+                    appViewModel.curHomeVideoNo.value = mCurPos
                 }
             })
 
@@ -138,10 +99,10 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
                 val count = mViewBind.vvp.childCount
                 Log.d(TAG, "count --- $count")
                 for (i in 0 until count) {
-                    val itemView = mViewBind.vvp!!.getChildAt(i)
+                    val itemView = mViewBind.vvp.getChildAt(i)
                     val viewHolder: VideoHomeAdapter.ViewHolder = itemView.tag as VideoHomeAdapter.ViewHolder
-                    if (viewHolder.mPosition == mCurPos) {
-                        videoHomeDataState.value?.listData?.get(0)?.let { it1 ->
+                    if (viewHolder.mPosition == appViewModel.curHomeVideoNo.value) {
+                        videoAllDataState.value?.listData?.get(viewHolder.mPosition)?.let { it1 ->
                             viewHolder.setLikeIcon(it1.ID)
                         }
                     }
@@ -166,11 +127,10 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
         mVideoView!!.addOnStateChangeListener(object : SimpleOnStateChangeListener() {
             override fun onPlayStateChanged(playState: Int) {
                 if (playState == VideoView.STATE_PLAYBACK_COMPLETED) {
-                    Log.d(TAG, "自动播放下一条， 当前是 ${appViewModel.curPlayVideoNo.value}")
                     mCurPos++
-                    nav().navigateAction(R.id.action_to_playFragment, Bundle().apply {
-                        putInt("curPos", mCurPos)
-                    })
+                    Log.d(TAG, "自动播放下一条， 当前是 ${mCurPos}")
+                    nav().navigateAction(R.id.action_to_playFragment)
+                    appViewModel.curHomeVideoNo.value = mCurPos
                 }
             }
         })
@@ -179,8 +139,8 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
     private fun initViewPager() {
         mViewBind.vvp.offscreenPageLimit = 4
         mViewBind.vvp.adapter = videoHomeAdapter
-        mViewBind.vvp!!.overScrollMode = View.OVER_SCROLL_NEVER
-        mViewBind.vvp!!.setOnPageChangeListener(object : SimpleOnPageChangeListener() {
+        mViewBind.vvp.overScrollMode = View.OVER_SCROLL_NEVER
+        mViewBind.vvp.setOnPageChangeListener(object : SimpleOnPageChangeListener() {
             private var mCurItem = 0
 
             /**
@@ -201,23 +161,24 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
 
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                if (position == mCurPos) return
-                nav().navigateAction(R.id.action_to_playFragment, Bundle().apply {
-                    putInt("curPos", mCurPos)
-                })
+                Log.d(TAG,"position == $position  curHomeVideoNo = ${appViewModel.curHomeVideoNo.value}")
+                if (position == appViewModel.curHomeVideoNo.value) return
+                mCurPos = position
+                nav().navigateAction(R.id.action_to_playFragment)
+                appViewModel.curHomeVideoNo.value = mCurPos
             }
 
             override fun onPageScrollStateChanged(state: Int) {
                 super.onPageScrollStateChanged(state)
                 Log.d(TAG, " onPageScrollStateChanged 状态变化 $state")
                 if (state == VerticalViewPager.SCROLL_STATE_DRAGGING) {
-                    mCurItem = mViewBind.vvp!!.currentItem
+                    mCurItem = mViewBind.vvp.currentItem
                     Log.d(TAG, "设置当前curItem ------- ")
                 }
                 if (state == VerticalViewPager.SCROLL_STATE_IDLE) {
-                    mPreloadManager!!.resumePreload(mCurPos, mIsReverseScroll)
+                    appViewModel.curHomeVideoNo.value?.let { mPreloadManager!!.resumePreload(it, mIsReverseScroll) }
                 } else {
-                    mPreloadManager!!.pausePreload(mCurPos, mIsReverseScroll)
+                    appViewModel.curHomeVideoNo.value?.let { mPreloadManager!!.pausePreload(it, mIsReverseScroll) }
                 }
             }
         })
@@ -229,7 +190,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
         for (i in 0 until count) {
             val itemView = mViewBind.vvp!!.getChildAt(i)
             val viewHolder: VideoHomeAdapter.ViewHolder = itemView.tag as VideoHomeAdapter.ViewHolder
-            if (viewHolder.mPosition === position) {
+            if (viewHolder.mPosition == position) {
                 mVideoView?.release()
                 if (mVideoView != null && mVideoView!!.parent != null) {
                     val parent: ViewParent = mVideoView!!.parent
@@ -237,7 +198,7 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
                         parent.removeView(mVideoView)
                     }
                 }
-                val videoBean: VideoResponse? = appViewModel.videoHomeDataState.value?.listData?.get(position)
+                val videoBean: VideoResponse? = appViewModel.videoAllDataState.value?.listData?.get(position)
                 if (videoBean != null) {
                     Log.d(TAG, "获取到的 position = $position  videoBean 的 videoName = ${videoBean.videoName} videoUrl = ${videoBean.videoUrl}")
 
@@ -263,7 +224,6 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
         appViewModel.curPage.value = "HomeFragment"
         Log.d(TAG, "onResume ---- ")
         if (mVideoView != null) {
-            Log.d(TAG, "mVideoView!!.resume ---- ")
             mVideoView!!.resume()
         }
     }
@@ -273,7 +233,6 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
         super.onPause()
         Log.d(TAG, "onPause ---- ")
         if (mVideoView != null) {
-            Log.d(TAG, "mVideoView!!.pause ---- ")
             mVideoView!!.pause()
         }
     }
@@ -282,7 +241,6 @@ class HomeFragment : BaseFragment1<HomeViewModel, FragmentHomeBinding>() {
         Log.d(TAG, "onDestroy ---- ")
         super.onDestroy()
         if (mVideoView != null) {
-            Log.d(TAG, "mVideoView!!.release ---- ")
             mVideoView!!.release()
         }
     }

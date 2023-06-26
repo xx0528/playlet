@@ -7,13 +7,10 @@ import com.google.gson.Gson
 import com.smallplay.playlet.app.appViewModel
 import com.smallplay.playlet.app.base.BaseFragment1
 import com.smallplay.playlet.app.ext.init
-import com.smallplay.playlet.app.ext.jumpByBind
-import com.smallplay.playlet.app.util.CacheUtil
 import com.smallplay.playlet.data.model.bean.EpisodesItem
 import com.smallplay.playlet.databinding.FragmentEpisodesBinding
 import com.smallplay.playlet.ui.adapter.EpisodesAdapter
 import com.smallplay.playlet.viewmodel.state.EpisodesViewModel
-import me.hgj.jetpackmvvm.ext.nav
 
 
 /**
@@ -40,21 +37,22 @@ class EpisodeFragment : BaseFragment1<EpisodesViewModel, FragmentEpisodesBinding
         episodesAdapter.run {
             setOnItemClickListener { adapter, view, position ->
                 //选集播放
-//                appViewModel.curPlayVideoNo.value = mEpisodePageNum*30 + position
-                var freeCount = appViewModel.videoHomeDataState.value?.listData?.get(position)?.freeCount
-                if (position >= freeCount!! && !CacheUtil.isBind()) {
-                    appViewModel.dialogVisible.value = 0
-                    nav().jumpByBind{}
-                } else {
-                    appViewModel.reqPlay(mEpisodePageNum*30 + position)
-                }
+                appViewModel.dialogVisible.value = 0
+                appViewModel.curPlayVideoNo.value = mEpisodePageNum*30 + position
+//                var freeCount = appViewModel.videoHomeDataState.value?.listData?.get(position)?.freeCount
+//                if (position >= freeCount!! && !CacheUtil.isBind()) {
+//                    appViewModel.dialogVisible.value = 0
+//                    nav().jumpByBind{}
+//                } else {
+//                    appViewModel.reqPlay(mEpisodePageNum*30 + position)
+//                }
             }
         }
     }
 
     override fun initData() {
         var list = arrayListOf<EpisodesItem>()
-        var videoInfo = appViewModel.videoHomeDataState.value?.listData?.get(0)
+        var videoInfo = appViewModel.videoPlayDataState.value?.listData?.get(0)
 
         val buyVideos = Gson().fromJson(appViewModel.buyVideos.value ?: "", Map::class.java)
         var buyEpisode = 0

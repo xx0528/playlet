@@ -59,6 +59,7 @@ class ParkFragment : BaseFragment1<ParkViewModel, FragmentParkBinding>() {
             setOnItemClickListener { adapter, view, position ->
                 Log.d(TAG, "按钮按到 跳转视频--  ${getItem(position).videoName} 视频ID ${getItem(position).ID}")
                 eventViewModel.navigationIdx.value = 0
+                appViewModel.curHomeVideoNo.value = position
                 appViewModel.setCurVideo(getItem(position).ID)
             }
         }
@@ -78,7 +79,7 @@ class ParkFragment : BaseFragment1<ParkViewModel, FragmentParkBinding>() {
     override fun createObserver() {
         appViewModel.run {
             //监听首页视频列表请求的数据变化
-            videoParkDataState.observe(viewLifecycleOwner, Observer {
+            videoAllDataState.observe(viewLifecycleOwner, Observer {
                 //设值 新写了个拓展函数，搞死了这个恶心的重复代码
                 loadListData(it, videoParkAdapter, loadsir, mViewBind.includeList.includeRecyclerview.recyclerView, mViewBind.includeList.includeRecyclerview.swipeRefresh)
             })
