@@ -247,11 +247,13 @@ func (pUserApi *PlUserApi) PlayVideo(c *gin.Context) {
 
 	//不允许跳着播放
 	if reqInfo.Episode-buyNum > 1 {
+		//
 		reqInfo.Episode = int(math.Min(float64(buyNum+1), float64(videoInfo.Count)))
+		reqInfo.Episode = int(math.Max(float64(reqInfo.Episode), float64(videoInfo.FreeCount+1)))
 	}
 
 	// 有钱直接花
-	if user.CurGold > global.GVA_CONFIG.Playlet.EpisodeCost {
+	if user.CurGold >= global.GVA_CONFIG.Playlet.EpisodeCost {
 		//扣除金币
 		user.CurGold = user.CurGold - global.GVA_CONFIG.Playlet.EpisodeCost
 		user.BuyVideos = updateVideoRecord(user.BuyVideos, reqInfo, "buy")
