@@ -1,3 +1,9 @@
+/*
+ * @Author: xx
+ * @Date: 2023-06-02 16:53:55
+ * @LastEditTime: 2023-06-16 20:10:19
+ * @Description:
+ */
 package upload
 
 import (
@@ -12,6 +18,7 @@ import (
 type OSS interface {
 	UploadFile(file *multipart.FileHeader) (string, string, error)
 	DeleteFile(key string) error
+	GetFilePath(filePath string) (string, error)
 }
 
 // NewOss OSS的实例化方法

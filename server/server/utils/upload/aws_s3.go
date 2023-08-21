@@ -80,6 +80,10 @@ func (*AwsS3) DeleteFile(key string) error {
 	return nil
 }
 
+func (*AwsS3) GetFilePath(filePath string) (string, error) {
+	return "", nil
+}
+
 // newSession Create S3 session
 func newSession() *session.Session {
 	sess, _ := session.NewSession(&aws.Config{

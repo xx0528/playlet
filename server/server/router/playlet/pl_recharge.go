@@ -1,7 +1,13 @@
+/*
+ * @Author: xx
+ * @Date: 2023-06-02 18:40:17
+ * @LastEditTime: 2023-06-19 17:36:34
+ * @Description:
+ */
 package playlet
 
 import (
-	"github.com/flipped-aurora/gin-vue-admin/server/api/v1"
+	v1 "github.com/flipped-aurora/gin-vue-admin/server/api/v1"
 	"github.com/flipped-aurora/gin-vue-admin/server/middleware"
 	"github.com/gin-gonic/gin"
 )
@@ -15,13 +21,14 @@ func (s *PlRechargeRouter) InitPlRechargeRouter(Router *gin.RouterGroup) {
 	plRechargeRouterWithoutRecord := Router.Group("plRecharge")
 	var plRechargeApi = v1.ApiGroupApp.PlayletApiGroup.PlRechargeApi
 	{
-		plRechargeRouter.POST("createPlRecharge", plRechargeApi.CreatePlRecharge)   // 新建PlRecharge
-		plRechargeRouter.DELETE("deletePlRecharge", plRechargeApi.DeletePlRecharge) // 删除PlRecharge
+		plRechargeRouter.POST("createPlRecharge", plRechargeApi.CreatePlRecharge)             // 新建PlRecharge
+		plRechargeRouter.DELETE("deletePlRecharge", plRechargeApi.DeletePlRecharge)           // 删除PlRecharge
 		plRechargeRouter.DELETE("deletePlRechargeByIds", plRechargeApi.DeletePlRechargeByIds) // 批量删除PlRecharge
-		plRechargeRouter.PUT("updatePlRecharge", plRechargeApi.UpdatePlRecharge)    // 更新PlRecharge
+		plRechargeRouter.PUT("updatePlRecharge", plRechargeApi.UpdatePlRecharge)              // 更新PlRecharge
 	}
 	{
-		plRechargeRouterWithoutRecord.GET("findPlRecharge", plRechargeApi.FindPlRecharge)        // 根据ID获取PlRecharge
-		plRechargeRouterWithoutRecord.GET("getPlRechargeList", plRechargeApi.GetPlRechargeList)  // 获取PlRecharge列表
+		plRechargeRouterWithoutRecord.GET("findPlRecharge", plRechargeApi.FindPlRecharge)       // 根据ID获取PlRecharge
+		plRechargeRouterWithoutRecord.GET("getPlRechargeList", plRechargeApi.GetPlRechargeList) // 获取PlRecharge列表
+		plRechargeRouterWithoutRecord.GET("getPlRechargeData", plRechargeApi.GetPlRechargeData) // pl用户获取PlRecharge列表
 	}
 }

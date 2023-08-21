@@ -194,6 +194,7 @@ func (plVideoApi *PlVideoApi) GetPlVideoList(c *gin.Context) {
 	}
 }
 
+// 获取视频列表
 func (plVideoApi *PlVideoApi) GetPlUserVideoList(c *gin.Context) {
 	pageInfo := playletReq.PlVideoSearch{}
 	numStr := c.Query("page")
@@ -201,14 +202,17 @@ func (plVideoApi *PlVideoApi) GetPlUserVideoList(c *gin.Context) {
 	if err == nil {
 		pageInfo.Page = num
 	}
-	pageInfo.PageSize = 50
+	pageInfo.PageSize = 20
 	if list, total, err := plVideoService.GetPlVideoInfoList(pageInfo); err != nil {
 		global.GVA_LOG.Error("获取失败!", zap.Error(err))
 		response.FailWithMessage("获取失败", c)
 	} else {
+
 		response.OkWithDetailed(response.PageResult{
 			List:     list,
 			Total:    total,
+			Over:     len(list) < pageInfo.PageSize,
+			Offset:   0,
 			Page:     pageInfo.Page,
 			PageSize: pageInfo.PageSize,
 		}, "获取成功", c)

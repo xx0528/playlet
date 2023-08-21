@@ -106,3 +106,8 @@ func (e *FileUploadAndDownloadService) UploadFile(header *multipart.FileHeader, 
 	}
 	return
 }
+
+func (e *FileUploadAndDownloadService) GetFilePath(filePath string) (string, error) {
+	oss := upload.NewOss()
+	return oss.GetFilePath(filePath)
+}

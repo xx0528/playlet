@@ -1,7 +1,7 @@
 /*
  * @Author: xx
  * @Date: 2023-06-14 10:34:27
- * @LastEditTime: 2023-06-16 15:24:59
+ * @LastEditTime: 2023-06-19 14:50:49
  * @Description:
  */
 package response
@@ -13,16 +13,18 @@ import (
 
 type PlLoginRes struct {
 	playlet.PlUser
-	Check      bool   `json:"check"`
-	ChatServer string `json:"chatServer"`
-	Token      string `json:"token"`
-	ExpiresAt  int64  `json:"expiresAt"`
+	RechargeDesc string `json:"rechargeDesc"`
+	Check        bool   `json:"check"`
+	ChatServer   string `json:"chatServer"`
+	Token        string `json:"token"`
+	ExpiresAt    int64  `json:"expiresAt"`
 }
 
 type PlPlayVideoRes struct {
 	playletReq.PlVideoInfo
 	Code     int            `json:"code"`
 	Msg      string         `json:"msg"`
+	VideoUrl string         `json:"videoUrl"`
 	UserInfo playlet.PlUser `json:"userInfo"`
 }
 

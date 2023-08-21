@@ -65,3 +65,7 @@ func (o *Obs) DeleteFile(key string) error {
 	}
 	return nil
 }
+
+func (*Obs) GetFilePath(filePath string) (string, error) {
+	return "", nil
+}

@@ -1,8 +1,8 @@
 aliyun-oss:
-  endpoint: yourEndpoint
-  access-key-id: yourAccessKeyId
-  access-key-secret: yourAccessKeySecret
-  bucket-name: yourBucketName
+  endpoint: oss-ap-southeast-1.aliyuncs.com
+  access-key-id: LTAI5tKhLuEaBEGqQoRWjy11
+  access-key-secret: L7Kvi2hlUjyR9HmallVx8I1fC0c9XL
+  bucket-name: playlet-aa
   bucket-url: yourBucketUrl
   base-path: yourBasePath
 autocode:
@@ -34,7 +34,7 @@ captcha:
   key-long: 6
   img-width: 240
   img-height: 80
-  open-captcha: 0
+  open-captcha: 5
   open-captcha-timeout: 3600
 cors:
   mode: strict-whitelist
@@ -85,10 +85,10 @@ hua-wei-obs:
   access-key: you-access-key
   secret-key: you-secret-key
 jwt:
-  signing-key: 656586af-2903-442f-80c8-18c480dd7896
+  signing-key: 656586af-29H3-442f-87c8-1832480dd7896
   expires-time: 7d
   buffer-time: 1d
-  issuer: qmPlus
+  issuer: playletPlus
 local:
   path: uploads/file
   store-path: uploads/file
@@ -164,7 +164,7 @@ system:
   env: public
   addr: 8888
   db-type: mysql
-  oss-type: local
+  oss-type: aliyun-oss
   use-multipoint: false
   use-redis: false
   iplimit-count: 15000
@@ -198,3 +198,9 @@ zap:
   max-age: 0
   show-line: true
   log-in-console: true
+playlet:
+  episode-cost: 10
+  playlet-server: http://192.168.3.67:8080
+  chat-server: http://192.168.3.67:8081/chatIndex?kefu_id=kefu2
+  check: true
+  recharge-desc: 1台币 = 100K币

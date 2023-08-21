@@ -1,22 +1,23 @@
 package playlet
 
 import (
+	"strconv"
+
 	"github.com/flipped-aurora/gin-vue-admin/server/global"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/playlet"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
-    playletReq "github.com/flipped-aurora/gin-vue-admin/server/model/playlet/request"
-    "github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
-    "github.com/flipped-aurora/gin-vue-admin/server/service"
-    "github.com/gin-gonic/gin"
-    "go.uber.org/zap"
-    "github.com/flipped-aurora/gin-vue-admin/server/utils"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/common/response"
+	"github.com/flipped-aurora/gin-vue-admin/server/model/playlet"
+	playletReq "github.com/flipped-aurora/gin-vue-admin/server/model/playlet/request"
+	"github.com/flipped-aurora/gin-vue-admin/server/service"
+	"github.com/flipped-aurora/gin-vue-admin/server/utils"
+	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 )
 
 type PlRechargeApi struct {
 }
 
 var plRechargeService = service.ServiceGroupApp.PlayletServiceGroup.PlRechargeService
-
 
 // CreatePlRecharge 创建PlRecharge
 // @Tags PlRecharge
@@ -34,20 +35,20 @@ func (plRechargeApi *PlRechargeApi) CreatePlRecharge(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-    plRecharge.CreatedBy = utils.GetUserID(c)
-    verify := utils.Rules{
-        "UserId":{utils.NotEmpty()},
-        "Recharge":{utils.NotEmpty()},
-        "BuyGold":{utils.NotEmpty()},
-        "LeftGold":{utils.NotEmpty()},
-        "AdminId":{utils.NotEmpty()},
-    }
+	plRecharge.CreatedBy = utils.GetUserID(c)
+	verify := utils.Rules{
+		"UserId":   {utils.NotEmpty()},
+		"Recharge": {utils.NotEmpty()},
+		"BuyGold":  {utils.NotEmpty()},
+		"LeftGold": {utils.NotEmpty()},
+		"AdminId":  {utils.NotEmpty()},
+	}
 	if err := utils.Verify(plRecharge, verify); err != nil {
-    		response.FailWithMessage(err.Error(), c)
-    		return
-    	}
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
 	if err := plRechargeService.CreatePlRecharge(&plRecharge); err != nil {
-        global.GVA_LOG.Error("创建失败!", zap.Error(err))
+		global.GVA_LOG.Error("创建失败!", zap.Error(err))
 		response.FailWithMessage("创建失败", c)
 	} else {
 		response.OkWithMessage("创建成功", c)
@@ -70,9 +71,9 @@ func (plRechargeApi *PlRechargeApi) DeletePlRecharge(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-    plRecharge.DeletedBy = utils.GetUserID(c)
+	plRecharge.DeletedBy = utils.GetUserID(c)
 	if err := plRechargeService.DeletePlRecharge(plRecharge); err != nil {
-        global.GVA_LOG.Error("删除失败!", zap.Error(err))
+		global.GVA_LOG.Error("删除失败!", zap.Error(err))
 		response.FailWithMessage("删除失败", c)
 	} else {
 		response.OkWithMessage("删除成功", c)
@@ -90,14 +91,14 @@ func (plRechargeApi *PlRechargeApi) DeletePlRecharge(c *gin.Context) {
 // @Router /plRecharge/deletePlRechargeByIds [delete]
 func (plRechargeApi *PlRechargeApi) DeletePlRechargeByIds(c *gin.Context) {
 	var IDS request.IdsReq
-    err := c.ShouldBindJSON(&IDS)
+	err := c.ShouldBindJSON(&IDS)
 	if err != nil {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-    deletedBy := utils.GetUserID(c)
-	if err := plRechargeService.DeletePlRechargeByIds(IDS,deletedBy); err != nil {
-        global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
+	deletedBy := utils.GetUserID(c)
+	if err := plRechargeService.DeletePlRechargeByIds(IDS, deletedBy); err != nil {
+		global.GVA_LOG.Error("批量删除失败!", zap.Error(err))
 		response.FailWithMessage("批量删除失败", c)
 	} else {
 		response.OkWithMessage("批量删除成功", c)
@@ -120,20 +121,20 @@ func (plRechargeApi *PlRechargeApi) UpdatePlRecharge(c *gin.Context) {
 		response.FailWithMessage(err.Error(), c)
 		return
 	}
-    plRecharge.UpdatedBy = utils.GetUserID(c)
-      verify := utils.Rules{
-          "UserId":{utils.NotEmpty()},
-          "Recharge":{utils.NotEmpty()},
-          "BuyGold":{utils.NotEmpty()},
-          "LeftGold":{utils.NotEmpty()},
-          "AdminId":{utils.NotEmpty()},
-      }
-    if err := utils.Verify(plRecharge, verify); err != nil {
-      	response.FailWithMessage(err.Error(), c)
-      	return
-     }
+	plRecharge.UpdatedBy = utils.GetUserID(c)
+	verify := utils.Rules{
+		"UserId":   {utils.NotEmpty()},
+		"Recharge": {utils.NotEmpty()},
+		"BuyGold":  {utils.NotEmpty()},
+		"LeftGold": {utils.NotEmpty()},
+		"AdminId":  {utils.NotEmpty()},
+	}
+	if err := utils.Verify(plRecharge, verify); err != nil {
+		response.FailWithMessage(err.Error(), c)
+		return
+	}
 	if err := plRechargeService.UpdatePlRecharge(plRecharge); err != nil {
-        global.GVA_LOG.Error("更新失败!", zap.Error(err))
+		global.GVA_LOG.Error("更新失败!", zap.Error(err))
 		response.FailWithMessage("更新失败", c)
 	} else {
 		response.OkWithMessage("更新成功", c)
@@ -157,7 +158,7 @@ func (plRechargeApi *PlRechargeApi) FindPlRecharge(c *gin.Context) {
 		return
 	}
 	if replRecharge, err := plRechargeService.GetPlRecharge(plRecharge.ID); err != nil {
-        global.GVA_LOG.Error("查询失败!", zap.Error(err))
+		global.GVA_LOG.Error("查询失败!", zap.Error(err))
 		response.FailWithMessage("查询失败", c)
 	} else {
 		response.OkWithData(gin.H{"replRecharge": replRecharge}, c)
@@ -181,14 +182,37 @@ func (plRechargeApi *PlRechargeApi) GetPlRechargeList(c *gin.Context) {
 		return
 	}
 	if list, total, err := plRechargeService.GetPlRechargeInfoList(pageInfo); err != nil {
-	    global.GVA_LOG.Error("获取失败!", zap.Error(err))
-        response.FailWithMessage("获取失败", c)
-    } else {
-        response.OkWithDetailed(response.PageResult{
-            List:     list,
-            Total:    total,
-            Page:     pageInfo.Page,
-            PageSize: pageInfo.PageSize,
-        }, "获取成功", c)
-    }
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
+}
+
+// pl用户获取充值记录
+func (plRechargeApi *PlRechargeApi) GetPlRechargeData(c *gin.Context) {
+	pageInfo := playletReq.PlRechargeSearch{}
+	numStr := c.Query("page")
+	num, err := strconv.Atoi(numStr)
+	if err == nil {
+		pageInfo.Page = num
+	}
+	pageInfo.PageSize = 50
+
+	if list, total, err := plRechargeService.GetPlRechargeInfoList(pageInfo); err != nil {
+		global.GVA_LOG.Error("获取失败!", zap.Error(err))
+		response.FailWithMessage("获取失败", c)
+	} else {
+		response.OkWithDetailed(response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "获取成功", c)
+	}
 }

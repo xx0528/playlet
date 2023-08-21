@@ -17,7 +17,7 @@ import (
 type PlCost struct {
 	global.GVA_MODEL
 	UserName  string    `json:"userName" form:"userName" gorm:"column:user_name;comment:用户名;"`
-	UserId    int       `json:"userId" form:"userId" gorm:"column:user_id;comment:用户Id;"`
+	UserId    string    `json:"userId" form:"userId" gorm:"column:user_id;comment:用户Id;"`
 	CostGold  float64   `json:"costGold" form:"costGold" gorm:"column:cost_gold;comment:消费金币;"`
 	Time      time.Time `json:"time" form:"time" gorm:"column:time;comment:时间;"`
 	LeftGold  float64   `json:"leftGold" form:"leftGold" gorm:"column:left_gold;comment:剩余金币;"`

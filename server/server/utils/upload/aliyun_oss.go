@@ -2,6 +2,7 @@ package upload
 
 import (
 	"errors"
+	"fmt"
 	"mime/multipart"
 	"time"
 
@@ -56,6 +57,24 @@ func (*AliyunOSS) DeleteFile(key string) error {
 	}
 
 	return nil
+}
+
+func (*AliyunOSS) GetFilePath(filePath string) (string, error) {
+	bucket, err := NewBucket()
+	if err != nil {
+		global.GVA_LOG.Error("function AliyunOSS.NewBucket() Failed", zap.Any("err", err.Error()))
+		return "", errors.New("function AliyunOSS.NewBucket() Failed, err:" + err.Error())
+	}
+
+	// 生成用于下载的签名URL，并指定签名URL的有效时间为60秒。
+	signedURL, err := bucket.SignURL(filePath, oss.HTTPGet, 200)
+	if err != nil {
+		global.GVA_LOG.Error("function AliyunOSS.NewBucket() Failed", zap.Any("err", err.Error()))
+		return "", errors.New("function AliyunOSS.NewBucket() Failed, err:" + err.Error())
+	}
+	fmt.Printf("获取到的 Sign Url:%s\n", signedURL)
+
+	return signedURL, nil
 }
 
 func NewBucket() (*oss.Bucket, error) {
